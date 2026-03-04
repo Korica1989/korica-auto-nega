@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KORICA Auto Nega | Cene po Touareg modelu</title>
+    <title>KORICA Auto Nega | Personalizovano Održavanje</title>
     <style>
         :root { --gold: #d4af37; --black: #0a0a0a; }
         body {
@@ -25,7 +25,17 @@
             width: 100%; padding: 12px; background: #111; color: white;
             border: 1px solid #333; border-radius: 10px; font-size: 14px; outline: none;
         }
-        select:focus { border-color: var(--gold); }
+        .services {
+            background: #111; padding: 15px; border-radius: 12px; border: 1px solid #333;
+            display: flex; flex-direction: column; gap: 12px; margin-top: 10px;
+        }
+        .service-item {
+            display: flex; align-items: center; justify-content: flex-start; gap: 10px;
+            cursor: pointer; font-size: 14px;
+        }
+        input[type="checkbox"] {
+            accent-color: var(--gold); width: 18px; height: 18px; cursor: pointer;
+        }
         .price-box {
             margin: 20px 0; padding: 15px; background: rgba(212, 175, 55, 0.05);
             border-radius: 15px; border: 1px solid rgba(212, 175, 55, 0.2);
@@ -43,51 +53,54 @@
 
 <div class="card">
     <h1>KORICA</h1>
-    <div class="subtitle">Auto Nega Sremčica</div>
+    <div class="subtitle">Auto Nega Sremčica | Koch-Chemie</div>
     
     <div class="group">
-        <label>1. Marka vozila</label>
+        <label>1. Izaberi marku</label>
         <select id="markaSel" onchange="azurirajModele()">
-            <option value="" selected disabled>Izaberi marku...</option>
+            <option value="" selected disabled>Marka...</option>
         </select>
     </div>
 
     <div class="group">
-        <label>2. Model vozila</label>
+        <label>2. Izaberi model</label>
         <select id="modelSel" onchange="izracunaj()">
-            <option value="">Prvo odaberi marku...</option>
+            <option value="">Prvo marka...</option>
         </select>
     </div>
 
     <div class="group">
-        <label>3. Tretman (Koch-Chemie)</label>
-        <select id="tretmanSel" onchange="izracunaj()">
-            <option value="1">Standard (Pranje + Usisavanje)</option>
-            <option value="1.5">Premium (Zaštita + Detalji)</option>
-            <option value="2.5">Deep Clean (Dubinsko pranje)</option>
-        </select>
+        <label>3. Šta radimo danas?</label>
+        <div class="services">
+            <label class="service-item">
+                <input type="checkbox" id="spolja" onchange="izracunaj()" checked> 
+                Spoljašnje pranje (Koch-Chemie)
+            </label>
+            <label class="service-item">
+                <input type="checkbox" id="unutra" onchange="izracunaj()" checked> 
+                Unutrašnje održavanje & Detalji
+            </label>
+        </div>
     </div>
 
     <div class="price-box">
-        <div style="font-size: 10px; color: #888; margin-bottom: 5px;">UKUPNA CENA</div>
+        <div style="font-size: 10px; color: #888; margin-bottom: 5px;">UKUPNO ZA NAPLATU</div>
         <div class="price-tag" id="rezultat">0 RSD</div>
     </div>
 
-    <button class="btn" onclick="zakazi()">Rezerviši termin</button>
+    <button class="btn" onclick="zakazi()">Rezerviši Termin</button>
 </div>
 
 <script>
-    // Cene bazirane na Touareg = 3000 RSD
+    // Cene su podeljene: Spolja (50%) + Unutra (50%) = Ukupna baza
+    // Primer Touareg baza 3000 RSD -> Spolja 1500, Unutra 1500
     const baza = {
-        "Audi": [{n:"A1",c:1800},{n:"A3",c:2200},{n:"A4",c:2500},{n:"A6",c:2800},{n:"Q5",c:3000},{n:"Q7",c:3500},{n:"Q8",c:3500}],
-        "BMW": [{n:"Serija 1",c:2200},{n:"Serija 3",c:2500},{n:"Serija 5",c:2800},{n:"X1",c:2800},{n:"X3",c:3000},{n:"X5",c:3200},{n:"X7",c:3800}],
-        "Mercedes": [{n:"A Klasa",c:2200},{n:"C Klasa",c:2500},{n:"E Klasa",c:2800},{n:"S Klasa",c:3200},{n:"GLC",c:3000},{n:"GLE",c:3200},{n:"GLS",c:3800}],
-        "Volkswagen": [{n:"Up!",c:1800},{n:"Polo",c:1800},{n:"Golf",c:2200},{n:"Passat",c:2800},{n:"Arteon",c:2800},{n:"Tiguan",c:3000},{n:"Touareg",c:3000},{n:"Caddy",c:2800},{n:"Amarok",c:3500}],
-        "Skoda": [{n:"Fabia",c:1800},{n:"Octavia",c:2500},{n:"Superb",c:2800},{n:"Kodiaq",c:3000}],
-        "Fiat": [{n:"500",c:1800},{n:"Punto",c:1800},{n:"Tipo",c:2200},{n:"500L",c:2500}],
-        "Opel": [{n:"Corsa",c:1800},{n:"Astra",c:2200},{n:"Insignia",c:2500},{n:"Mokka",c:2500}],
-        "Renault": [{n:"Clio",c:1800},{n:"Megane",c:2200},{n:"Talisman",c:2500},{n:"Captur",c:2500},{n:"Kadjar",c:3000}],
-        "Peugeot": [{n:"208",c:1800},{n:"308",c:2200},{n:"508",c:2500},{n:"3008",c:3000},{n:"5008",c:3200}]
+        "Audi": [{n:"A3",c:2200},{n:"A4",c:2500},{n:"A6",c:2800},{n:"Q7",c:3500}],
+        "BMW": [{n:"Serija 1",c:2200},{n:"Serija 3",c:2500},{n:"Serija 5",c:2800},{n:"X5",c:3200}],
+        "Volkswagen": [{n:"Polo",c:1800},{n:"Golf",c:2200},{n:"Passat",c:2800},{n:"Touareg",c:3000},{n:"Amarok",c:3500}],
+        "Mercedes": [{n:"C Klasa",c:2500},{n:"E Klasa",c:2800},{n:"GLE",c:3200}],
+        "Skoda": [{n:"Fabia",c:1800},{n:"Octavia",c:2500},{n:"Superb",c:2800}],
+        "Fiat": [{n:"500",c:1800},{n:"Tipo",c:2200}]
     };
 
     function inicijalizuj() {
@@ -100,9 +113,9 @@
     function azurirajModele() {
         const m = document.getElementById("markaSel").value;
         const modSel = document.getElementById("modelSel");
-        modSel.innerHTML = '<option value="" disabled selected>Izaberi model...</option>';
+        modSel.innerHTML = '<option value="" disabled selected>Model...</option>';
         if(baza[m]) {
-            baza[m].sort((a,b)=>a.n.localeCompare(b.n)).forEach(mo => {
+            baza[m].forEach(mo => {
                 let o = document.createElement("option"); o.value = mo.c; o.text = mo.n; modSel.appendChild(o);
             });
         }
@@ -110,23 +123,37 @@
     }
 
     function izracunaj() {
-        const mc = parseInt(document.getElementById("modelSel").value);
-        const tc = parseFloat(document.getElementById("tretmanSel").value);
+        const osnovnaCena = parseInt(document.getElementById("modelSel").value);
         const r = document.getElementById("rezultat");
-        if(mc) { 
-            let total = Math.round(mc * tc);
-            r.innerText = total.toLocaleString() + " RSD"; 
-        } else { r.innerText = "0 RSD"; }
+        
+        if(!osnovnaCena) { r.innerText = "0 RSD"; return; }
+
+        let finalnaCena = 0;
+        const spoljaCheckbox = document.getElementById("spolja").checked;
+        const unutraCheckbox = document.getElementById("unutra").checked;
+
+        // Logika: Pola cene je spolja, pola unutra
+        if(spoljaCheckbox) finalnaCena += (osnovnaCena / 2);
+        if(unutraCheckbox) finalnaCena += (osnovnaCena / 2);
+
+        r.innerText = Math.round(finalnaCena).toLocaleString() + " RSD";
     }
 
     function zakazi() {
         const m = document.getElementById("markaSel").value;
         const modEl = document.getElementById("modelSel");
-        if(modEl.selectedIndex <= 0) { alert("Odaberi auto!"); return; }
         const mo = modEl.options[modEl.selectedIndex].text;
         const c = document.getElementById("rezultat").innerText;
+        
+        let usluge = [];
+        if(document.getElementById("spolja").checked) usluge.push("Spolja");
+        if(document.getElementById("unutra").checked) usluge.push("Unutra");
+
+        if(c === "0 RSD") { alert("Izaberi bar jednu uslugu!"); return; }
+
         const bURL = "https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url";
-        window.open(`${bURL}&entry.345073777=${encodeURIComponent(m + " " + mo)}&entry.988818818=${encodeURIComponent(c)}`, '_blank');
+        const msg = encodeURIComponent(`${m} ${mo} (${usluge.join(" + ")})`);
+        window.open(`${bURL}&entry.345073777=${msg}&entry.988818818=${encodeURIComponent(c)}`, '_blank');
     }
 
     inicijalizuj();
