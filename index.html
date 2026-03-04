@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KORICA Auto Nega | Kärcher Professional</title>
+    <title>KORICA Auto Nega | Rezervacija</title>
     <style>
         :root { --gold: #d4af37; --black: #0a0a0a; }
         body {
@@ -54,12 +54,12 @@
 
 <div class="card">
     <h1>KORICA</h1>
-    <div class="subtitle">Auto Nega | Kärcher & Koch-Chemie</div>
+    <div class="subtitle">Auto Nega Sremčica | Koch-Chemie</div>
     
     <div class="group">
         <label>1. Odaberi marku</label>
         <select id="markaSel" onchange="azurirajModele()">
-            <option value="" selected disabled>Marka...</option>
+            <option value="" selected disabled>Izaberi marku...</option>
         </select>
     </div>
 
@@ -71,10 +71,10 @@
     </div>
 
     <div class="group">
-        <label>3. Usluge (Bezkontaktno pranje)</label>
+        <label>3. Usluge (Bezkontaktno održavanje)</label>
         <div class="services-container">
             <label class="service-item">
-                <input type="checkbox" id="spolja" onchange="izracunaj()" checked> Spoljašnje pranje (Kärcher)
+                <input type="checkbox" id="spolja" onchange="izracunaj()" checked> Spoljašnje pranje
             </label>
             <label class="service-item">
                 <input type="checkbox" id="unutra" onchange="izracunaj()" checked> Unutrašnje održavanje
@@ -91,23 +91,17 @@
 </div>
 
 <script>
-    // MAKSIMALNA BAZA: XS(1600), S(1800), M(2200), L(2600), XL(3200)
-    // Vreme je smanjeno zbog Kärcher kompresora
     const baza = {
         "Abarth": [{n:"595 (XS)",c:1600,v:40}],
         "Alfa Romeo": [{n:"Giulietta (M)",c:2200,v:50},{n:"Giulia (M)",c:2200,v:50},{n:"Stelvio (L)",c:2600,v:60}],
         "Audi": [{n:"A1 (S)",c:1800,v:45},{n:"A3 (M)",c:2200,v:50},{n:"A4 (M)",c:2200,v:50},{n:"A6 (L)",c:2600,v:60},{n:"Q3 (M)",c:2200,v:50},{n:"Q5 (L)",c:2600,v:60},{n:"Q7 (XL)",c:3200,v:80}],
         "BMW": [{n:"Serija 1 (S)",c:1800,v:45},{n:"Serija 3 (M)",c:2200,v:50},{n:"Serija 5 (L)",c:2600,v:60},{n:"X1 (M)",c:2200,v:50},{n:"X3 (L)",c:2600,v:60},{n:"X5 (L)",c:2600,v:60},{n:"X7 (XL)",c:3200,v:80}],
-        "Citroen": [{n:"C3 (S)",c:1800,v:45},{n:"C4 (M)",c:2200,v:50},{n:"C5 (L)",c:2600,v:60}],
-        "Dacia": [{n:"Sandero (S)",c:1800,v:45},{n:"Duster (L)",c:2600,v:60}],
         "Fiat": [{n:"500 (XS)",c:1600,v:40},{n:"Punto (S)",c:1800,v:45},{n:"Tipo (M)",c:2200,v:50},{n:"500L (M)",c:2200,v:50}],
-        "Ford": [{n:"Fiesta (S)",c:1800,v:45},{n:"Focus (M)",c:2200,v:50},{n:"Kuga (L)",c:2600,v:60}],
         "Mercedes": [{n:"A Klasa (S)",c:1800,v:45},{n:"C Klasa (M)",c:2200,v:50},{n:"E Klasa (L)",c:2600,v:60},{n:"GLC (L)",c:2600,v:60},{n:"GLE (L)",c:2600,v:60},{n:"S Klasa (XL)",c:3200,v:80}],
         "Opel": [{n:"Corsa (S)",c:1800,v:45},{n:"Astra (M)",c:2200,v:50},{n:"Insignia (L)",c:2600,v:60}],
         "Peugeot": [{n:"208 (S)",c:1800,v:45},{n:"308 (M)",c:2200,v:50},{n:"508 (L)",c:2600,v:60},{n:"3008 (L)",c:2600,v:60}],
-        "Renault": [{n:"Clio (S)",c:1800,v:45},{n:"Megane (M)",c:2200,v:50},{n:"Talisman (L)",c:2600,v:60},{n:"Captur (M)",c:2200,v:50}],
+        "Renault": [{n:"Clio (S)",c:1800,v:45},{n:"Megane (M)",c:2200,v:50},{n:"Talisman (L)",c:2600,v:60}],
         "Skoda": [{n:"Fabia (S)",c:1800,v:45},{n:"Octavia (M)",c:2200,v:50},{n:"Superb (L)",c:2600,v:60},{n:"Kodiaq (L)",c:2600,v:60}],
-        "Toyota": [{n:"Yaris (S)",c:1800,v:45},{n:"Corolla (M)",c:2200,v:50},{n:"Rav4 (L)",c:2600,v:60}],
         "Volkswagen": [{n:"Up! (XS)",c:1600,v:40},{n:"Polo (S)",c:1800,v:45},{n:"Golf (M)",c:2200,v:50},{n:"Passat (L)",c:2600,v:60},{n:"Tiguan (L)",c:2600,v:60},{n:"Touareg (L)",c:2600,v:60},{n:"Caddy (L)",c:2600,v:60},{n:"Amarok (XL)",c:3200,v:80},{n:"Transporter (XL)",c:3200,v:80}],
         "Volvo": [{n:"XC40 (M)",c:2200,v:50},{n:"XC60 (L)",c:2600,v:60},{n:"XC90 (XL)",c:3200,v:80}]
     };
@@ -123,12 +117,14 @@
         const m = document.getElementById("markaSel").value;
         const modSel = document.getElementById("modelSel");
         modSel.innerHTML = '<option value="" disabled selected>Model...</option>';
-        baza[m].sort((a,b)=>a.n.localeCompare(b.n)).forEach(mo => {
-            let o = document.createElement("option"); 
-            o.value = JSON.stringify({c: mo.c, v: mo.v}); 
-            o.text = mo.n; 
-            modSel.appendChild(o);
-        });
+        if(baza[m]) {
+            baza[m].sort((a,b)=>a.n.localeCompare(b.n)).forEach(mo => {
+                let o = document.createElement("option"); 
+                o.value = JSON.stringify({c: mo.c, v: mo.v}); 
+                o.text = mo.n; 
+                modSel.appendChild(o);
+            });
+        }
         izracunaj();
     }
 
@@ -146,7 +142,6 @@
         let faktor = 0;
         let vMins = 0;
         
-        // Kärcher smanjuje spoljašnje pranje na ~15-20 min za S/M vozila
         if(s) { faktor += 0.5; vMins += Math.round(data.v * 0.35); } 
         if(u) { faktor += 0.5; vMins += Math.round(data.v * 0.65); }
 
