@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KORICA Auto Nega | Rezervacija</title>
     <style>
-        :root { --gold: #d4af37; --black: #0a0a0a; --gray: #1a1a1a; }
+        :root { --gold: #d4af37; --black: #0a0a0a; }
         body {
             background: var(--black); color: white; font-family: 'Poppins', sans-serif;
             display: flex; justify-content: center; align-items: center;
@@ -14,44 +14,37 @@
         }
         .card {
             background: rgba(20, 20, 20, 0.98); padding: 30px; border-radius: 25px;
-            border: 1px solid var(--gold); width: 100%; max-width: 480px; text-align: center;
+            border: 1px solid var(--gold); width: 100%; max-width: 450px; text-align: center;
             box-shadow: 0 20px 50px rgba(0,0,0,0.9);
         }
-        h1 { color: var(--gold); margin: 0; letter-spacing: 5px; text-transform: uppercase; font-size: 32px; font-weight: 800; }
+        h1 { color: var(--gold); margin: 0; letter-spacing: 5px; text-transform: uppercase; font-size: 30px; font-weight: 800; }
         .subtitle { color: #888; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 25px; }
-        .group { text-align: left; margin-bottom: 15px; position: relative; }
-        label { display: block; color: var(--gold); margin-bottom: 5px; font-weight: 600; font-size: 11px; text-transform: uppercase; }
-        
-        select, input[type="text"] {
-            width: 100%; padding: 12px; background: #111; color: white;
-            border: 1px solid #333; border-radius: 10px; font-size: 14px; outline: none; box-sizing: border-box;
+        .group { text-align: left; margin-bottom: 20px; }
+        label { display: block; color: var(--gold); margin-bottom: 8px; font-weight: 600; font-size: 11px; text-transform: uppercase; }
+        select {
+            width: 100%; padding: 15px; background: #111; color: white;
+            border: 1px solid #333; border-radius: 12px; font-size: 16px; outline: none; cursor: pointer;
+            -webkit-appearance: none;
         }
-        select:focus, input[type="text"]:focus { border-color: var(--gold); }
-
-        .search-box { margin-bottom: 10px; }
-
+        select:focus { border-color: var(--gold); }
         .services-container {
             background: #111; padding: 15px; border-radius: 12px; border: 1px solid #333;
-            display: flex; flex-direction: column; gap: 12px; margin-top: 5px;
+            display: flex; flex-direction: column; gap: 12px;
         }
-        .service-item { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 14px; }
-        input[type="checkbox"] { accent-color: var(--gold); width: 20px; height: 20px; cursor: pointer; }
-
+        .service-item { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 15px; }
+        input[type="checkbox"] { accent-color: var(--gold); width: 22px; height: 22px; cursor: pointer; }
         .price-box {
-            margin: 20px 0; padding: 20px; background: rgba(212, 175, 55, 0.05);
+            margin: 25px 0; padding: 20px; background: rgba(212, 175, 55, 0.05);
             border-radius: 15px; border: 1px solid rgba(212, 175, 55, 0.2);
         }
-        .price-tag { font-size: 42px; color: var(--gold); font-weight: 800; line-height: 1; }
-        .time-info { color: #00ffcc; font-size: 13px; margin-top: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-
+        .price-tag { font-size: 40px; color: var(--gold); font-weight: 800; }
+        .time-info { color: #00ffcc; font-size: 13px; margin-top: 8px; font-weight: 600; }
         .btn {
             background: linear-gradient(135deg, var(--gold), #b8860b);
-            color: black; border: none; padding: 18px; width: 100%;
-            border-radius: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase;
-            transition: 0.3s;
+            color: black; border: none; padding: 20px; width: 100%;
+            border-radius: 15px; font-weight: 800; cursor: pointer; text-transform: uppercase;
+            font-size: 16px;
         }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3); }
-        .btn:active { transform: translateY(0); }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
@@ -59,32 +52,27 @@
 
 <div class="card">
     <h1>KORICA</h1>
-    <div class="subtitle">Premium Auto Nega Sremčica</div>
+    <div class="subtitle">Auto Nega Sremčica</div>
     
     <div class="group">
         <label>1. Odaberi marku</label>
-        <select id="markaSel" onchange="resetujModele()">
+        <select id="markaSel" onchange="azurirajModele()">
             <option value="" selected disabled>Izaberi brend...</option>
         </select>
     </div>
 
     <div class="group">
-        <label>2. Pretraži i odaberi model</label>
-        <input type="text" id="modelSearch" class="search-box" placeholder="Kucaj npr. Golf ili A4..." oninput="filtrirajModele()">
+        <label>2. Odaberi model</label>
         <select id="modelSel" onchange="izracunaj()">
             <option value="">Prvo odaberi marku...</option>
         </select>
     </div>
 
     <div class="group">
-        <label>3. Usluge (Bezkontaktno + Unutrašnje)</label>
+        <label>3. Usluge</label>
         <div class="services-container">
-            <label class="service-item">
-                <input type="checkbox" id="spolja" onchange="izracunaj()" checked> Spoljašnje pranje
-            </label>
-            <label class="service-item">
-                <input type="checkbox" id="unutra" onchange="izracunaj()" checked> Unutrašnje održavanje
-            </label>
+            <label class="service-item"><input type="checkbox" id="spolja" onchange="izracunaj()" checked> Spoljašnje pranje</label>
+            <label class="service-item"><input type="checkbox" id="unutra" onchange="izracunaj()" checked> Unutrašnje održavanje</label>
         </div>
     </div>
 
@@ -97,124 +85,64 @@
 </div>
 
 <script>
-    // MASIVNA BAZA PODATAKA (XS: 1600, S: 1800, M: 2200, L: 2600, XL: 3200)
     const baza = {
-        "Abarth": ["500 (XS)", "595 (XS)", "695 (XS)"],
         "Alfa Romeo": ["145 (S)", "146 (S)", "147 (S)", "155 (M)", "156 (M)", "159 (M)", "164 (L)", "166 (L)", "Brera (M)", "GT (M)", "Giulia (M)", "Giulietta (M)", "Mito (S)", "Stelvio (L)", "Tonale (M)"],
         "Audi": ["80 (M)", "90 (M)", "100 (L)", "200 (L)", "A1 (S)", "A2 (S)", "A3 (M)", "A4 (M)", "A5 (M)", "A6 (L)", "A7 (L)", "A8 (XL)", "Q1 (M)", "Q2 (M)", "Q3 (M)", "Q4 (L)", "Q5 (L)", "Q7 (XL)", "Q8 (XL)", "RS3 (M)", "RS4 (M)", "RS5 (M)", "RS6 (L)", "RS7 (L)", "TT (S)"],
-        "BMW": ["Serija 1 (S)", "Serija 2 (M)", "Serija 3 (M)", "Serija 4 (M)", "Serija 5 (L)", "Serija 6 (L)", "Serija 7 (XL)", "Serija 8 (L)", "X1 (M)", "X2 (M)", "X3 (L)", "X4 (L)", "X5 (L)", "X6 (L)", "X7 (XL)", "Z3 (S)", "Z4 (S)", "i3 (S)", "i4 (M)", "iX (XL)"],
-        "Chevrolet": ["Aveo (S)", "Captiva (L)", "Cruze (M)", "Epica (L)", "Kalos (S)", "Lacetti (M)", "Matiz (XS)", "Spark (XS)", "Trax (M)"],
-        "Citroen": ["Berlingo (L)", "C1 (XS)", "C2 (S)", "C3 (S)", "C3 Picasso (M)", "C4 (M)", "C4 Cactus (M)", "C4 Picasso (L)", "C5 (L)", "C5 Aircross (L)", "C6 (L)", "C8 (XL)", "C-Elysee (M)", "DS3 (S)", "DS4 (M)", "DS5 (L)", "Jumper (XL)", "Jumpy (XL)", "Nemo (S)", "Saxo (S)", "Xsara (M)"],
-        "Cupra": ["Ateca (L)", "Born (M)", "Formentor (L)", "Leon (M)"],
-        "Dacia": ["Dokker (L)", "Duster (L)", "Jogger (L)", "Lodgy (L)", "Logan (M)", "Sandero (S)", "Solenza (S)", "Spring (S)"],
-        "Daewoo": ["Kalos (S)", "Lanos (S)", "Matiz (XS)", "Nubira (M)"],
-        "Dodge": ["Challenger (L)", "Charger (L)", "Durango (XL)", "Ram (XL)"],
-        "Ferrari": ["458 (M)", "488 (M)", "F8 (M)", "Roma (M)"],
-        "Fiat": ["500 (XS)", "500L (M)", "500X (M)", "Brava (M)", "Bravo (M)", "Croma (L)", "Doblo (L)", "Ducato (XL)", "Fiorino (S)", "Grande Punto (S)", "Idea (M)", "Linea (M)", "Marea (M)", "Multipla (L)", "Panda (XS)", "Punto (S)", "Sedici (M)", "Stilo (M)", "Talento (XL)", "Tipo (M)", "Uno (XS)"],
-        "Ford": ["C-Max (M)", "Edge (L)", "Escort (M)", "Explorer (XL)", "Fiesta (S)", "Focus (M)", "Fusion (M)", "Galaxy (XL)", "Ka (XS)", "Kuga (L)", "Mondeo (L)", "Puma (M)", "Ranger (XL)", "S-Max (L)", "Transit (XL)"],
-        "Honda": ["Accord (L)", "Civic (M)", "CR-V (L)", "FR-V (L)", "HR-V (M)", "Insight (M)", "Jazz (S)"],
-        "Hyundai": ["Accent (M)", "Elantra (M)", "Getz (S)", "Ioniq (M)", "Kona (M)", "Matrix (M)", "Santa Fe (XL)", "Tucson (L)", "i10 (XS)", "i20 (S)", "i30 (M)", "i40 (L)"],
-        "Jaguar": ["E-Pace (L)", "F-Pace (L)", "I-Pace (L)", "XE (M)", "XF (L)", "XJ (XL)"],
-        "Jeep": ["Cherokee (L)", "Compass (L)", "Grand Cherokee (XL)", "Renegade (M)", "Wrangler (L)"],
-        "Kia": ["Ceed (M)", "Niro (M)", "Picanto (XS)", "Proceed (M)", "Rio (S)", "Sorento (XL)", "Soul (M)", "Sportage (L)", "Stinger (L)", "Stonic (M)"],
-        "Lada": ["Niva (S)", "Vesta (M)"],
-        "Lancia": ["Delta (M)", "Lybra (M)", "Musa (M)", "Phedra (XL)", "Thesis (L)", "Ypsilon (S)"],
-        "Land Rover": ["Defender (XL)", "Discovery (XL)", "Freelander (L)", "Range Rover (XL)", "RR Evoque (L)", "RR Sport (XL)", "RR Velar (L)"],
-        "Lexus": ["ES (L)", "IS (M)", "LS (XL)", "NX (L)", "RX (XL)", "UX (M)"],
-        "Mazda": ["2 (S)", "3 (M)", "5 (L)", "6 (L)", "CX-3 (M)", "CX-30 (M)", "CX-5 (L)", "CX-7 (L)", "CX-9 (XL)", "MX-5 (S)"],
-        "Mercedes": ["A Klasa (S)", "B Klasa (M)", "C Klasa (M)", "CLA (M)", "CLS (L)", "E Klasa (L)", "G Klasa (XL)", "GLA (M)", "GLB (L)", "GLC (L)", "GLE (XL)", "GLS (XL)", "ML (XL)", "S Klasa (XL)", "Sprinter (XL)", "V Klasa (XL)", "Vito (XL)"],
-        "Mini": ["Clubman (M)", "Cooper (S)", "Countryman (M)"],
-        "Mitsubishi": ["ASX (M)", "Colt (S)", "L200 (XL)", "Lancer (M)", "Outlander (L)", "Pajero (XL)"],
-        "Nissan": ["Juke (M)", "Leaf (M)", "Micra (S)", "Murano (XL)", "Navara (XL)", "Note (S)", "Pathfinder (XL)", "Patrol (XL)", "Qashqai (L)", "X-Trail (L)"],
-        "Opel": ["Adam (XS)", "Antara (L)", "Astra (M)", "Combo (L)", "Corsa (S)", "Frontera (L)", "Grandland (L)", "Insignia (L)", "Meriva (M)", "Mokka (M)", "Omega (L)", "Vectra (M)", "Vivaro (XL)", "Zafira (L)"],
-        "Peugeot": ["106 (XS)", "107 (XS)", "108 (XS)", "206 (S)", "207 (S)", "208 (S)", "301 (M)", "307 (M)", "308 (M)", "406 (M)", "407 (M)", "508 (L)", "607 (L)", "807 (XL)", "2008 (M)", "3008 (L)", "5008 (XL)", "Bipper (S)", "Boxer (XL)", "Partner (L)", "Rifter (L)"],
-        "Porsche": ["911 (M)", "Boxster (S)", "Cayenne (XL)", "Cayman (S)", "Macan (L)", "Panamera (L)", "Taycan (L)"],
-        "Renault": ["Austral (L)", "Captur (M)", "Clio (S)", "Espace (XL)", "Fluence (M)", "Kadjar (L)", "Kangoo (L)", "Koleos (L)", "Laguna (L)", "Master (XL)", "Megane (M)", "Scenic (L)", "Talisman (L)", "Traffic (XL)", "Twingo (XS)", "Zoe (S)"],
-        "Rover": ["25 (S)", "45 (M)", "75 (L)"],
-        "Saab": ["9-3 (M)", "9-5 (L)"],
-        "Seat": ["Alhambra (XL)", "Altea (M)", "Arona (M)", "Ateca (L)", "Cordoba (M)", "Exeo (M)", "Ibiza (S)", "Leon (M)", "Tarraco (XL)", "Toledo (M)"],
-        "Skoda": ["Citigo (XS)", "Enyaq (L)", "Fabia (S)", "Felicia (S)", "Kamiq (M)", "Karoq (L)", "Kodiaq (XL)", "Octavia (M)", "Rapid (M)", "Roomster (M)", "Scala (M)", "Superb (L)", "Yeti (M)"],
-        "Smart": ["ForFour (S)", "ForTwo (XS)"],
-        "Subaru": ["Forester (L)", "Impreza (M)", "Outback (L)"],
-        "Suzuki": ["Grand Vitara (L)", "Ignis (XS)", "Jimny (S)", "S-Cross (M)", "Swift (S)", "SX4 (M)", "Vitara (L)"],
-        "Tesla": ["Model 3 (M)", "Model S (L)", "Model X (XL)", "Model Y (L)"],
-        "Toyota": ["Aygo (XS)", "C-HR (M)", "Camry (L)", "Corolla (M)", "Hilux (XL)", "Land Cruiser (XL)", "Prius (M)", "Proace (XL)", "Rav4 (L)", "Yaris (S)", "Yaris Cross (M)"],
-        "Volkswagen": ["Amarok (XL)", "Arteon (L)", "Buba (S)", "Caddy (L)", "Crafter (XL)", "Golf 1 (XS)", "Golf 2 (S)", "Golf 3 (S)", "Golf 4 (S)", "Golf 5 (M)", "Golf 6 (M)", "Golf 7 (M)", "Golf 8 (M)", "ID.3 (M)", "ID.4 (L)", "ID.Buzz (XL)", "Jetta (M)", "Multivan (XL)", "Passat (L)", "Polo (S)", "Scirocco (S)", "Sharan (XL)", "T-Cross (M)", "Tiguan (L)", "Touareg (L)", "Touran (L)", "Transporter (XL)"],
-        "Volvo": ["S60 (M)", "S90 (L)", "V40 (M)", "V60 (M)", "V90 (L)", "XC40 (M)", "XC60 (L)", "XC90 (XL)"],
+        "BMW": ["Serija 1 (S)", "Serija 2 (M)", "Serija 3 (M)", "Serija 4 (M)", "Serija 5 (L)", "Serija 6 (L)", "Serija 7 (XL)", "Serija 8 (L)", "X1 (M)", "X2 (M)", "X3 (L)", "X4 (L)", "X5 (L)", "X6 (L)", "X7 (XL)", "Z4 (S)", "i3 (S)", "i4 (M)", "iX (XL)"],
+        "Citroen": ["Berlingo (L)", "C1 (XS)", "C2 (S)", "C3 (S)", "C4 (M)", "C5 (L)", "C6 (L)", "DS3 (S)", "DS4 (M)", "DS5 (L)", "Xsara (M)"],
+        "Dacia": ["Dokker (L)", "Duster (L)", "Jogger (L)", "Logan (M)", "Sandero (S)", "Spring (S)"],
+        "Fiat": ["500 (XS)", "500L (M)", "500X (M)", "Bravo (M)", "Doblo (L)", "Ducato (XL)", "Panda (XS)", "Punto (S)", "Stilo (M)", "Tipo (M)"],
+        "Ford": ["Fiesta (S)", "Focus (M)", "Fusion (M)", "Kuga (L)", "Mondeo (L)", "Puma (M)", "Ranger (XL)", "S-Max (L)", "Transit (XL)"],
+        "Hyundai": ["Accent (M)", "Elantra (M)", "Getz (S)", "Santa Fe (XL)", "Tucson (L)", "i10 (XS)", "i20 (S)", "i30 (M)", "i40 (L)"],
+        "Kia": ["Ceed (M)", "Picanto (XS)", "Rio (S)", "Sorento (XL)", "Sportage (L)", "Stonic (M)"],
+        "Mazda": ["2 (S)", "3 (M)", "6 (L)", "CX-3 (M)", "CX-30 (M)", "CX-5 (L)"],
+        "Mercedes": ["A Klasa (S)", "B Klasa (M)", "C Klasa (M)", "CLA (M)", "CLS (L)", "E Klasa (L)", "G Klasa (XL)", "GLA (M)", "GLC (L)", "GLE (XL)", "S Klasa (XL)", "Vito (XL)", "Sprinter (XL)"],
+        "Nissan": ["Juke (M)", "Micra (S)", "Navara (XL)", "Qashqai (L)", "X-Trail (L)"],
+        "Opel": ["Astra (M)", "Corsa (S)", "Insignia (L)", "Meriva (M)", "Mokka (M)", "Vectra (M)", "Vivaro (XL)", "Zafira (L)"],
+        "Peugeot": ["206 (S)", "207 (S)", "208 (S)", "307 (M)", "308 (M)", "508 (L)", "2008 (M)", "3008 (L)", "5008 (XL)", "Partner (L)", "Boxer (XL)"],
+        "Renault": ["Captur (M)", "Clio (S)", "Espace (XL)", "Kadjar (L)", "Kangoo (L)", "Laguna (L)", "Megane (M)", "Scenic (L)", "Talisman (L)", "Traffic (XL)", "Twingo (XS)", "Master (XL)"],
+        "Seat": ["Arona (M)", "Ateca (L)", "Ibiza (S)", "Leon (M)", "Tarraco (XL)"],
+        "Skoda": ["Fabia (S)", "Kamiq (M)", "Karoq (L)", "Kodiaq (XL)", "Octavia (M)", "Rapid (M)", "Scala (M)", "Superb (L)"],
+        "Suzuki": ["Ignis (XS)", "Jimny (S)", "Swift (S)", "SX4 (M)", "Vitara (L)"],
+        "Toyota": ["Aygo (XS)", "Corolla (M)", "Hilux (XL)", "Land Cruiser (XL)", "Rav4 (L)", "Yaris (S)"],
+        "Volkswagen": ["Amarok (XL)", "Arteon (L)", "Caddy (L)", "Golf 2 (S)", "Golf 4 (S)", "Golf 5 (M)", "Golf 6 (M)", "Golf 7 (M)", "Golf 8 (M)", "Passat (L)", "Polo (S)", "Tiguan (L)", "Touareg (L)", "Touran (L)", "Transporter (XL)", "Crafter (XL)"],
+        "Volvo": ["S60 (M)", "S90 (L)", "V40 (M)", "XC40 (M)", "XC60 (L)", "XC90 (XL)"],
         "Zastava": ["Florinda (M)", "Skala (S)", "Yugo (XS)", "10 (S)"]
     };
 
     const cene = { "XS": 1600, "S": 1800, "M": 2200, "L": 2600, "XL": 3200 };
     const vremena = { "XS": 40, "S": 45, "M": 55, "L": 70, "XL": 110 };
 
-    function inicijalizujMarke() {
+    function inicijalizuj() {
         const mSel = document.getElementById("markaSel");
         Object.keys(baza).sort().forEach(m => {
             let o = document.createElement("option"); o.value = m; o.text = m; mSel.appendChild(o);
         });
     }
 
-    function resetujModele() {
-        document.getElementById("modelSearch").value = "";
-        azurirajModele();
-    }
-
     function azurirajModele() {
-        const marka = document.getElementById("markaSel").value;
+        const m = document.getElementById("markaSel").value;
         const modSel = document.getElementById("modelSel");
-        modSel.innerHTML = '<option value="" disabled selected>Odaberi...</option>';
-        if(baza[marka]) {
-            baza[marka].sort().forEach(mo => {
-                let o = document.createElement("option");
-                o.text = mo; o.value = mo;
-                modSel.appendChild(o);
-            });
-        }
+        modSel.innerHTML = '<option value="" disabled selected>Odaberi model...</option>';
+        baza[m].sort().forEach(mo => {
+            let o = document.createElement("option"); o.value = mo; o.text = mo; modSel.appendChild(o);
+        });
         izracunaj();
-    }
-
-    function filtrirajModele() {
-        const query = document.getElementById("modelSearch").value.toLowerCase();
-        const marka = document.getElementById("markaSel").value;
-        const modSel = document.getElementById("modelSel");
-        if(!marka) return;
-        
-        modSel.innerHTML = '';
-        const filtrirani = baza[marka].filter(m => m.toLowerCase().includes(query));
-        
-        if(filtrirani.length > 0) {
-            filtrirani.forEach(mo => {
-                let o = document.createElement("option");
-                o.text = mo; o.value = mo;
-                modSel.appendChild(o);
-            });
-        } else {
-            modSel.innerHTML = '<option>Nema rezultata...</option>';
-        }
     }
 
     function izracunaj() {
         const modelStr = document.getElementById("modelSel").value;
-        const resEl = document.getElementById("rezultat");
-        const timeEl = document.getElementById("vreme");
-        
-        if(!modelStr || modelStr.includes("Odaberi") || modelStr.includes("Nema")) {
-            resEl.innerText = "0 RSD"; timeEl.innerText = "Vreme rada: -- min"; return;
+        if(!modelStr || modelStr.includes("Odaberi")) {
+            document.getElementById("rezultat").innerText = "0 RSD";
+            document.getElementById("vreme").innerText = "Vreme rada: -- min";
+            return;
         }
-
         const kat = modelStr.match(/\(([^)]+)\)/)[1];
-        const punaCena = cene[kat];
-        const punoVreme = vremena[kat];
-
-        let s = document.getElementById("spolja").checked;
-        let u = document.getElementById("unutra").checked;
-        
         let f = 0, v = 0;
-        if(s) { f += 0.5; v += Math.round(punoVreme * 0.35); }
-        if(u) { f += 0.5; v += Math.round(punoVreme * 0.65); }
-
-        resEl.innerText = Math.round(punaCena * f).toLocaleString() + " RSD";
-        timeEl.innerText = v > 0 ? "Procenjeno vreme: ~" + v + " min" : "-- min";
+        if(document.getElementById("spolja").checked) { f += 0.5; v += Math.round(vremena[kat] * 0.35); }
+        if(document.getElementById("unutra").checked) { f += 0.5; v += Math.round(vremena[kat] * 0.65); }
+        document.getElementById("rezultat").innerText = Math.round(cene[kat] * f).toLocaleString() + " RSD";
+        document.getElementById("vreme").innerText = v > 0 ? "Procenjeno vreme: ~" + v + " min" : "-- min";
     }
 
     function zakazi() {
@@ -223,11 +151,10 @@
         if(!mo || mo.includes("Odaberi")) { alert("Odaberi auto!"); return; }
         const cena = document.getElementById("rezultat").innerText;
         const v = document.getElementById("vreme").innerText;
-        const info = encodeURIComponent(`${m} ${mo} | ${v}`);
-        window.open(`https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url&entry.345073777=${info}&entry.988818818=${encodeURIComponent(cena)}`, '_blank');
+        window.open(`https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url&entry.345073777=${encodeURIComponent(m + " " + mo + " | " + v)}&entry.988818818=${encodeURIComponent(cena)}`, '_blank');
     }
 
-    inicijalizujMarke();
+    inicijalizuj();
 </script>
 </body>
 </html>
