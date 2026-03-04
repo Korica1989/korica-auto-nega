@@ -12,9 +12,9 @@
         }
 
         body {
-            /* Zamenjeno sa skicom Hrama bele boje na crnoj pozadini */
-            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), 
-                        url('https://i.postimg.cc/mD4mC3R2/hram-skica-white.png');
+            /* Koristimo kvalitetnu noćnu sliku Hrama sa wikipedije */
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), 
+                        url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/The_Temple_of_Saint_Sava_at_Night.jpg/1280px-The_Temple_of_Saint_Sava_at_Night.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -29,16 +29,17 @@
         }
 
         .card {
-            /* Povećana prozirnost (opacity) na 0.65 da bi se skica videla kroz kalkulator */
-            background: rgba(15, 15, 15, 0.65); 
+            /* Smanjena neprozirnost (0.4) da bi se Hram video KROZ kalkulator */
+            background: rgba(10, 10, 10, 0.4); 
             padding: 40px;
             border-radius: 24px;
-            border: 1px solid rgba(212, 175, 55, 0.4);
+            border: 1px solid rgba(212, 175, 55, 0.5);
             box-shadow: 0 20px 50px rgba(0,0,0,0.9);
             width: 100%;
             max-width: 420px;
             text-align: center;
-            backdrop-filter: blur(8px); /* Smanjeno zamućenje da skica bude jasnija */
+            backdrop-filter: blur(5px); /* Manji blur da bi se obrisi Hrama jasnije videli */
+            -webkit-backdrop-filter: blur(5px);
         }
 
         .logo-area { margin-bottom: 30px; }
@@ -48,15 +49,16 @@
             font-size: 38px; 
             letter-spacing: 6px; 
             font-weight: 800;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+            text-shadow: 2px 2px 15px rgba(0,0,0,1);
         }
 
         .subtitle { 
-            color: #ccc; 
+            color: #fff; 
             font-size: 13px; 
             letter-spacing: 4px; 
             text-transform: uppercase;
             margin-top: 5px;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.8);
         }
 
         .group { text-align: left; margin-bottom: 25px; }
@@ -65,32 +67,29 @@
         select {
             width: 100%;
             padding: 15px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid #444;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid var(--gold);
             color: #fff;
             border-radius: 12px;
             outline: none;
             font-size: 15px;
-            transition: all 0.3s;
         }
 
-        select:focus { border-color: var(--gold); box-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
-
         .price-container {
-            background: rgba(212, 175, 55, 0.1);
+            background: rgba(0, 0, 0, 0.6);
             border-radius: 15px;
             padding: 20px;
             margin: 30px 0;
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.4);
         }
 
-        .price-label { font-size: 12px; color: #bbb; text-transform: uppercase; margin-bottom: 5px; }
+        .price-label { font-size: 12px; color: #ddd; text-transform: uppercase; }
         .price-tag {
             font-size: 44px;
             font-weight: 700;
             color: var(--gold);
             margin: 0;
-            text-shadow: 0 2px 15px rgba(212, 175, 55, 0.3);
+            text-shadow: 0 0 20px rgba(0, 0, 0, 1);
         }
 
         .order-btn {
@@ -103,18 +102,11 @@
             font-weight: 800;
             cursor: pointer;
             font-size: 16px;
-            transition: all 0.3s ease;
             text-transform: uppercase;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.6);
         }
 
-        .order-btn:hover {
-            transform: translateY(-3px);
-            background: linear-gradient(135deg, var(--gold-light), var(--gold));
-            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.3);
-        }
-
-        .info-text { font-size: 11px; color: #999; margin-top: 20px; line-height: 1.6; }
+        .info-text { font-size: 11px; color: #fff; margin-top: 20px; text-shadow: 1px 1px 3px #000; }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
@@ -155,8 +147,7 @@
     <button class="order-btn" onclick="zakazi()">Rezerviši tretman</button>
     
     <div class="info-text">
-        Cena je informativnog karaktera.<br>
-        Lokacija: Sremčica, Beograd.
+        Beograd - Sremčica
     </div>
 </div>
 
@@ -180,15 +171,12 @@
     function zakazi() {
         const cena = display.innerText;
         const model = autoEl.options[autoEl.selectedIndex].text;
-
         if (cena === "0 RSD" || autoEl.value === "0") {
             alert("Molimo Vas da prvo izaberete kategoriju vozila.");
             return;
         }
-
         const baseURL = "https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url";
         const finalURL = `${baseURL}&entry.345073777=${encodeURIComponent(model)}&entry.988818818=${encodeURIComponent(cena)}`;
-        
         window.open(finalURL, '_blank');
     }
 </script>
