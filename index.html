@@ -3,181 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KORICA Auto Nega | Premium Detailing</title>
+    <title>KORICA Auto Nega | Premium Kalkulator</title>
     <style>
-        :root {
-            --gold: #d4af37;
-            --black: #050505;
-        }
-
+        :root { --gold: #d4af37; --black: #050505; }
         body {
             background-color: var(--black);
-            /* Tamna pozadina sa teksturom */
             background-image: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
-            color: white;
-            font-family: 'Poppins', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
+            color: white; font-family: 'Poppins', sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; margin: 0; padding: 20px;
         }
-
         .card {
-            position: relative;
-            /* Slika Hrama je sada fiksirana UNUTAR kalkulatora kao pozadina */
-            background: linear-gradient(rgba(10, 10, 10, 0.7), rgba(10, 10, 10, 0.7)), 
-                        url('https://upload.wikimedia.org/wikipedia/commons/5/52/Hram_Svetog_Save_no%C4%87u.jpg');
-            background-size: cover;
-            background-position: center;
-            padding: 40px;
-            border-radius: 24px;
-            border: 2px solid var(--gold);
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
-            width: 100%;
-            max-width: 420px;
-            text-align: center;
-            overflow: hidden;
-        }
-
-        /* Dodatni sjaj da slova budu čitljiva preko slike */
-        .logo-area h1 { 
-            color: var(--gold); 
-            margin: 0; 
-            font-size: 38px; 
-            letter-spacing: 6px; 
-            font-weight: 800;
-            text-shadow: 0 0 15px rgba(0,0,0,1), 0 0 5px rgba(212, 175, 55, 0.5);
-        }
-
-        .subtitle { 
-            color: #fff; 
-            font-size: 13px; 
-            letter-spacing: 4px; 
-            text-transform: uppercase;
-            margin-top: 5px;
-            text-shadow: 2px 2px 4px #000;
-        }
-
-        .group { text-align: left; margin-bottom: 25px; position: relative; z-index: 2; }
-        label { display: block; margin-bottom: 10px; color: var(--gold); font-size: 13px; font-weight: 600; text-transform: uppercase; }
-
-        select {
-            width: 100%;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(20, 20, 20, 0.9);
+            padding: 30px; border-radius: 24px;
             border: 1px solid var(--gold);
-            color: #fff;
-            border-radius: 12px;
-            outline: none;
-            font-size: 15px;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
+            width: 100%; max-width: 450px; text-align: center;
         }
-
-        .price-container {
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 15px;
-            padding: 20px;
-            margin: 30px 0;
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            position: relative;
-            z-index: 2;
+        h1 { color: var(--gold); letter-spacing: 5px; margin-bottom: 5px; font-size: 32px; }
+        .subtitle { color: #888; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px; }
+        .group { text-align: left; margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: var(--gold); font-size: 11px; text-transform: uppercase; font-weight: 600; }
+        select {
+            width: 100%; padding: 12px; background: #111; border: 1px solid #333;
+            color: #fff; border-radius: 10px; outline: none; font-size: 14px;
         }
-
-        .price-tag {
-            font-size: 44px;
-            font-weight: 700;
-            color: var(--gold);
-            margin: 0;
-            text-shadow: 0 0 10px rgba(0,0,0,1);
+        select:focus { border-color: var(--gold); }
+        .price-box {
+            background: rgba(212, 175, 55, 0.1); border: 1px dashed var(--gold);
+            padding: 20px; border-radius: 15px; margin: 25px 0;
         }
-
+        .price-tag { font-size: 38px; font-weight: 800; color: var(--gold); }
         .order-btn {
             background: linear-gradient(135deg, var(--gold), #b8860b);
-            color: black;
-            border: none;
-            padding: 20px;
-            width: 100%;
-            border-radius: 12px;
-            font-weight: 800;
-            cursor: pointer;
-            font-size: 16px;
-            text-transform: uppercase;
-            position: relative;
-            z-index: 2;
+            color: black; border: none; padding: 18px; width: 100%;
+            border-radius: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase;
         }
-
-        .info-text { font-size: 11px; color: #fff; margin-top: 20px; text-shadow: 1px 1px 3px #000; }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div class="card">
-    <div class="logo-area">
-        <h1>KORICA</h1>
-        <div class="subtitle">Auto Nega Sremčica</div>
-    </div>
+    <h1>KORICA</h1>
+    <div class="subtitle">Auto Nega Sremčica</div>
 
     <div class="group">
-        <label>Vozilo</label>
-        <select id="auto">
-            <option value="0" disabled selected>Izaberi vozilo...</option>
-            <option value="1800">Malo vozilo</option>
-            <option value="2000">Srednje vozilo</option>
-            <option value="2300">Limuzina/Karavan</option>
-            <option value="2600">Džip/SUV</option>
-            <option value="3200">Kombi / Lux</option>
+        <label>Marka vozila</label>
+        <select id="marka" onchange="popuniModele()">
+            <option value="" disabled selected>Izaberi marku...</option>
+            <option value="audi">Audi</option>
+            <option value="bmw">BMW</option>
+            <option value="volkswagen">Volkswagen</option>
+            <option value="mercedes">Mercedes-Benz</option>
+            <option value="fiat">Fiat</option>
+            <option value="renault">Renault</option>
+            <option value="skoda">Škoda</option>
+            <option value="opel">Opel</option>
+            <option value="peugeot">Peugeot</option>
         </select>
     </div>
 
     <div class="group">
-        <label>Tretman</label>
-        <select id="tretman">
-            <option value="1">Standard</option>
-            <option value="1.5">Premium</option>
-            <option value="2.5">Deep Clean</option>
+        <label>Model vozila</label>
+        <select id="model" onchange="osveziCenu()">
+            <option value="" disabled selected>Prvo izaberi marku...</option>
         </select>
     </div>
 
-    <div class="price-container">
+    <div class="group">
+        <label>Izaberi tretman</label>
+        <select id="tretman" onchange="osveziCenu()">
+            <option value="1">Standardno pranje</option>
+            <option value="1.5">Premium (Zaštita + Enterijer)</option>
+            <option value="2.5">Dubinsko pranje (Deep Clean)</option>
+        </select>
+    </div>
+
+    <div class="price-box">
+        <div style="font-size: 10px; color: #888; text-transform: uppercase;">Ukupna cena</div>
         <div class="price-tag" id="displayCena">0 RSD</div>
     </div>
 
-    <button class="order-btn" onclick="zakazi()">Rezerviši</button>
-    
-    <div class="info-text">BEOGRAD - SREMČICA</div>
+    <button class="order-btn" onclick="zakazi()">Rezerviši termin</button>
 </div>
 
 <script>
-    const autoEl = document.getElementById('auto');
-    const tretmanEl = document.getElementById('tretman');
-    const display = document.getElementById('displayCena');
+    // BAZA PODATAKA (Cene: 1800=Malo, 2000=Srednje, 2300=Limuzina, 2600=SUV)
+    const podaci = {
+        audi: [
+            { n: "A1", p: 1800 }, { n: "A3", p: 2000 }, { n: "A4", p: 2300 }, 
+            { n: "A6", p: 2300 }, { n: "Q3", p: 2600 }, { n: "Q5", p: 2600 }, { n: "Q7", p: 2600 }
+        ],
+        bmw: [
+            { n: "Serija 1", p: 2000 }, { n: "Serija 3", p: 2300 }, { n: "Serija 5", p: 2300 },
+            { n: "X1", p: 2600 }, { n: "X3", p: 2600 }, { n: "X5", p: 2600 }
+        ],
+        volkswagen: [
+            { n: "Polo", p: 1800 }, { n: "Golf", p: 2000 }, { n: "Passat", p: 2300 },
+            { n: "Arteon", p: 2300 }, { n: "Tiguan", p: 2600 }, { n: "Touareg", p: 2600 }
+        ],
+        mercedes: [
+            { n: "A Klasa", p: 2000 }, { n: "C Klasa", p: 2300 }, { n: "E Klasa", p: 2300 },
+            { n: "GLA", p: 2600 }, { n: "GLC", p: 2600 }, { n: "GLE", p: 2600 }
+        ],
+        fiat: [
+            { n: "500", p: 1800 }, { n: "Punto", p: 1800 }, { n: "Tipo", p: 2000 }, { n: "500L", p: 2300 }
+        ],
+        skoda: [
+            { n: "Fabia", p: 1800 }, { n: "Octavia", p: 2300 }, { n: "Superb", p: 2300 }, { n: "Kodiaq", p: 2600 }
+        ]
+    };
 
-    function osveziCenu() {
-        const baza = parseInt(autoEl.value);
-        const mnozilac = parseFloat(tretmanEl.value);
-        if (baza > 0) {
-            const ukupno = baza * mnozilac;
-            display.innerText = ukupno.toLocaleString() + " RSD";
+    function popuniModele() {
+        const marka = document.getElementById('marka').value;
+        const modelSelect = document.getElementById('model');
+        modelSelect.innerHTML = '<option value="" disabled selected>Izaberi model...</option>';
+        
+        if (podaci[marka]) {
+            podaci[marka].forEach(m => {
+                let opt = document.createElement('option');
+                opt.value = m.p;
+                opt.innerHTML = m.n;
+                modelSelect.appendChild(opt);
+            });
         }
     }
 
-    autoEl.addEventListener('change', osveziCenu);
-    tretmanEl.addEventListener('change', osveziCenu);
+    function osveziCenu() {
+        const cenaModela = parseInt(document.getElementById('model').value);
+        const mnozilac = parseFloat(document.getElementById('tretman').value);
+        if (cenaModela) {
+            const ukupno = cenaModela * mnozilac;
+            document.getElementById('displayCena').innerText = ukupno.toLocaleString() + " RSD";
+        }
+    }
 
     function zakazi() {
-        const cena = display.innerText;
-        const model = autoEl.options[autoEl.selectedIndex].text;
-        if (cena === "0 RSD" || autoEl.value === "0") {
-            alert("Izaberite vozilo.");
-            return;
-        }
+        const cena = document.getElementById('displayCena').innerText;
+        const markaIme = document.getElementById('marka').options[document.getElementById('marka').selectedIndex].text;
+        const modelIme = document.getElementById('model').options[document.getElementById('model').selectedIndex].text;
+        
+        if (cena === "0 RSD") { alert("Izaberi vozilo!"); return; }
+
         const baseURL = "https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url";
-        const finalURL = `${baseURL}&entry.345073777=${encodeURIComponent(model)}&entry.988818818=${encodeURIComponent(cena)}`;
+        const finalURL = `${baseURL}&entry.345073777=${encodeURIComponent(markaIme + " " + modelIme)}&entry.988818818=${encodeURIComponent(cena)}`;
         window.open(finalURL, '_blank');
     }
 </script>
-
 </body>
 </html>
