@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KORICA Auto Nega | Cene po Touareg modelu</title>
+    <title>KORICA Auto Nega | Kalkulator</title>
     <style>
         :root { --gold: #d4af37; --black: #0a0a0a; }
         body {
@@ -25,7 +25,17 @@
             width: 100%; padding: 12px; background: #111; color: white;
             border: 1px solid #333; border-radius: 10px; font-size: 14px; outline: none;
         }
-        select:focus { border-color: var(--gold); }
+        .services-container {
+            background: #111; padding: 15px; border-radius: 12px; border: 1px solid #333;
+            display: flex; flex-direction: column; gap: 12px; margin-top: 10px;
+        }
+        .service-item {
+            display: flex; align-items: center; justify-content: flex-start; gap: 12px;
+            cursor: pointer; font-size: 14px; transition: 0.3s;
+        }
+        input[type="checkbox"] {
+            accent-color: var(--gold); width: 20px; height: 20px; cursor: pointer;
+        }
         .price-box {
             margin: 20px 0; padding: 15px; background: rgba(212, 175, 55, 0.05);
             border-radius: 15px; border: 1px solid rgba(212, 175, 55, 0.2);
@@ -35,7 +45,9 @@
             background: linear-gradient(135deg, var(--gold), #b8860b);
             color: black; border: none; padding: 18px; width: 100%;
             border-radius: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase;
+            transition: 0.3s;
         }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3); }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
@@ -43,29 +55,34 @@
 
 <div class="card">
     <h1>KORICA</h1>
-    <div class="subtitle">Auto Nega Sremčica</div>
+    <div class="subtitle">Auto Nega Sremčica | Koch-Chemie</div>
     
     <div class="group">
-        <label>1. Marka vozila</label>
+        <label>1. Odaberi marku</label>
         <select id="markaSel" onchange="azurirajModele()">
             <option value="" selected disabled>Izaberi marku...</option>
         </select>
     </div>
 
     <div class="group">
-        <label>2. Model vozila</label>
+        <label>2. Odaberi model</label>
         <select id="modelSel" onchange="izracunaj()">
             <option value="">Prvo odaberi marku...</option>
         </select>
     </div>
 
     <div class="group">
-        <label>3. Tretman (Koch-Chemie)</label>
-        <select id="tretmanSel" onchange="izracunaj()">
-            <option value="1">Standard (Pranje + Usisavanje)</option>
-            <option value="1.5">Premium (Zaštita + Detalji)</option>
-            <option value="2.5">Deep Clean (Dubinsko pranje)</option>
-        </select>
+        <label>3. Odaberi usluge</label>
+        <div class="services-container">
+            <label class="service-item">
+                <input type="checkbox" id="spolja" onchange="izracunaj()" checked> 
+                Spoljašnje pranje
+            </label>
+            <label class="service-item">
+                <input type="checkbox" id="unutra" onchange="izracunaj()" checked> 
+                Unutrašnje održavanje
+            </label>
+        </div>
     </div>
 
     <div class="price-box">
@@ -73,21 +90,29 @@
         <div class="price-tag" id="rezultat">0 RSD</div>
     </div>
 
-    <button class="btn" onclick="zakazi()">Rezerviši termin</button>
+    <button class="btn" onclick="zakazi()">Rezerviši Termin</button>
 </div>
 
 <script>
-    // Cene bazirane na Touareg = 3000 RSD
+    // BAZA SA REPRODUKCIJOM CENA (Touareg = 2600)
     const baza = {
-        "Audi": [{n:"A1",c:1800},{n:"A3",c:2200},{n:"A4",c:2500},{n:"A6",c:2800},{n:"Q5",c:3000},{n:"Q7",c:3500},{n:"Q8",c:3500}],
-        "BMW": [{n:"Serija 1",c:2200},{n:"Serija 3",c:2500},{n:"Serija 5",c:2800},{n:"X1",c:2800},{n:"X3",c:3000},{n:"X5",c:3200},{n:"X7",c:3800}],
-        "Mercedes": [{n:"A Klasa",c:2200},{n:"C Klasa",c:2500},{n:"E Klasa",c:2800},{n:"S Klasa",c:3200},{n:"GLC",c:3000},{n:"GLE",c:3200},{n:"GLS",c:3800}],
-        "Volkswagen": [{n:"Up!",c:1800},{n:"Polo",c:1800},{n:"Golf",c:2200},{n:"Passat",c:2800},{n:"Arteon",c:2800},{n:"Tiguan",c:3000},{n:"Touareg",c:3000},{n:"Caddy",c:2800},{n:"Amarok",c:3500}],
-        "Skoda": [{n:"Fabia",c:1800},{n:"Octavia",c:2500},{n:"Superb",c:2800},{n:"Kodiaq",c:3000}],
-        "Fiat": [{n:"500",c:1800},{n:"Punto",c:1800},{n:"Tipo",c:2200},{n:"500L",c:2500}],
-        "Opel": [{n:"Corsa",c:1800},{n:"Astra",c:2200},{n:"Insignia",c:2500},{n:"Mokka",c:2500}],
-        "Renault": [{n:"Clio",c:1800},{n:"Megane",c:2200},{n:"Talisman",c:2500},{n:"Captur",c:2500},{n:"Kadjar",c:3000}],
-        "Peugeot": [{n:"208",c:1800},{n:"308",c:2200},{n:"508",c:2500},{n:"3008",c:3000},{n:"5008",c:3200}]
+        "Alfa Romeo": [{n:"Giulietta",c:2000},{n:"Giulia",c:2200},{n:"Stelvio",c:2600}],
+        "Audi": [{n:"A1",c:1600},{n:"A3",c:1800},{n:"A4",c:2200},{n:"A6",c:2400},{n:"Q3",c:2400},{n:"Q5",c:2600},{n:"Q7",c:3000},{n:"Q8",c:3000}],
+        "BMW": [{n:"Serija 1",c:1800},{n:"Serija 3",c:2200},{n:"Serija 5",c:2400},{n:"Serija 7",c:2800},{n:"X1",c:2400},{n:"X3",c:2600},{n:"X5",c:2800},{n:"X7",c:3200}],
+        "Citroen": [{n:"C3",c:1600},{n:"C4",c:1800},{n:"C5",c:2200}],
+        "Dacia": [{n:"Sandero",c:1600},{n:"Duster",c:2400}],
+        "Fiat": [{n:"500",c:1600},{n:"Punto",c:1600},{n:"Tipo",c:1800},{n:"500L",c:2200}],
+        "Ford": [{n:"Fiesta",c:1600},{n:"Focus",c:1800},{n:"Mondeo",c:2200},{n:"Kuga",c:2600}],
+        "Hyundai": [{n:"i20",c:1600},{n:"i30",c:1800},{n:"Tucson",c:2600}],
+        "Kia": [{n:"Ceed",c:1800},{n:"Sportage",c:2600}],
+        "Mercedes": [{n:"A Klasa",c:1800},{n:"C Klasa",c:2200},{n:"E Klasa",c:2400},{n:"S Klasa",c:2800},{n:"GLC",c:2600},{n:"GLE",c:2800},{n:"GLS",c:3200}],
+        "Opel": [{n:"Corsa",c:1600},{n:"Astra",c:1800},{n:"Insignia",c:2200}],
+        "Peugeot": [{n:"208",c:1600},{n:"308",c:1800},{n:"508",c:2200},{n:"3008",c:2600},{n:"5008",c:2800}],
+        "Renault": [{n:"Clio",c:1600},{n:"Megane",c:1800},{n:"Talisman",c:2200},{n:"Captur",c:2200},{n:"Kadjar",c:2600}],
+        "Skoda": [{n:"Fabia",c:1600},{n:"Octavia",c:2200},{n:"Superb",c:2400},{n:"Kodiaq",c:2600}],
+        "Toyota": [{n:"Yaris",c:1600},{n:"Corolla",c:1800},{n:"Rav4",c:2600},{n:"Land Cruiser",c:3200}],
+        "Volkswagen": [{n:"Up!",c:1600},{n:"Polo",c:1600},{n:"Golf",c:1800},{n:"Passat",c:2400},{n:"Arteon",c:2400},{n:"Tiguan",c:2600},{n:"Touareg",c:2600},{n:"Caddy",c:2400},{n:"Amarok",c:3200},{n:"Transporter",c:3400}],
+        "Volvo": [{n:"XC40",c:2200},{n:"XC60",c:2600},{n:"XC90",c:3200}]
     };
 
     function inicijalizuj() {
@@ -111,12 +136,17 @@
 
     function izracunaj() {
         const mc = parseInt(document.getElementById("modelSel").value);
-        const tc = parseFloat(document.getElementById("tretmanSel").value);
         const r = document.getElementById("rezultat");
-        if(mc) { 
-            let total = Math.round(mc * tc);
-            r.innerText = total.toLocaleString() + " RSD"; 
-        } else { r.innerText = "0 RSD"; }
+        if(!mc) { r.innerText = "0 RSD"; return; }
+
+        let s = document.getElementById("spolja").checked;
+        let u = document.getElementById("unutra").checked;
+        
+        let faktor = 0;
+        if(s) faktor += 0.5;
+        if(u) faktor += 0.5;
+
+        r.innerText = Math.round(mc * faktor).toLocaleString() + " RSD";
     }
 
     function zakazi() {
@@ -125,8 +155,13 @@
         if(modEl.selectedIndex <= 0) { alert("Odaberi auto!"); return; }
         const mo = modEl.options[modEl.selectedIndex].text;
         const c = document.getElementById("rezultat").innerText;
+        const usluge = [];
+        if(document.getElementById("spolja").checked) usluge.push("Spolja");
+        if(document.getElementById("unutra").checked) usluge.push("Unutra");
+        
         const bURL = "https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url";
-        window.open(`${bURL}&entry.345073777=${encodeURIComponent(m + " " + mo)}&entry.988818818=${encodeURIComponent(c)}`, '_blank');
+        const msg = encodeURIComponent(`${m} ${mo} (${usluge.join("+")})`);
+        window.open(`${bURL}&entry.345073777=${msg}&entry.988818818=${encodeURIComponent(c)}`, '_blank');
     }
 
     inicijalizuj();
