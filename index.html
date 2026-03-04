@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KORICA Auto Nega | Kalkulator</title>
+    <title>KORICA Auto Nega | Kalkulator Gabarita</title>
     <style>
         :root { --gold: #d4af37; --black: #0a0a0a; }
         body {
@@ -31,23 +31,20 @@
         }
         .service-item {
             display: flex; align-items: center; justify-content: flex-start; gap: 12px;
-            cursor: pointer; font-size: 14px; transition: 0.3s;
+            cursor: pointer; font-size: 14px;
         }
-        input[type="checkbox"] {
-            accent-color: var(--gold); width: 20px; height: 20px; cursor: pointer;
-        }
+        input[type="checkbox"] { accent-color: var(--gold); width: 20px; height: 20px; }
         .price-box {
             margin: 20px 0; padding: 15px; background: rgba(212, 175, 55, 0.05);
             border-radius: 15px; border: 1px solid rgba(212, 175, 55, 0.2);
         }
         .price-tag { font-size: 38px; color: var(--gold); font-weight: 800; }
+        .time-info { color: #888; font-size: 12px; margin-top: 5px; font-style: italic; }
         .btn {
             background: linear-gradient(135deg, var(--gold), #b8860b);
             color: black; border: none; padding: 18px; width: 100%;
             border-radius: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase;
-            transition: 0.3s;
         }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3); }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
@@ -58,61 +55,48 @@
     <div class="subtitle">Auto Nega Sremčica | Koch-Chemie</div>
     
     <div class="group">
-        <label>1. Odaberi marku</label>
+        <label>1. Marka vozila</label>
         <select id="markaSel" onchange="azurirajModele()">
-            <option value="" selected disabled>Izaberi marku...</option>
+            <option value="" selected disabled>Izaberi...</option>
         </select>
     </div>
 
     <div class="group">
-        <label>2. Odaberi model</label>
+        <label>2. Model vozila (Gabarit)</label>
         <select id="modelSel" onchange="izracunaj()">
-            <option value="">Prvo odaberi marku...</option>
+            <option value="">Prvo marka...</option>
         </select>
     </div>
 
     <div class="group">
-        <label>3. Odaberi usluge</label>
+        <label>3. Usluge</label>
         <div class="services-container">
             <label class="service-item">
-                <input type="checkbox" id="spolja" onchange="izracunaj()" checked> 
-                Spoljašnje pranje
+                <input type="checkbox" id="spolja" onchange="izracunaj()" checked> Spoljašnje pranje
             </label>
             <label class="service-item">
-                <input type="checkbox" id="unutra" onchange="izracunaj()" checked> 
-                Unutrašnje održavanje
+                <input type="checkbox" id="unutra" onchange="izracunaj()" checked> Unutrašnje održavanje
             </label>
         </div>
     </div>
 
     <div class="price-box">
-        <div style="font-size: 10px; color: #888; margin-bottom: 5px;">UKUPNA CENA</div>
         <div class="price-tag" id="rezultat">0 RSD</div>
+        <div class="time-info" id="vreme">Vreme rada: -- min</div>
     </div>
 
     <button class="btn" onclick="zakazi()">Rezerviši Termin</button>
 </div>
 
 <script>
-    // BAZA SA REPRODUKCIJOM CENA (Touareg = 2600)
+    // BAZA: n = naziv, c = puna cena (komplet), v = vreme u minutima za komplet
     const baza = {
-        "Alfa Romeo": [{n:"Giulietta",c:2000},{n:"Giulia",c:2200},{n:"Stelvio",c:2600}],
-        "Audi": [{n:"A1",c:1600},{n:"A3",c:1800},{n:"A4",c:2200},{n:"A6",c:2400},{n:"Q3",c:2400},{n:"Q5",c:2600},{n:"Q7",c:3000},{n:"Q8",c:3000}],
-        "BMW": [{n:"Serija 1",c:1800},{n:"Serija 3",c:2200},{n:"Serija 5",c:2400},{n:"Serija 7",c:2800},{n:"X1",c:2400},{n:"X3",c:2600},{n:"X5",c:2800},{n:"X7",c:3200}],
-        "Citroen": [{n:"C3",c:1600},{n:"C4",c:1800},{n:"C5",c:2200}],
-        "Dacia": [{n:"Sandero",c:1600},{n:"Duster",c:2400}],
-        "Fiat": [{n:"500",c:1600},{n:"Punto",c:1600},{n:"Tipo",c:1800},{n:"500L",c:2200}],
-        "Ford": [{n:"Fiesta",c:1600},{n:"Focus",c:1800},{n:"Mondeo",c:2200},{n:"Kuga",c:2600}],
-        "Hyundai": [{n:"i20",c:1600},{n:"i30",c:1800},{n:"Tucson",c:2600}],
-        "Kia": [{n:"Ceed",c:1800},{n:"Sportage",c:2600}],
-        "Mercedes": [{n:"A Klasa",c:1800},{n:"C Klasa",c:2200},{n:"E Klasa",c:2400},{n:"S Klasa",c:2800},{n:"GLC",c:2600},{n:"GLE",c:2800},{n:"GLS",c:3200}],
-        "Opel": [{n:"Corsa",c:1600},{n:"Astra",c:1800},{n:"Insignia",c:2200}],
-        "Peugeot": [{n:"208",c:1600},{n:"308",c:1800},{n:"508",c:2200},{n:"3008",c:2600},{n:"5008",c:2800}],
-        "Renault": [{n:"Clio",c:1600},{n:"Megane",c:1800},{n:"Talisman",c:2200},{n:"Captur",c:2200},{n:"Kadjar",c:2600}],
-        "Skoda": [{n:"Fabia",c:1600},{n:"Octavia",c:2200},{n:"Superb",c:2400},{n:"Kodiaq",c:2600}],
-        "Toyota": [{n:"Yaris",c:1600},{n:"Corolla",c:1800},{n:"Rav4",c:2600},{n:"Land Cruiser",c:3200}],
-        "Volkswagen": [{n:"Up!",c:1600},{n:"Polo",c:1600},{n:"Golf",c:1800},{n:"Passat",c:2400},{n:"Arteon",c:2400},{n:"Tiguan",c:2600},{n:"Touareg",c:2600},{n:"Caddy",c:2400},{n:"Amarok",c:3200},{n:"Transporter",c:3400}],
-        "Volvo": [{n:"XC40",c:2200},{n:"XC60",c:2600},{n:"XC90",c:3200}]
+        "Audi": [{n:"A1 (S)",c:1800,v:60},{n:"A3 (M)",c:2200,v:75},{n:"A4 (M)",c:2200,v:75},{n:"A6 (L)",c:2600,v:90},{n:"Q7 (XL)",c:3200,v:120}],
+        "BMW": [{n:"Serija 1 (S)",c:1800,v:60},{n:"Serija 3 (M)",c:2200,v:75},{n:"Serija 5 (L)",c:2600,v:90},{n:"X5 (L)",c:2600,v:90},{n:"X7 (XL)",c:3200,v:120}],
+        "Fiat": [{n:"500 (XS)",c:1600,v:50},{n:"Punto (S)",c:1800,v:60},{n:"Tipo (M)",c:2200,v:75}],
+        "Mercedes": [{n:"A Klasa (S)",c:1800,v:60},{n:"C Klasa (M)",c:2200,v:75},{n:"E Klasa (L)",c:2600,v:90},{n:"GLE (L)",c:2600,v:90},{n:"S Klasa (XL)",c:3200,v:120}],
+        "Volkswagen": [{n:"Up! (XS)",c:1600,v:50},{n:"Polo (S)",c:1800,v:60},{n:"Golf (M)",c:2200,v:75},{n:"Passat (L)",c:2600,v:90},{n:"Touareg (L)",c:2600,v:90},{n:"Transporter (XL)",c:3200,v:120}],
+        "Skoda": [{n:"Fabia (S)",c:1800,v:60},{n:"Octavia (M)",c:2200,v:75},{n:"Superb (L)",c:2600,v:90},{n:"Kodiaq (L)",c:2600,v:90}]
     };
 
     function inicijalizuj() {
@@ -125,43 +109,42 @@
     function azurirajModele() {
         const m = document.getElementById("markaSel").value;
         const modSel = document.getElementById("modelSel");
-        modSel.innerHTML = '<option value="" disabled selected>Izaberi model...</option>';
-        if(baza[m]) {
-            baza[m].sort((a,b)=>a.n.localeCompare(b.n)).forEach(mo => {
-                let o = document.createElement("option"); o.value = mo.c; o.text = mo.n; modSel.appendChild(o);
-            });
-        }
+        modSel.innerHTML = '<option value="" disabled selected>Model...</option>';
+        baza[m].forEach(mo => {
+            let o = document.createElement("option"); 
+            o.value = JSON.stringify({c: mo.c, v: mo.v}); 
+            o.text = mo.n; 
+            modSel.appendChild(o);
+        });
         izracunaj();
     }
 
     function izracunaj() {
-        const mc = parseInt(document.getElementById("modelSel").value);
-        const r = document.getElementById("rezultat");
-        if(!mc) { r.innerText = "0 RSD"; return; }
-
+        const modelData = document.getElementById("modelSel").value;
+        if(!modelData) return;
+        const data = JSON.parse(modelData);
+        
         let s = document.getElementById("spolja").checked;
         let u = document.getElementById("unutra").checked;
         
         let faktor = 0;
-        if(s) faktor += 0.5;
-        if(u) faktor += 0.5;
+        let vremeFaktor = 0;
+        
+        if(s) { faktor += 0.5; vremeFaktor += 0.4; } // Spolja uzima oko 40% vremena kompleta
+        if(u) { faktor += 0.5; vremeFaktor += 0.6; } // Unutra uzima oko 60% vremena kompleta
 
-        r.innerText = Math.round(mc * faktor).toLocaleString() + " RSD";
+        document.getElementById("rezultat").innerText = Math.round(data.c * faktor).toLocaleString() + " RSD";
+        document.getElementById("vreme").innerText = "Vreme rada: ~" + Math.round(data.v * vremeFaktor) + " min";
     }
 
     function zakazi() {
         const m = document.getElementById("markaSel").value;
         const modEl = document.getElementById("modelSel");
         if(modEl.selectedIndex <= 0) { alert("Odaberi auto!"); return; }
-        const mo = modEl.options[modEl.selectedIndex].text;
         const c = document.getElementById("rezultat").innerText;
-        const usluge = [];
-        if(document.getElementById("spolja").checked) usluge.push("Spolja");
-        if(document.getElementById("unutra").checked) usluge.push("Unutra");
-        
+        const v = document.getElementById("vreme").innerText;
         const bURL = "https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url";
-        const msg = encodeURIComponent(`${m} ${mo} (${usluge.join("+")})`);
-        window.open(`${bURL}&entry.345073777=${msg}&entry.988818818=${encodeURIComponent(c)}`, '_blank');
+        window.open(`${bURL}&entry.345073777=${encodeURIComponent(m + " " + modEl.options[modEl.selectedIndex].text)}&entry.988818818=${encodeURIComponent(c + " / " + v)}`, '_blank');
     }
 
     inicijalizuj();
