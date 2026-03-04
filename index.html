@@ -12,6 +12,7 @@
             font-family: 'Arial', sans-serif;
             display: flex; justify-content: center; align-items: center;
             min-height: 100vh; margin: 0;
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
         }
         .card {
             background: #1a1a1a;
@@ -21,10 +22,12 @@
             width: 90%;
             max-width: 400px;
             text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        h1 { color: var(--gold); margin-bottom: 25px; letter-spacing: 3px; text-transform: uppercase; }
+        h1 { color: var(--gold); margin-bottom: 5px; letter-spacing: 3px; text-transform: uppercase; font-size: 28px; }
+        .subtitle { color: #888; font-size: 11px; letter-spacing: 2px; margin-bottom: 25px; }
         .group { text-align: left; margin-bottom: 20px; }
-        label { display: block; color: var(--gold); margin-bottom: 8px; font-weight: bold; font-size: 14px; }
+        label { display: block; color: var(--gold); margin-bottom: 8px; font-weight: bold; font-size: 13px; text-transform: uppercase; }
         select {
             width: 100%;
             padding: 12px;
@@ -32,43 +35,45 @@
             color: white;
             border: 1px solid #444;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             outline: none;
+            cursor: pointer;
         }
         select:focus { border-color: var(--gold); }
         .price-box {
             margin: 20px 0;
             padding: 20px;
             background: rgba(212, 175, 55, 0.1);
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px dashed var(--gold);
         }
-        .price-tag { font-size: 32px; color: var(--gold); font-weight: bold; }
+        .price-tag { font-size: 36px; color: var(--gold); font-weight: bold; }
         .btn {
             background: var(--gold);
             color: black;
             border: none;
-            padding: 15px;
+            padding: 16px;
             width: 100%;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: bold;
             font-size: 16px;
             cursor: pointer;
             text-transform: uppercase;
             transition: 0.3s;
         }
-        .btn:hover { background: #b8860b; }
+        .btn:hover { background: #b8860b; transform: translateY(-2px); }
     </style>
 </head>
 <body>
 
 <div class="card">
     <h1>KORICA</h1>
+    <div class="subtitle">Auto Nega Sremčica</div>
     
     <div class="group">
         <label>1. Odaberi marku vozila:</label>
         <select id="markaSel" onchange="azurirajModele()">
-            <option value="" selected disabled>Izaberi marku...</option>
+            <option value="" selected disabled>Izaberi...</option>
             <option value="Audi">Audi</option>
             <option value="BMW">BMW</option>
             <option value="Volkswagen">Volkswagen</option>
@@ -98,7 +103,7 @@
     </div>
 
     <div class="price-box">
-        <div style="font-size: 12px; color: #888;">PROCENJENA CENA</div>
+        <div style="font-size: 11px; color: #888; margin-bottom: 5px;">PROCENJENA CENA</div>
         <div class="price-tag" id="rezultat">0 RSD</div>
     </div>
 
@@ -107,46 +112,15 @@
 
 <script>
     const baza = {
-        "Audi": [
-            {ime: "A1", cena: 1800}, {ime: "A3", cena: 2000}, {ime: "A4", cena: 2300}, 
-            {ime: "A6", cena: 2300}, {ime: "A8", cena: 2600}, {ime: "Q3", cena: 2600}, 
-            {ime: "Q5", cena: 2600}, {ime: "Q7", cena: 2600}
-        ],
-        "BMW": [
-            {ime: "Serija 1", cena: 2000}, {ime: "Serija 3", cena: 2300}, 
-            {ime: "Serija 5", cena: 2300}, {ime: "Serija 7", cena: 2600},
-            {ime: "X1", cena: 2600}, {ime: "X3", cena: 2600}, {ime: "X5", cena: 2600}
-        ],
-        "Volkswagen": [
-            {ime: "Polo", cena: 1800}, {ime: "Golf", cena: 2000}, 
-            {ime: "Passat", cena: 2300}, {ime: "Tiguan", cena: 2600},
-            {ime: "Arteon", cena: 2300}, {ime: "Touran", cena: 2300}
-        ],
-        "Mercedes": [
-            {ime: "A Klasa", cena: 2000}, {ime: "C Klasa", cena: 2300}, 
-            {ime: "E Klasa", cena: 2300}, {ime: "S Klasa", cena: 2600},
-            {ime: "GLC", cena: 2600}, {ime: "GLE", cena: 2600}
-        ],
-        "Fiat": [
-            {ime: "500", cena: 1800}, {ime: "Punto", cena: 1800}, 
-            {ime: "Tipo", cena: 2000}, {ime: "500L", cena: 2300}
-        ],
-        "Skoda": [
-            {ime: "Fabia", cena: 1800}, {ime: "Octavia", cena: 2300}, 
-            {ime: "Superb", cena: 2300}, {ime: "Kodiaq", cena: 2600}
-        ],
-        "Opel": [
-            {ime: "Corsa", cena: 1800}, {ime: "Astra", cena: 2000}, 
-            {ime: "Insignia", cena: 2300}, {ime: "Mokka", cena: 2600}
-        ],
-        "Renault": [
-            {ime: "Clio", cena: 1800}, {ime: "Megane", cena: 2000}, 
-            {ime: "Captur", cena: 2600}, {ime: "Talisman", cena: 2300}
-        ],
-        "Peugeot": [
-            {ime: "208", cena: 1800}, {ime: "308", cena: 2000}, 
-            {ime: "508", cena: 2300}, {ime: "3008", cena: 2600}
-        ]
+        "Audi": [{ime: "A1", cena: 1800}, {ime: "A3", cena: 2000}, {ime: "A4", cena: 2300}, {ime: "A6", cena: 2300}, {ime: "A8", cena: 2600}, {ime: "Q3", cena: 2600}, {ime: "Q5", cena: 2600}, {ime: "Q7", cena: 2600}],
+        "BMW": [{ime: "Serija 1", cena: 2000}, {ime: "Serija 3", cena: 2300}, {ime: "Serija 5", cena: 2300}, {ime: "Serija 7", cena: 2600}, {ime: "X1", cena: 2600}, {ime: "X3", cena: 2600}, {ime: "X5", cena: 2600}],
+        "Volkswagen": [{ime: "Polo", cena: 1800}, {ime: "Golf", cena: 2000}, {ime: "Passat", cena: 2300}, {ime: "Tiguan", cena: 2600}, {ime: "Arteon", cena: 2300}],
+        "Mercedes": [{ime: "A Klasa", cena: 2000}, {ime: "C Klasa", cena: 2300}, {ime: "E Klasa", cena: 2300}, {ime: "S Klasa", cena: 2600}, {ime: "GLC", cena: 2600}, {ime: "GLE", cena: 2600}],
+        "Fiat": [{ime: "500", cena: 1800}, {ime: "Punto", cena: 1800}, {ime: "Tipo", cena: 2000}, {ime: "500L", cena: 2300}],
+        "Skoda": [{ime: "Fabia", cena: 1800}, {ime: "Octavia", cena: 2300}, {ime: "Superb", cena: 2300}, {ime: "Kodiaq", cena: 2600}],
+        "Opel": [{ime: "Corsa", cena: 1800}, {ime: "Astra", cena: 2000}, {ime: "Insignia", cena: 2300}, {ime: "Mokka", cena: 2600}],
+        "Renault": [{ime: "Clio", cena: 1800}, {ime: "Megane", cena: 2000}, {ime: "Captur", cena: 2600}, {ime: "Talisman", cena: 2300}],
+        "Peugeot": [{ime: "208", cena: 1800}, {ime: "308", cena: 2000}, {ime: "508", cena: 2300}, {ime: "3008", cena: 2600}]
     };
 
     function azurirajModele() {
@@ -179,12 +153,11 @@
     function zakazi() {
         const marka = document.getElementById("markaSel").value;
         const modelEl = document.getElementById("modelSel");
+        if (modelEl.selectedIndex <= 0) { alert("Odaberi vozilo!"); return; }
         const model = modelEl.options[modelEl.selectedIndex].text;
         const cena = document.getElementById("rezultat").innerText;
-        if (cena === "0 RSD" || !marka) {
-            alert("Molimo odaberite vozilo!");
-            return;
-        }
+        
+        // OVAJ LINK MORA DA BUDE TVOJ "PRE-FILLED" LINK IZ GOOGLE FORME
         const baseURL = "https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url";
         const finalURL = `${baseURL}&entry.345073777=${encodeURIComponent(marka + " " + model)}&entry.988818818=${encodeURIComponent(cena)}`;
         window.open(finalURL, '_blank');
