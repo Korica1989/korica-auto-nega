@@ -7,17 +7,13 @@
     <style>
         :root {
             --gold: #d4af37;
-            --gold-light: #f1c40f;
             --black: #050505;
         }
 
         body {
-            /* Koristimo kvalitetnu noćnu sliku Hrama sa wikipedije */
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), 
-                        url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/The_Temple_of_Saint_Sava_at_Night.jpg/1280px-The_Temple_of_Saint_Sava_at_Night.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            background-color: var(--black);
+            /* Tamna pozadina sa teksturom */
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
             color: white;
             font-family: 'Poppins', sans-serif;
             display: flex;
@@ -29,27 +25,30 @@
         }
 
         .card {
-            /* Smanjena neprozirnost (0.4) da bi se Hram video KROZ kalkulator */
-            background: rgba(10, 10, 10, 0.4); 
+            position: relative;
+            /* Slika Hrama je sada fiksirana UNUTAR kalkulatora kao pozadina */
+            background: linear-gradient(rgba(10, 10, 10, 0.7), rgba(10, 10, 10, 0.7)), 
+                        url('https://upload.wikimedia.org/wikipedia/commons/5/52/Hram_Svetog_Save_no%C4%87u.jpg');
+            background-size: cover;
+            background-position: center;
             padding: 40px;
             border-radius: 24px;
-            border: 1px solid rgba(212, 175, 55, 0.5);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
             width: 100%;
             max-width: 420px;
             text-align: center;
-            backdrop-filter: blur(5px); /* Manji blur da bi se obrisi Hrama jasnije videli */
-            -webkit-backdrop-filter: blur(5px);
+            overflow: hidden;
         }
 
-        .logo-area { margin-bottom: 30px; }
-        h1 { 
+        /* Dodatni sjaj da slova budu čitljiva preko slike */
+        .logo-area h1 { 
             color: var(--gold); 
             margin: 0; 
             font-size: 38px; 
             letter-spacing: 6px; 
             font-weight: 800;
-            text-shadow: 2px 2px 15px rgba(0,0,0,1);
+            text-shadow: 0 0 15px rgba(0,0,0,1), 0 0 5px rgba(212, 175, 55, 0.5);
         }
 
         .subtitle { 
@@ -58,16 +57,16 @@
             letter-spacing: 4px; 
             text-transform: uppercase;
             margin-top: 5px;
-            text-shadow: 1px 1px 5px rgba(0,0,0,0.8);
+            text-shadow: 2px 2px 4px #000;
         }
 
-        .group { text-align: left; margin-bottom: 25px; }
+        .group { text-align: left; margin-bottom: 25px; position: relative; z-index: 2; }
         label { display: block; margin-bottom: 10px; color: var(--gold); font-size: 13px; font-weight: 600; text-transform: uppercase; }
 
         select {
             width: 100%;
             padding: 15px;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             border: 1px solid var(--gold);
             color: #fff;
             border-radius: 12px;
@@ -76,20 +75,21 @@
         }
 
         .price-container {
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.8);
             border-radius: 15px;
             padding: 20px;
             margin: 30px 0;
             border: 1px solid rgba(212, 175, 55, 0.4);
+            position: relative;
+            z-index: 2;
         }
 
-        .price-label { font-size: 12px; color: #ddd; text-transform: uppercase; }
         .price-tag {
             font-size: 44px;
             font-weight: 700;
             color: var(--gold);
             margin: 0;
-            text-shadow: 0 0 20px rgba(0, 0, 0, 1);
+            text-shadow: 0 0 10px rgba(0,0,0,1);
         }
 
         .order-btn {
@@ -103,7 +103,8 @@
             cursor: pointer;
             font-size: 16px;
             text-transform: uppercase;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+            position: relative;
+            z-index: 2;
         }
 
         .info-text { font-size: 11px; color: #fff; margin-top: 20px; text-shadow: 1px 1px 3px #000; }
@@ -119,36 +120,33 @@
     </div>
 
     <div class="group">
-        <label>Kategorija vozila</label>
+        <label>Vozilo</label>
         <select id="auto">
             <option value="0" disabled selected>Izaberi vozilo...</option>
-            <option value="1800">Malo vozilo (Polo, Corsa...)</option>
-            <option value="2000">Srednje vozilo (Golf, Astra...)</option>
-            <option value="2300">Limuzina/Karavan (Passat, BMW 5...)</option>
-            <option value="2600">Džip/SUV (X5, Tiguan...)</option>
-            <option value="3200">Kombi / Lux vozila</option>
+            <option value="1800">Malo vozilo</option>
+            <option value="2000">Srednje vozilo</option>
+            <option value="2300">Limuzina/Karavan</option>
+            <option value="2600">Džip/SUV</option>
+            <option value="3200">Kombi / Lux</option>
         </select>
     </div>
 
     <div class="group">
-        <label>Izbor tretmana</label>
+        <label>Tretman</label>
         <select id="tretman">
-            <option value="1">Standard (Pranje + Usisavanje)</option>
-            <option value="1.5">Premium (Vax + Detalji)</option>
-            <option value="2.5">Deep Clean (Dubinsko pranje)</option>
+            <option value="1">Standard</option>
+            <option value="1.5">Premium</option>
+            <option value="2.5">Deep Clean</option>
         </select>
     </div>
 
     <div class="price-container">
-        <div class="price-label">Procenjena cena</div>
         <div class="price-tag" id="displayCena">0 RSD</div>
     </div>
 
-    <button class="order-btn" onclick="zakazi()">Rezerviši tretman</button>
+    <button class="order-btn" onclick="zakazi()">Rezerviši</button>
     
-    <div class="info-text">
-        Beograd - Sremčica
-    </div>
+    <div class="info-text">BEOGRAD - SREMČICA</div>
 </div>
 
 <script>
@@ -172,7 +170,7 @@
         const cena = display.innerText;
         const model = autoEl.options[autoEl.selectedIndex].text;
         if (cena === "0 RSD" || autoEl.value === "0") {
-            alert("Molimo Vas da prvo izaberete kategoriju vozila.");
+            alert("Izaberite vozilo.");
             return;
         }
         const baseURL = "https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url";
