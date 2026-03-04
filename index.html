@@ -61,7 +61,7 @@
     <div class="group">
         <label>2. Model vozila</label>
         <select id="modelSel" onchange="izracunaj()">
-            <option value="">Prvo marka...</option>
+            <option value="">Prvo odaberi marku...</option>
         </select>
     </div>
 
@@ -83,31 +83,40 @@
 
 <script>
     const baza = {
-        "Abarth":[{n:"595 (XS)",c:1600,v:40}], "Alfa Romeo":[{n:"Giulietta (M)",c:2200,v:50},{n:"Stelvio (L)",c:2600,v:60}],
-        "Aston Martin":[{n:"DB11 (L)",c:3000,v:70}], "Audi":[{n:"A1 (S)",c:1800,v:45},{n:"A3 (M)",c:2200,v:50},{n:"A4 (M)",c:2200,v:55},{n:"A6 (L)",c:2600,v:65},{n:"Q7 (XL)",c:3200,v:85}],
-        "Bentley":[{n:"Bentayga (XL)",c:3800,v:100}], "BMW":[{n:"Serija 1 (S)",c:1800,v:45},{n:"Serija 3 (M)",c:2200,v:55},{n:"Serija 5 (L)",c:2600,v:65},{n:"X5 (L)",c:2600,v:70},{n:"X7 (XL)",c:3200,v:90}],
-        "Cadillac":[{n:"Escalade (XL)",c:3800,v:110}], "Chevrolet":[{n:"Spark (XS)",c:1600,v:40},{n:"Cruze (M)",c:2200,v:55}],
-        "Chrysler":[{n:"300C (L)",c:2600,v:70}], "Citroen":[{n:"C3 (S)",c:1800,v:45},{n:"C4 (M)",c:2200,v:55},{n:"C5 (L)",c:2600,v:65}],
-        "Cupra":[{n:"Formentor (M)",c:2200,v:55}], "Dacia":[{n:"Sandero (S)",c:1800,v:45},{n:"Duster (L)",c:2600,v:65}],
-        "Daewoo":[{n:"Matiz (XS)",c:1600,v:40}], "Daihatsu":[{n:"Terios (S)",c:1800,v:45}],
-        "Dodge":[{n:"Ram (XL)",c:3800,v:110}], "Ferrari":[{n:"488 (M)",c:3000,v:70}],
-        "Fiat":[{n:"500 (XS)",c:1600,v:40},{n:"Punto (S)",c:1800,v:45},{n:"Tipo (M)",c:2200,v:55},{n:"Ducato (XL)",c:3800,v:120}],
-        "Ford":[{n:"Fiesta (S)",c:1800,v:45},{n:"Focus (M)",c:2200,v:55},{n:"Mondeo (L)",c:2600,v:65},{n:"Ranger (XL)",c:3500,v:95}],
-        "Honda":[{n:"Civic (M)",c:2200,v:55},{n:"CR-V (L)",c:2600,v:70}], "Hyundai":[{n:"i20 (S)",c:1800,v:45},{n:"Tucson (L)",c:2600,v:70}],
-        "Infiniti":[{n:"QX70 (L)",c:2600,v:70}], "Jaguar":[{n:"F-Pace (L)",c:2600,v:70}], "Jeep":[{n:"Grand Cherokee (L)",c:2800,v:75}],
-        "Kia":[{n:"Sportage (L)",c:2600,v:70}], "Lada":[{n:"Niva (S)",c:1800,v:50}], "Lamborghini":[{n:"Urus (XL)",c:3800,v:100}],
-        "Lancia":[{n:"Ypsilon (S)",c:1800,v:45}], "Land Rover":[{n:"Defender (XL)",c:3500,v:90},{n:"Range Rover (XL)",c:3800,v:100}],
-        "Lexus":[{n:"RX (L)",c:2800,v:75}], "Maserati":[{n:"Levante (L)",c:3000,v:75}], "Mazda":[{n:"CX-5 (L)",c:2600,v:70}],
-        "Mercedes":[{n:"A Klasa (S)",c:1800,v:45},{n:"C Klasa (M)",c:2200,v:55},{n:"E Klasa (L)",c:2600,v:65},{n:"GLE (L)",c:2600,v:70},{n:"Sprinter (XL)",c:4000,v:130}],
-        "Mini":[{n:"Cooper (S)",c:1800,v:45}], "Mitsubishi":[{n:"Pajero (L)",c:2800,v:80}], "Nissan":[{n:"Qashqai (L)",c:2600,v:70},{n:"Navara (XL)",c:3500,v:95}],
-        "Opel":[{n:"Corsa (S)",c:1800,v:45},{n:"Insignia (L)",c:2600,v:65},{n:"Vivaro (XL)",c:3500,v:110}], "Peugeot":[{n:"208 (S)",c:1800,v:45},{n:"508 (L)",c:2600,v:65},{n:"5008 (L)",c:2800,v:75}],
-        "Porsche":[{n:"911 (M)",c:2500,v:60},{n:"Cayenne (L)",c:2800,v:75}], "Renault":[{n:"Clio (S)",c:1800,v:45},{n:"Talisman (L)",c:2600,v:65},{n:"Master (XL)",c:4000,v:130}],
-        "Rolls-Royce":[{n:"Cullinan (XL)",c:4500,v:120}], "Saab":[{n:"9-3 (M)",c:2200,v:55}], "Seat":[{n:"Leon (M)",c:2200,v:55}],
-        "Skoda":[{n:"Fabia (S)",c:1800,v:45},{n:"Octavia (M)",c:2200,v:55},{n:"Superb (L)",c:2600,v:65},{n:"Kodiaq (L)",c:2600,v:70}], "Smart":[{n:"ForTwo (XS)",c:1600,v:35}],
-        "Subaru":[{n:"Forester (L)",c:2600,v:70}], "Suzuki":[{n:"Vitara (M)",c:2200,v:55}], "Tesla":[{n:"Model S (L)",c:2600,v:65},{n:"Model X (L)",c:2800,v:75}],
-        "Toyota":[{n:"Yaris (S)",c:1800,v:45},{n:"Rav4 (L)",c:2600,v:70},{n:"Land Cruiser (XL)",c:3500,v:95}], "Volvo":[{n:"XC60 (L)",c:2600,v:70},{n:"XC90 (XL)",c:3200,v:90}],
-        "Volkswagen":[{n:"Up! (XS)",c:1600,v:40},{n:"Golf (M)",c:2200,v:55},{n:"Passat (L)",c:2600,v:65},{n:"Touareg (L)",c:2600,v:70},{n:"Transporter (XL)",c:3500,v:110}]
-        // Dodate su i ostale marke automatski pri inicijalizaciji...
+        "Abarth": [{n:"500",c:1600,v:40},{n:"595",c:1600,v:40}],
+        "Alfa Romeo": [{n:"147",c:1800,v:45},{n:"156",c:2000,v:50},{n:"159",c:2200,v:55},{n:"Brera",c:2200,v:55},{n:"GT",c:2000,v:50},{n:"Giulietta",c:2000,v:50},{n:"Giulia",c:2200,v:55},{n:"Stelvio",c:2600,v:65}],
+        "Audi": [
+            {n:"A1",c:1800,v:45},{n:"A2",c:1800,v:45},{n:"A3",c:2000,v:50},{n:"A4",c:2200,v:55},{n:"A5",c:2300,v:55},{n:"A6",c:2500,v:65},{n:"A7",c:2600,v:65},{n:"A8",c:2800,v:75},
+            {n:"Q1",c:2000,v:50},{n:"Q2",c:2200,v:55},{n:"Q3",c:2300,v:60},{n:"Q5",c:2500,v:65},{n:"Q7",c:3000,v:85},{n:"Q8",c:3000,v:85}
+        ],
+        "BMW": [
+            {n:"Serija 1",c:1800,v:45},{n:"Serija 2",c:2000,v:50},{n:"Serija 3",c:2200,v:55},{n:"Serija 4",c:2300,v:55},{n:"Serija 5",c:2500,v:65},{n:"Serija 7",c:2800,v:75},
+            {n:"X1",c:2200,v:55},{n:"X2",c:2300,v:55},{n:"X3",c:2500,v:65},{n:"X4",c:2500,v:65},{n:"X5",c:2600,v:70},{n:"X6",c:2800,v:75},{n:"X7",c:3200,v:90}
+        ],
+        "Citroen": [{n:"C1",c:1600,v:40},{n:"C2",c:1600,v:40},{n:"C3",c:1800,v:45},{n:"C4",c:2000,v:50},{n:"C5",c:2400,v:65},{n:"Berlingo",c:2400,v:65}],
+        "Dacia": [{n:"Sandero",c:1800,v:45},{n:"Logan",c:2000,v:50},{n:"Duster",c:2400,v:65},{n:"Jogger",c:2500,v:70}],
+        "Fiat": [{n:"500",c:1600,v:40},{n:"Panda",c:1600,v:40},{n:"Punto",c:1800,v:45},{n:"Stilo",c:2000,v:50},{n:"Bravo",c:2000,v:50},{n:"Tipo",c:2200,v:55},{n:"500L",c:2300,v:60},{n:"Ducato",c:3500,v:110}],
+        "Ford": [{n:"Ka",c:1600,v:40},{n:"Fiesta",c:1800,v:45},{n:"Focus",c:2000,v:55},{n:"Mondeo",c:2400,v:65},{n:"Kuga",c:2500,v:70},{n:"S-Max",c:2600,v:75},{n:"Ranger",c:3200,v:90}],
+        "Honda": [{n:"Jazz",c:1800,v:45},{n:"Civic",c:2100,v:55},{n:"Accord",c:2400,v:65},{n:"CR-V",c:2600,v:70}],
+        "Hyundai": [{n:"i10",c:1600,v:40},{n:"i20",c:1800,v:45},{n:"i30",c:2100,v:55},{n:"Elantra",c:2300,v:60},{n:"Tucson",c:2600,v:70},{n:"Santa Fe",c:2800,v:80}],
+        "Kia": [{n:"Picanto",c:1600,v:40},{n:"Rio",c:1800,v:45},{n:"Ceed",c:2100,v:55},{n:"Sportage",c:2600,v:70},{n:"Sorento",c:2800,v:80}],
+        "Mazda": [{n:"Mazda 2",c:1800,v:45},{n:"Mazda 3",c:2100,v:55},{n:"Mazda 6",c:2400,v:65},{n:"CX-3",c:2200,v:55},{n:"CX-5",c:2600,v:70},{n:"CX-30",c:2400,v:60}],
+        "Mercedes": [
+            {n:"A Klasa",c:1900,v:45},{n:"B Klasa",c:2100,v:50},{n:"C Klasa",c:2300,v:55},{n:"E Klasa",c:2500,v:65},{n:"S Klasa",c:3000,v:80},
+            {n:"CLA",c:2300,v:55},{n:"CLS",c:2600,v:65},{n:"GLA",c:2200,v:55},{n:"GLC",c:2600,v:65},{n:"GLE",c:2800,v:75},{n:"GLS",c:3500,v:100},{n:"G Klasa",c:3200,v:90},{n:"V Klasa",c:3500,v:110}
+        ],
+        "Nissan": [{n:"Micra",c:1700,v:45},{n:"Juke",c:2100,v:50},{n:"Qashqai",c:2500,v:65},{n:"X-Trail",c:2700,v:75},{n:"Navara",c:3200,v:90}],
+        "Opel": [{n:"Corsa",c:1800,v:45},{n:"Astra",c:2100,v:55},{n:"Insignia",c:2400,v:65},{n:"Mokka",c:2200,v:55},{n:"Zafira",c:2500,v:70}],
+        "Peugeot": [{n:"108",c:1600,v:40},{n:"206/207/208",c:1800,v:45},{n:"307/308",c:2100,v:55},{n:"407/508",c:2400,v:65},{n:"2008",c:2200,v:55},{n:"3008",c:2500,v:70},{n:"5008",c:2800,v:80}],
+        "Renault": [{n:"Twingo",c:1600,v:40},{n:"Clio",c:1800,v:45},{n:"Megane",c:2100,v:55},{n:"Laguna/Talisman",c:2400,v:65},{n:"Captur",c:2200,v:55},{n:"Kadjar",c:2500,v:70},{n:"Scenic",c:2400,v:70},{n:"Espace",c:2800,v:80}],
+        "Seat": [{n:"Ibiza",c:1800,v:45},{n:"Leon",c:2100,v:55},{n:"Arona",c:2200,v:55},{n:"Ateca",c:2500,v:70},{n:"Tarraco",c:2800,v:80}],
+        "Skoda": [{n:"Citigo",c:1600,v:40},{n:"Fabia",c:1800,v:45},{n:"Scala",c:2100,v:55},{n:"Octavia",c:2300,v:60},{n:"Superb",c:2600,v:70},{n:"Kamiq",c:2200,v:55},{n:"Karoq",c:2500,v:70},{n:"Kodiaq",c:2800,v:80}],
+        "Toyota": [{n:"Aygo",c:1600,v:40},{n:"Yaris",c:1800,v:45},{n:"Corolla",c:2200,v:55},{n:"Avensis",c:2400,v:65},{n:"CH-R",c:2400,v:60},{n:"Rav4",c:2700,v:75},{n:"Land Cruiser",c:3500,v:100}],
+        "Volkswagen": [
+            {n:"Up!",c:1600,v:40},{n:"Polo",c:1800,v:45},{n:"Golf",c:2100,v:55},{n:"Passat",c:2400,v:65},{n:"Arteon",c:2500,v:65},{n:"Scirocco",c:2100,v:50},
+            {n:"T-Cross",c:2200,v:55},{n:"T-Roc",c:2300,v:60},{n:"Tiguan",c:2600,v:70},{n:"Touareg",c:2600,v:70},{n:"Touran",c:2500,v:70},{n:"Sharan",c:2800,v:80},{n:"Caddy",c:2500,v:70},{n:"Amarok",c:3200,v:90},{n:"Transporter",c:3500,v:110}
+        ],
+        "Volvo": [{n:"V40",c:2100,v:50},{n:"S60/V60",c:2400,v:65},{n:"S90/V90",c:2700,v:75},{n:"XC40",c:2400,v:60},{n:"XC60",c:2700,v:70},{n:"XC90",c:3200,v:90}]
     };
 
     function inicijalizuj() {
@@ -120,16 +129,18 @@
     function azurirajModele() {
         const m = document.getElementById("markaSel").value;
         const modSel = document.getElementById("modelSel");
-        modSel.innerHTML = '<option value="" disabled selected>Model...</option>';
-        baza[m].sort((a,b)=>a.n.localeCompare(b.n)).forEach(mo => {
-            let o = document.createElement("option"); o.value = JSON.stringify({c: mo.c, v: mo.v}); o.text = mo.n; modSel.appendChild(o);
-        });
+        modSel.innerHTML = '<option value="" disabled selected>Izaberi model...</option>';
+        if(baza[m]) {
+            baza[m].sort((a,b)=>a.n.localeCompare(b.n)).forEach(mo => {
+                let o = document.createElement("option"); o.value = JSON.stringify({c: mo.c, v: mo.v}); o.text = mo.n; modSel.appendChild(o);
+            });
+        }
         izracunaj();
     }
 
     function izracunaj() {
         const modelData = document.getElementById("modelSel").value;
-        if(!modelData) { document.getElementById("rezultat").innerText = "0 RSD"; return; }
+        if(!modelData) { document.getElementById("rezultat").innerText = "0 RSD"; document.getElementById("vreme").innerText = "-- min"; return; }
         const data = JSON.parse(modelData);
         let s = document.getElementById("spolja").checked, u = document.getElementById("unutra").checked;
         let f = 0, v = 0;
