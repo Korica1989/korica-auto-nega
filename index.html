@@ -3,18 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KORICA Auto Nega | Kalkulator</title>
+    <title>KORICA Auto Nega | Premium Detailing</title>
     <style>
         :root {
             --gold: #d4af37;
-            --black: #0a0a0a;
-            --dark-grey: #1a1a1a;
+            --gold-light: #f1c40f;
+            --black: #050505;
+            --card-bg: rgba(26, 26, 26, 0.95);
         }
 
         body {
             background-color: var(--black);
+            background-image: radial-gradient(circle at top right, #1a1a1a, #050505);
             color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -24,101 +26,136 @@
         }
 
         .card {
-            background: var(--dark-grey);
-            padding: 30px;
-            border-radius: 15px;
-            border: 1px solid var(--gold);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.1);
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             text-align: center;
+            backdrop-filter: blur(10px);
         }
 
-        h1 { color: var(--gold); margin-bottom: 10px; font-size: 28px; letter-spacing: 2px; }
-        p { color: #888; margin-bottom: 25px; font-size: 14px; text-transform: uppercase; }
+        .logo-area {
+            margin-bottom: 30px;
+        }
 
-        .group { text-align: left; margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; color: var(--gold); font-weight: bold; font-size: 14px; }
+        h1 { 
+            color: var(--gold); 
+            margin: 0; 
+            font-size: 35px; 
+            letter-spacing: 5px; 
+            font-weight: 800;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .subtitle { 
+            color: #888; 
+            font-size: 12px; 
+            letter-spacing: 3px; 
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .group { text-align: left; margin-bottom: 25px; }
+        label { display: block; margin-bottom: 10px; color: var(--gold); font-size: 13px; font-weight: 600; text-transform: uppercase; }
 
         select {
             width: 100%;
-            padding: 12px;
-            background: #252525;
-            border: 1px solid #444;
-            color: white;
-            border-radius: 8px;
+            padding: 15px;
+            background: #111;
+            border: 1px solid #333;
+            color: #eee;
+            border-radius: 12px;
             outline: none;
-            cursor: pointer;
+            font-size: 15px;
+            transition: border 0.3s;
         }
 
+        select:focus { border-color: var(--gold); }
+
+        .price-container {
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            border: 1px dashed rgba(212, 175, 55, 0.2);
+        }
+
+        .price-label { font-size: 12px; color: #666; text-transform: uppercase; margin-bottom: 5px; }
         .price-tag {
-            font-size: 36px;
-            font-weight: bold;
+            font-size: 42px;
+            font-weight: 700;
             color: var(--gold);
-            margin: 25px 0;
-            padding: 15px;
-            border-top: 1px solid #333;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            margin: 0;
         }
 
         .order-btn {
-            background: var(--gold);
+            background: linear-gradient(135deg, var(--gold), #b8860b);
             color: black;
             border: none;
-            padding: 18px 25px;
+            padding: 20px;
             width: 100%;
-            border-radius: 8px;
-            font-weight: bold;
+            border-radius: 12px;
+            font-weight: 800;
             cursor: pointer;
             font-size: 16px;
             transition: all 0.3s ease;
             text-transform: uppercase;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
         .order-btn:hover {
-            background: #f1c40f;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(212, 175, 55, 0.2);
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
         }
 
-        .footer-note {
-            margin-top: 15px;
-            font-size: 11px;
-            color: #555;
-        }
+        .info-text { font-size: 11px; color: #555; margin-top: 20px; line-height: 1.5; }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div class="card">
-    <h1>KORICA</h1>
-    <p>Premium Auto Nega Sremčica</p>
+    <div class="logo-area">
+        <h1>KORICA</h1>
+        <div class="subtitle">Auto Nega Sremčica</div>
+    </div>
 
     <div class="group">
-        <label>Izaberite vozilo:</label>
+        <label>Kategorija vozila</label>
         <select id="auto">
-            <option value="0" disabled selected>Odaberi kategoriju...</option>
-            <option value="1800">Malo vozilo (npr. Polo, Corsa, Yaris)</option>
-            <option value="2000">Srednje vozilo (npr. Golf, Astra, Focus)</option>
-            <option value="2300">Limuzina/Karavan (npr. Passat, A6, BMW 5)</option>
-            <option value="2600">Džip/SUV (npr. Tiguan, X5, Q7)</option>
-            <option value="3200">Kombi/Lux (npr. V-Klasa, Multivan)</option>
+            <option value="0" disabled selected>Izaberi vozilo...</option>
+            <option value="1800">Malo vozilo (Polo, Corsa...)</option>
+            <option value="2000">Srednje vozilo (Golf, Astra...)</option>
+            <option value="2300">Limuzina/Karavan (Passat, BMW 5...)</option>
+            <option value="2600">Džip/SUV (X5, Tiguan...)</option>
+            <option value="3200">Kombi / Lux vozila</option>
         </select>
     </div>
 
     <div class="group">
-        <label>Izaberite paket usluga:</label>
+        <label>Izbor tretmana</label>
         <select id="tretman">
             <option value="1">Standard (Pranje + Usisavanje)</option>
-            <option value="1.5">Premium (Vax + Detaljan enterijer)</option>
+            <option value="1.5">Premium (Vax + Detalji)</option>
             <option value="2.5">Deep Clean (Dubinsko pranje)</option>
         </select>
     </div>
 
-    <div class="price-tag" id="displayCena">0 RSD</div>
+    <div class="price-container">
+        <div class="price-label">Procenjena cena</div>
+        <div class="price-tag" id="displayCena">0 RSD</div>
+    </div>
 
-    <button class="order-btn" onclick="zakazi()">REZERVIŠI TERMIN</button>
-    <div class="footer-note">Cena je informativnog karaktera i zavisi od stanja vozila.</div>
+    <button class="order-btn" onclick="zakazi()">Rezerviši tretman</button>
+    
+    <div class="info-text">
+        *Konačna cena se formira na licu mesta nakon pregleda vozila.<br>
+        Vreme rada zavisi od izabranog tretmana.
+    </div>
 </div>
 
 <script>
@@ -147,10 +184,7 @@
             return;
         }
 
-        // TVOJ PAMETNI LINK SA GOOGLE FORME
         const baseURL = "https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url";
-        
-        // entry.345073777 je za Model, entry.988818818 je za Cenu
         const finalURL = `${baseURL}&entry.345073777=${encodeURIComponent(model)}&entry.988818818=${encodeURIComponent(cena)}`;
         
         window.open(finalURL, '_blank');
