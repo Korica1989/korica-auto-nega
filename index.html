@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KORICA Auto Nega - Dimenzije</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #c5a059; --bg: #050505; --card: #111111; --text: #ffffff; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); padding: 10px; }
+        .app-shell { max-width: 500px; margin: 20px auto; background: var(--card); border-radius: 35px; padding: 30px; border: 1px solid #222; box-shadow: 0 40px 80px rgba(0,0,0,0.8); }
+        header { text-align: center; margin-bottom: 25px; }
+        h1 { font-family: 'Cinzel', serif; font-size: 2rem; color: var(--gold); margin: 0; letter-spacing: 3px; }
+        .subtitle { font-size: 0.65rem; color: #666; text-transform: uppercase; letter-spacing: 2px; }
+
+        .input-group { margin-bottom: 20px; }
+        label { display: block; font-size: 0.7rem; font-weight: 700; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; }
+        select { width: 100%; padding: 14px; background: #1a1a1a; border: 1px solid #333; color: #fff; border-radius: 12px; font-size: 0.9rem; outline: none; }
+        
+        /* NOVO: Stil za dimenzije */
+        .dim-info { background: #1a150c; border-left: 3px solid var(--gold); padding: 10px; margin-top: 10px; border-radius: 8px; font-size: 0.75rem; color: #ccc; display: none; }
+        .dim-info b { color: var(--gold); }
+
+        .service-row { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-service { flex: 1; padding: 15px; background: #1a1a1a; border: 1px solid #333; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .btn-service.active { background: #221d12; border-color: var(--gold); }
+        .total-display { background: #000; padding: 20px; border-radius: 20px; margin-top: 25px; text-align: center; border-bottom: 3px solid var(--gold); }
+        .price-val { font-size: 2.2rem; font-weight: 700; color: var(--gold); display: block; }
+        .order-btn { width: 100%; padding: 18px; background: var(--gold); color: #000; border: none; border-radius: 12px; font-weight: 700; text-transform: uppercase; margin-top: 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="app-shell">
+    <header>
+        <h1>KORICA</h1>
+        <div class="subtitle">Sinonim kvaliteta - Sremčica</div>
+    </header>
+
+    <div class="input-group">
+        <label>Marka vozila</label>
+        <select id="brand" onchange="populateModels()">
+            <option value="">Izaberi brend...</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label>Model vozila</label>
+        <select id="model" onchange="calculate()">
+            <option value="">Prvo izaberi marku</option>
+        </select>
+        <div id="dimBox" class="dim-info"></div>
+    </div>
+
+    <div class="input-group">
+        <label>Usluga</label>
+        <div class="service-row">
+            <div id="extS" class="btn-service" onclick="toggleS('ext')"><span>Spoljašnje</span></div>
+            <div id="intS" class="btn-service" onclick="toggleS('int')"><span>Enterijer</span></div>
+        </div>
+    </div>
+
+    <div class="total-display">
+        <span class="price-val" id="totalP">0 RSD</span>
+    </div>
+
+    <button class="order-btn">Rezerviši tretman</button>
+</div>
+
+<script>
+    // Baza sa koeficijentima i dimenzijama (Dužina x Visina u metrima)
+    const data = {
+        "Audi": { 
+            "A3": { f: 1.0, d: "4.3m x 1.4m" }, 
+            "A4": { f: 1.2, d: "4.7m x 1.4m" },
+            "Q5": { f: 1.5, d: "4.6m x 1.6m" }
+        },
+        "Mercedes": { 
+            "A Class": { f: 0.9, d: "4.4m x 1.4m" },
+            "B Class": { f: 1.1, d: "4.4m x 1.55m" }, // Viši od A3 i A klase
+            "C Class": { f: 1.2, d: "4.7m x 1.4m" },
+            "E Class": { f: 1.4, d: "4.9m x 1.4m" }
+        },
+        "Ford": { 
+            "Fiesta": { f: 0.9, d: "4.0m x 1.4m" },
+            "Focus": { f: 1.1, d: "4.3m x 1.4m" },
+            "S-Max": { f: 1.5, d: "4.8m x 1.6m" } // Ogroman MPV
+        }
+    };
+
+    const brandEl = document.getElementById('brand');
+    const modelEl = document.getElementById('model');
+    const dimBox = document.getElementById('dimBox');
+    let selected = { ext: false, int: false };
+
+    Object.keys(data).sort().forEach(b => {
+        brandEl.innerHTML += `<option value="${b}">${b}</option>`;
+    });
+
+    function populateModels() {
+        const b = brandEl.value;
+        modelEl.innerHTML = b ? '<option value="">Izaberi model</option>' : '<option>Izaberi marku</option>';
+        dimBox.style.display = 'none';
+        if(b) {
+            Object.keys(data[b]).sort().forEach(m => {
+                modelEl.innerHTML += `<option value="${data[b][m].f}" data-dim="${data[b][m].d}">${m}</option>`;
+            });
+        }
+        calculate();
+    }
+
+    function toggleS(type) {
+        selected[type] = !selected[type];
+        document.getElementById(type + 'S').classList.toggle('active');
+        calculate();
+    }
+
+    function calculate() {
+        const selectedOption = modelEl.options[modelEl.selectedIndex];
+        const f = parseFloat(selectedOption.value) || 0;
+        const d = selectedOption.getAttribute('data-dim');
+
+        // Prikaz dimenzija ako je model izabran
+        if(d) {
+            dimBox.innerHTML = `📍 Dimenzije modela: <b>${d}</b><br><small>Klasa težine rada: x${f.toFixed(1)}</small>`;
+            dimBox.style.display = 'block';
+        } else {
+            dimBox.style.display = 'none';
+        }
+
+        const bExt = 700; const bInt = 800; 
+        let p = 0; let count = 0;
+
+        if(selected.ext) { p += bExt * f; count++; }
+        if(selected.int) { p += bInt * f; count++; }
+        if(count === 1) { p += 100; }
+
+        document.getElementById('totalP').innerText = f > 0 && count > 0 ? Math.round(p).toLocaleString() + " RSD" : "0 RSD";
+    }
+</script>
+</body>
+</html>
