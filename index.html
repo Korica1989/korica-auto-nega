@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KORICA Auto Nega | Rezervacija</title>
+    <title>KORICA Auto Nega | Mega Baza 100</title>
     <style>
         :root { --gold: #d4af37; --black: #0a0a0a; --dark: #111; }
         body {
@@ -14,7 +14,7 @@
         }
         .card {
             background: rgba(20, 20, 20, 0.98); padding: 30px; border-radius: 25px;
-            border: 1px solid var(--gold); width: 100%; max-width: 480px; text-align: center;
+            border: 1px solid var(--gold); width: 100%; max-width: 500px; text-align: center;
             box-shadow: 0 20px 50px rgba(0,0,0,0.9);
         }
         h1 { color: var(--gold); margin: 0; letter-spacing: 5px; text-transform: uppercase; font-size: 32px; font-weight: 800; }
@@ -26,10 +26,10 @@
             border: 1px solid #333; border-radius: 12px; font-size: 16px; outline: none; cursor: pointer;
         }
         .size-info {
-            display: inline-block; margin-top: 10px; padding: 6px 15px; 
+            display: block; margin-top: 10px; padding: 8px; 
             background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold);
             color: var(--gold); border-radius: 8px; font-size: 13px; font-weight: 600;
-            display: none; width: 100%; box-sizing: border-box; text-align: center;
+            display: none; text-align: center;
         }
         .services-container {
             background: var(--dark); padding: 15px; border-radius: 12px; border: 1px solid #333;
@@ -55,12 +55,12 @@
 
 <div class="card">
     <h1>KORICA</h1>
-    <div class="subtitle">Premium Auto Nega | Sremčica</div>
+    <div class="subtitle">Maksimalna Baza Vozila | Sremčica</div>
     
     <div class="group">
         <label>1. Odaberi marku</label>
         <select id="markaSel" onchange="azurirajModele()">
-            <option value="" selected disabled>Izaberi brend...</option>
+            <option value="" selected disabled>Učitavanje baze...</option>
         </select>
     </div>
 
@@ -89,57 +89,74 @@
 </div>
 
 <script>
-    // MAKSIMALNA BAZA PODATAKA (100+ MARKI)
     const baza = {
         "Abarth": ["500|XS", "595|XS", "695|XS", "124 Spider|S"],
-        "Alfa Romeo": ["33|S", "75|M", "145|S", "146|S", "147|S", "155|M", "156|M", "159|M", "164|L", "166|L", "GT|M", "Giulia|M", "Giulietta|M", "Mito|S", "Stelvio|L", "Tonale|M"],
-        "Audi": ["80|M", "100|L", "A1|S", "A3|M", "A4|M", "A5|M", "A6|L", "A7|L", "A8|XL", "Q2|M", "Q3|M", "Q5|L", "Q7|XL", "Q8|XL", "TT|S", "R8|M", "e-tron|XL"],
-        "BMW": ["Serija 1|S", "Serija 3|M", "Serija 5|L", "Serija 7|XL", "X1|M", "X3|L", "X5|L", "X6|L", "X7|XL", "i3|S", "iX|XL", "M3|M", "M5|L"],
-        "BYD": ["Atto 3|M", "Han|L", "Seal|M", "Dolphin|S"],
-        "Bentley": ["Continental GT|L", "Bentayga|XL", "Flying Spur|XL"],
-        "Cadillac": ["Escalade|XL", "CTS|L", "XT5|L"],
-        "Chery": ["FX|M", "Tiggo 7|L", "Tiggo 8|XL"],
-        "Chevrolet": ["Aveo|S", "Spark|XS", "Cruze|M", "Captiva|L", "Camaro|M", "Corvette|M"],
-        "Citroen": ["C1|XS", "C2|S", "C3|S", "C4|M", "C5|L", "DS3|S", "DS4|M", "DS7|L", "Berlingo|L", "Jumper|XL"],
-        "Cupra": ["Leon|M", "Formentor|L", "Ateca|L", "Born|M"],
-        "Dacia": ["Sandero|S", "Logan|M", "Duster|L", "Jogger|L", "Spring|S", "Dokker|L"],
-        "Dodge": ["Challenger|L", "Charger|L", "Durango|XL", "RAM 1500|XL"],
-        "Ferrari": ["458|M", "488|M", "Purosangue|XL", "Roma|M"],
-        "Fiat": ["Fića (Novi)|XS", "Panda|XS", "Punto|S", "Stilo|M", "Bravo|M", "Tipo|M", "500L|M", "500X|M", "Doblo|L", "Ducato|XL"],
-        "Ford": ["Ka|XS", "Fiesta|S", "Focus|M", "Mondeo|L", "Kuga|L", "Puma|M", "Mustang|L", "Ranger|XL", "Transit|XL"],
-        "Honda": ["Jazz|S", "Civic|M", "Accord|L", "CR-V|L", "HR-V|M"],
-        "Hyundai": ["i10|XS", "i20|S", "i30|M", "i40|L", "Tucson|L", "Santa Fe|XL", "Kona|M", "Ioniq 5|L"],
-        "Jaguar": ["XE|M", "XF|L", "F-Pace|L", "I-Pace|L"],
-        "Jeep": ["Renegade|M", "Compass|L", "Cherokee|L", "Grand Cherokee|XL", "Wrangler|L"],
-        "Kia": ["Picanto|XS", "Rio|S", "Ceed|M", "Sportage|L", "Sorento|XL", "EV6|L", "EV9|XL"],
-        "Lada": ["Niva|S", "Vesta|M", "Granta|M", "Samara|S"],
-        "Lamborghini": ["Urus|XL", "Huracan|M", "Aventador|M"],
-        "Lancia": ["Ypsilon|S", "Delta|M", "Musa|M", "Thesis|L"],
-        "Land Rover": ["Defender|XL", "Discovery|XL", "Evoque|L", "Velar|L", "Range Rover|XL"],
-        "Lexus": ["IS|M", "RX|XL", "NX|L", "UX|M", "LS|XL"],
-        "Maserati": ["Ghibli|L", "Levante|XL", "Grecale|L"],
-        "Mazda": ["2|S", "3|M", "6|L", "CX-3|M", "CX-30|M", "CX-5|L", "CX-60|L", "MX-5|S"],
-        "Mercedes-Benz": ["190 (W201)|M", "A Klasa|S", "B Klasa|M", "C Klasa|M", "E Klasa|L", "S Klasa|XL", "CLA|M", "CLS|L", "CLK|M", "GLA|M", "GLB|L", "GLC|L", "GLE|XL", "GL|XL", "GLS|XL", "ML|XL", "G Klasa|XL", "R Klasa|XL", "SL|L", "SLK|S", "Vito|XL", "Viano|XL", "V Klasa|XL", "Sprinter|XL", "Citan|L", "W124|L"],,
-        "MG": ["ZS|M", "HS|L", "MG4|M", "MG5|M"],
-        "Mini": ["Cooper|S", "Countryman|M", "Clubman|M"],
-        "Mitsubishi": ["Colt|S", "Lancer|M", "ASX|M", "Outlander|L", "Pajero|XL", "L200|XL"],
-        "Nissan": ["Micra|S", "Juke|M", "Qashqai|L", "X-Trail|L", "Navara|XL", "Leaf|M"],
-        "Opel": ["Corsa|S", "Astra|M", "Insignia|L", "Mokka|M", "Zafira|L", "Vectra|M", "Vivaro|XL"],
-        "Peugeot": ["108|XS", "208|S", "308|M", "508|L", "2008|M", "3008|L", "5008|XL", "Partner|L", "Boxer|XL"],
-        "Porsche": ["911|M", "Panamera|L", "Macan|L", "Cayenne|XL", "Taycan|L"],
-        "Renault": ["Twingo|XS", "Clio|S", "Megane|M", "Laguna|L", "Talisman|L", "Captur|M", "Kadjar|L", "Espace|XL", "Traffic|XL", "Master|XL"],
-        "Rolls-Royce": ["Ghost|XL", "Cullinan|XL", "Phantom|XL"],
-        "Seat": ["Ibiza|S", "Leon|M", "Ateca|L", "Tarraco|XL", "Alhambra|XL"],
-        "Skoda": ["Fabia|S", "Octavia|M", "Superb|L", "Kamiq|M", "Karoq|L", "Kodiaq|XL", "Scala|M"],
-        "Smart": ["ForTwo|XS", "ForFour|S"],
-        "Subaru": ["Impreza|M", "Forester|L", "Outback|L"],
-        "Suzuki": ["Ignis|XS", "Swift|S", "Vitara|L", "S-Cross|M", "Jimny|S"],
-        "Tesla": ["Model 3|M", "Model S|L", "Model Y|L", "Model X|XL", "Cybertruck|XL"],
-        "Toyota": ["Aygo|XS", "Yaris|S", "Corolla|M", "Avensis|L", "Rav4|L", "Land Cruiser|XL", "Hilux|XL"],
-        "Volkswagen": ["Polo|S", "Golf 4/5/6/7/8|M", "Passat|L", "Arteon|L", "Tiguan|L", "Touareg|L", "Touran|L", "Caddy|L", "Transporter|XL", "Crafter|XL"],
-        "Volvo": ["V40|M", "S60|M", "S90|L", "XC40|M", "XC60|L", "XC90|XL"],
-        "Zastava": ["750 (Fića)|XS", "Yugo|XS", "101 (Stojadin)|S", "Florida|M"]
-        // Ostatak od 100 marki se automatski mapira ovde...
+        "Acura": ["NSX|S", "MDX|XL", "RDX|L"],
+        "Alfa Romeo": ["33|S", "75|M", "145|S", "146|S", "147|S", "155|M", "156|M", "159|M", "164|L", "166|L", "Brera|M", "Giulia|M", "Giulietta|M", "GT|M", "GTV|S", "Mito|S", "Spider|S", "Stelvio|L", "Tonale|M"],
+        "Alpine": ["A110|S"],
+        "Aston Martin": ["DB11|L", "DBS|L", "Vantage|S", "DBX|XL"],
+        "Audi": ["80|M", "90|M", "100|L", "A1|S", "A2|S", "A3|M", "A4|M", "A5|M", "A6|L", "A7|L", "A8|XL", "Q2|M", "Q3|M", "Q4|L", "Q5|L", "Q7|XL", "Q8|XL", "R8|M", "RS3|M", "RS4|M", "RS5|M", "RS6|L", "RSQ8|XL", "TT|S", "e-tron|XL"],
+        "Bentley": ["Bentayga|XL", "Continental GT|L", "Flying Spur|XL"],
+        "BMW": ["Serija 1|S", "Serija 2|M", "Serija 3|M", "Serija 4|M", "Serija 5|L", "Serija 6|L", "Serija 7|XL", "Serija 8|L", "X1|M", "X2|M", "X3|L", "X4|L", "X5|L", "X6|L", "X7|XL", "Z3|S", "Z4|S", "i3|S", "i4|M", "i7|XL", "iX|XL", "M2|S", "M3|M", "M4|M", "M5|L"],
+        "Bugatti": ["Chiron|M", "Veyron|M"],
+        "BYD": ["Atto 3|M", "Dolphin|S", "Han|L", "Seal|M", "Tang|XL"],
+        "Cadillac": ["CTS|L", "Escalade|XL", "SRX|L", "XT5|L"],
+        "Chery": ["FX|M", "Tiggo 4|M", "Tiggo 7|L", "Tiggo 8|XL"],
+        "Chevrolet": ["Aveo|S", "Camaro|M", "Captiva|L", "Corvette|M", "Cruze|M", "Epica|L", "Kalos|S", "Lacetti|M", "Matiz|XS", "Orlando|XL", "Spark|XS", "Tahoe|XL", "Trax|M"],
+        "Chrysler": ["300C|XL", "Crossfire|S", "Grand Voyager|XL", "PT Cruiser|M", "Sebring|L"],
+        "Citroen": ["AX|XS", "Berlingo|L", "C1|XS", "C2|S", "C3|S", "C3 Aircross|M", "C3 Picasso|M", "C4|M", "C4 Cactus|M", "C4 Picasso|L", "C5|L", "C5 Aircross|L", "C5 X|L", "C6|L", "C8|XL", "C-Elysee|M", "DS3|S", "DS4|M", "DS5|L", "DS7|L", "Evasion|XL", "Jumper|XL", "Jumpy|XL", "Nemo|S", "Saxo|S", "Xantia|M", "XM|L", "Xsara|M", "Xsara Picasso|L"],
+        "Cupra": ["Ateca|L", "Born|M", "Formentor|L", "Leon|M", "Tavascan|L"],
+        "Dacia": ["Dokker|L", "Duster|L", "Jogger|L", "Lodgy|L", "Logan|M", "Logan MCV|L", "Sandero|S", "Sandero Stepway|M", "Solenza|M", "Spring|S"],
+        "Daewoo": ["Kalos|S", "Lanos|S", "Leganza|L", "Matiz|XS", "Nubira|M", "Tacuma|L"],
+        "Daihatsu": ["Cuore|XS", "Sirion|S", "Terios|M"],
+        "Dodge": ["Avenger|L", "Caliber|M", "Challenger|L", "Charger|L", "Durango|XL", "Nitro|L", "RAM 1500|XL"],
+        "DS Automobiles": ["DS 3|S", "DS 4|M", "DS 7|L", "DS 9|L"],
+        "Ferrari": ["458|M", "488|M", "812|M", "F8|M", "Portofino|M", "Purosangue|XL", "Roma|M"],
+        "Fiat": ["126p (Peglica)|XS", "500|XS", "500L|M", "500X|M", "Barchetta|S", "Brava|M", "Bravo|M", "Cinquecento|XS", "Croma|L", "Doblo|L", "Ducato|XL", "Fiorino|S", "Grande Punto|S", "Idea|M", "Marea|L", "Multipla|L", "Panda|XS", "Punto|S", "Scudo|XL", "Sedici|M", "Seicento|XS", "Stilo|M", "Talento|XL", "Tipo|M", "Ulysse|XL", "Uno|XS"],
+        "Ford": ["B-Max|M", "C-Max|L", "EcoSport|M", "Edge|L", "Explorer|XL", "Fiesta|S", "Focus|M", "Fusion|M", "Galaxy|XL", "Ka|XS", "Kuga|L", "Mondeo|L", "Mustang|L", "Mustang Mach-E|L", "Probe|M", "Puma|M", "Ranger|XL", "S-Max|L", "Transit|XL", "Transit Connect|L"],
+        "Geely": ["Atlas Pro|L", "Coolray|M", "Starray|L"],
+        "GMC": ["Sierra|XL", "Yukon|XL"],
+        "Great Wall": ["Hover|L", "Steed|XL"],
+        "Honda": ["Accord|L", "Civic|M", "CR-V|L", "CR-Z|S", "FR-V|L", "HR-V|M", "Insight|M", "Jazz|S", "Legend|L", "NSX|S", "Prelude|M", "S2000|S"],
+        "Hyundai": ["Accent|M", "Atos|XS", "Bayon|M", "Coupe|M", "Elantra|M", "Getz|S", "H1|XL", "i10|XS", "i20|S", "i30|M", "i40|L", "Ioniq|L", "Ioniq 5|L", "Ioniq 6|L", "ix20|M", "ix35|L", "Kona|M", "Lantra|M", "Matrix|M", "Santa Fe|XL", "Sonata|L", "Terracan|XL", "Trajet|XL", "Tucson|L"],
+        "Infiniti": ["G37|L", "Q30|M", "Q50|L", "QX30|M", "QX70|XL"],
+        "Isuzu": ["D-Max|XL", "Trooper|XL"],
+        "Iveco": ["Daily|XL"],
+        "Jaguar": ["E-Pace|L", "F-Pace|L", "F-Type|S", "I-Pace|L", "S-Type|L", "XE|M", "XF|L", "XJ|XL", "X-Type|L"],
+        "Jeep": ["Avenger|M", "Cherokee|L", "Compass|L", "Grand Cherokee|XL", "Liberty|L", "Patriot|L", "Renegade|M", "Wrangler|L"],
+        "Kia": ["Carens|L", "Carnival|XL", "Ceed|M", "Cerato|M", "EV6|L", "EV9|XL", "Niro|M", "Optima|L", "Picanto|XS", "Proceed|M", "Rio|S", "Sephia|M", "Shuma|M", "Sorento|XL", "Soul|M", "Sportage|L", "Stinger|L", "Stonic|M", "Venga|M", "XCeed|M"],
+        "Lada": ["Granta|M", "Kalina|S", "Niva|S", "Niva Travel|L", "Samara|S", "Vesta|M"],
+        "Lamborghini": ["Aventador|M", "Huracan|M", "Urus|XL"],
+        "Lancia": ["Delta|M", "Kappa|L", "Lybra|M", "Musa|M", "Phedra|XL", "Thema|L", "Thesis|L", "Voyager|XL", "Ypsilon|S"],
+        "Land Rover": ["Defender|XL", "Discovery|XL", "Discovery Sport|L", "Freelander|L", "Range Rover|XL", "Range Rover Evoque|L", "Range Rover Sport|XL", "Range Rover Velar|L"],
+        "Lexus": ["CT|M", "ES|L", "GS|L", "IS|M", "LS|XL", "NX|L", "RX|XL", "UX|M"],
+        "Lotus": ["Emira|M", "Evora|M"],
+        "Maserati": ["Ghibli|L", "Grecale|L", "Levante|XL", "Quattroporte|XL"],
+        "Mazda": ["2|S", "3|M", "5|L", "6|L", "121|S", "323|M", "626|L", "CX-3|M", "CX-30|M", "CX-5|L", "CX-7|L", "CX-60|L", "CX-80|XL", "Demio|S", "MPV|XL", "MX-3|S", "MX-5|S", "MX-30|M", "Premacy|L", "RX-7|M", "RX-8|M", "Xedos|L"],
+        "McLaren": ["570S|M", "720S|M", "Artura|M"],
+        "Mercedes-Benz": ["190 (W201)|M", "A Klasa|S", "B Klasa|M", "C Klasa|M", "CLA|M", "CLC|M", "CLK|M", "CLS|L", "E Klasa|L", "EQA|M", "EQB|L", "EQC|L", "EQE|L", "EQS|XL", "G Klasa|XL", "GL|XL", "GLA|M", "GLB|L", "GLC|L", "GLE|XL", "GLS|XL", "ML|XL", "R Klasa|XL", "S Klasa|XL", "SL|L", "SLK|S", "Sprinter|XL", "V Klasa|XL", "Viano|XL", "Vito|XL", "W124|L", "X Klasa|XL"],
+        "MG": ["MG3|S", "MG4|M", "MG5|M", "ZS|M", "HS|L"],
+        "Mini": ["Clubman|M", "Cooper|S", "Countryman|M", "Coupe|S", "One|S", "Paceman|M"],
+        "Mitsubishi": ["ASX|M", "Carisma|M", "Colt|S", "Eclipse Cross|L", "L200|XL", "Lancer|M", "Outlander|L", "Pajero|XL", "Pajero Pinin|M", "Space Star|S"],
+        "Nissan": ["350Z|S", "370Z|S", "Almera|M", "Almera Tino|L", "Ariya|L", "Juke|M", "Leaf|M", "Maxima|L", "Micra|S", "Murano|XL", "Navara|XL", "Note|S", "Pathfinder|XL", "Patrol|XL", "Primera|L", "Pulsar|M", "Qashqai|L", "Serena|XL", "Terrano|XL", "Tiida|M", "X-Trail|L"],
+        "Opel": ["Adam|XS", "Agila|XS", "Antara|L", "Ascona|M", "Astra (F,G,H,J,K,L)|M", "Calibra|M", "Cascada|L", "Combo|L", "Corsa (A,B,C,D,E,F)|S", "Crossland|M", "Frontera|L", "Grandland|L", "Insignia|L", "Kadett|M", "Meriva|M", "Mokka|M", "Monterey|XL", "Omega|L", "Signum|L", "Sintra|XL", "Tigra|S", "Vectra (A,B,C)|M", "Vivaro|XL", "Zafira|L"],
+        "Peugeot": ["106|XS", "107|XS", "108|XS", "205|S", "206|S", "207|S", "208|S", "301|M", "306|M", "307|M", "308|M", "405|M", "406|M", "407|L", "408|L", "508|L", "605|L", "607|L", "806|XL", "807|XL", "1007|S", "2008|M", "3008|L", "4007|L", "4008|L", "5008|XL", "Bipper|S", "Boxer|XL", "Expert|XL", "Partner|L", "RCZ|S", "Rifter|L"],
+        "Porsche": ["718 Boxster|S", "718 Cayman|S", "911|M", "Cayenne|XL", "Macan|L", "Panamera|L", "Taycan|L"],
+        "Renault": ["4 (Četvorka)|S", "5 (Petica)|S", "Arkana (Conquest)|L", "Austral|L", "Captur|M", "Clio|S", "Espace|XL", "Express|L", "Fluence|L", "Grand Scenic|L", "Kadjar|L", "Kangoo|L", "Koleos|L", "Laguna|L", "Master|XL", "Megane|M", "Modus|S", "Rafale|L", "Safrane|L", "Scenic|L", "Talisman|L", "Traffic|XL", "Twingo|XS", "Vel Satis|L", "Zoe|S"],
+        "Rolls-Royce": ["Cullinan|XL", "Ghost|XL", "Phantom|XL"],
+        "Rover": ["25|S", "45|M", "75|L", "200|S", "400|M", "600|L"],
+        "Saab": ["900|M", "9-3|M", "9-5|L"],
+        "Seat": ["Alhambra|XL", "Altea|L", "Arona|M", "Arosa|XS", "Ateca|L", "Cordoba|S", "Exeo|L", "Ibiza|S", "Leon|M", "Marbella|XS", "Mii|XS", "Tarraco|XL", "Toledo|M"],
+        "Skoda": ["Citigo|XS", "Enyaq|L", "Fabia|S", "Favorit|S", "Felicia|S", "Kamiq|M", "Karoq|L", "Kodiaq|XL", "Octavia|M", "Praktik|L", "Rapid|M", "Roomster|L", "Scala|M", "Superb|L", "Yeti|L"],
+        "Smart": ["ForTwo|XS", "ForFour|S", "Smart #1|M"],
+        "SsangYong": ["Korando|L", "Musso|XL", "Rexton|XL", "Tivoli|M"],
+        "Subaru": ["Forester|L", "Impreza|M", "Justy|S", "Legacy|L", "Outback|L", "XV|M"],
+        "Suzuki": ["Across|L", "Alto|XS", "Baleno|S", "Grand Vitara|L", "Ignis|XS", "Jimny|S", "Liana|M", "Samurai|S", "S-Cross|M", "Splash|S", "Swace|M", "Swift|S", "SX4|M", "Vitara|L", "Wagon R+|S"],
+        "Tesla": ["Model 3|M", "Model S|L", "Model X|XL", "Model Y|L", "Cybertruck|XL"],
+        "Toyota": ["Aurion|L", "Auris|M", "Avensis|L", "Aygo|XS", "Aygo X|S", "bZ4X|L", "Camry|L", "C-HR|M", "Corolla|M", "Corolla Cross|L", "GT86|S", "Hilux|XL", "IQ|XS", "Land Cruiser|XL", "MR2|S", "Prius|M", "Proace|XL", "Proace City|L", "Rav4|L", "Supra|M", "Verso|L", "Yaris|S", "Yaris Cross|M"],
+        "Volkswagen": ["Amarok|XL", "Arteon|L", "Beetle (Buba)|M", "Bora|M", "Caddy|L", "Corrado|M", "Crafter|XL", "Eos|M", "Fox|S", "Golf 1/2/3|M", "Golf 4/5/6|M", "Golf 7/8|M", "Golf Plus/Sportsvan|L", "ID.3|M", "ID.4|L", "ID.5|L", "ID.Buzz|XL", "Jetta|M", "Lupo|XS", "Multivan|XL", "Passat (svi)|L", "Passat CC|L", "Phaeton|XL", "Polo|S", "Scirocco|M", "Sharan|XL", "T-Cross|M", "Tiguan|L", "Tiguan Allspace|XL", "Touareg|XL", "Touran|L", "Transporter T4/T5/T6|XL", "T-Roc|M", "Up!|XS"],
+        "Volvo": ["C30|M", "C70|M", "EX30|M", "S40|M", "S60|M", "S80|L", "S90|L", "V40|M", "V50|M", "V60|L", "V70|L", "V90|L", "XC40|M", "XC60|L", "XC70|L", "XC90|XL"],
+        "Zastava": ["750 (Fića)|XS", "101 (Stojadin)|S", "128|S", "Florida|M", "Skala 55|S", "Yugo|XS", "Zastava 10|S"]
     };
 
     const cene = { "XS": 1600, "S": 1800, "M": 2200, "L": 2600, "XL": 3200 };
@@ -148,6 +165,7 @@
 
     function inicijalizuj() {
         const mSel = document.getElementById("markaSel");
+        mSel.innerHTML = '<option value="" selected disabled>Izaberi brend...</option>';
         Object.keys(baza).sort().forEach(m => {
             let o = document.createElement("option"); o.value = m; o.text = m; mSel.appendChild(o);
         });
@@ -199,13 +217,10 @@
         if(!moRaw) { alert("Molimo odaberite vozilo!"); return; }
         const [mo, kat] = moRaw.split('|');
         const cena = document.getElementById("rezultat").innerText;
-        const info = opisi[kat];
-        
-        window.open(`https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url&entry.345073777=${encodeURIComponent(m + " " + mo + " (" + info + ")")}&entry.988818818=${encodeURIComponent(cena)}`, '_blank');
+        window.open(`https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url&entry.345073777=${encodeURIComponent(m + " " + mo + " (" + opisi[kat] + ")")}&entry.988818818=${encodeURIComponent(cena)}`, '_blank');
     }
 
-    inicijalizuj();
+    window.onload = inicijalizuj;
 </script>
 </body>
 </html>
-
