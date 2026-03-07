@@ -6,47 +6,177 @@
     <title>KORICA | Auto nega</title>
     <style>
         :root { --gold: #d4af37; --black: #000; --dark: #111; }
-        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: var(--black); color: white; display: flex; justify-content: center; padding: 20px; margin: 0; }
+        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: var(--black); 
+            color: white; 
+            display: flex; 
+            justify-content: center; 
+            padding: 20px; 
+            margin: 0; 
+            min-height: 100vh;
+        }
+
         .card { width: 100%; max-width: 450px; }
-        .header { margin-bottom: 30px; border-left: 4px solid var(--gold); padding-left: 20px; }
-        h1 { color: var(--gold); margin: 0; letter-spacing: 10px; text-transform: uppercase; font-size: 38px; font-weight: 900; }
-        .tagline { color: #fff; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; display: block; margin-top: 5px; }
-        .synonym { color: #fff; font-size: 12px; text-transform: uppercase; letter-spacing: 3px; display: block; margin-top: 2px; }
         
-        .group { margin-bottom: 20px; }
-        label { display: block; color: #666; font-size: 10px; text-transform: uppercase; margin-bottom: 8px; }
-        select { width: 100%; padding: 15px; background: #000; color: white; border: 1px solid #333; border-radius: 0; font-size: 14px; outline: none; appearance: none; }
+        .header { 
+            margin-bottom: 30px; 
+            border-left: 4px solid var(--gold); 
+            padding-left: 20px; 
+        }
         
-        /* Skriveni elementi do selekcije */
-        #main-ui { display: none; }
+        h1 { 
+            color: var(--gold); 
+            margin: 0; 
+            letter-spacing: 10px; 
+            text-transform: uppercase; 
+            font-size: 38px; 
+            font-weight: 900; 
+        }
+        
+        .tagline { 
+            color: #fff; 
+            font-size: 16px; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            display: block; 
+            margin-top: 5px; 
+        }
+        
+        .synonym { 
+            color: #fff; 
+            font-size: 12px; 
+            text-transform: uppercase; 
+            letter-spacing: 3px; 
+            display: block; 
+            margin-top: 2px; 
+            opacity: 0.8;
+        }
 
-        .tech-data { margin: 20px 0; padding: 15px; border-top: 1px solid #222; border-bottom: 1px solid #222; }
-        .data-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; font-family: monospace; }
-        .data-label { color: #444; text-transform: uppercase; }
-        .data-val { color: var(--gold); }
+        .group { margin-bottom: 25px; }
+        
+        label { 
+            display: block; 
+            color: #666; 
+            font-size: 10px; 
+            text-transform: uppercase; 
+            margin-bottom: 10px; 
+            letter-spacing: 1px;
+        }
+        
+        select { 
+            width: 100%; 
+            padding: 16px; 
+            background: #000; 
+            color: white; 
+            border: 1px solid #333; 
+            border-radius: 0; 
+            font-size: 15px; 
+            outline: none; 
+            appearance: none;
+            cursor: pointer;
+        }
+        
+        select:focus { border-color: var(--gold); }
 
-        .services { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 10px; }
-        .opt { background: #000; border: 1px solid #222; padding: 15px; text-align: center; cursor: pointer; font-size: 12px; color: #444; transition: 0.3s; }
-        .opt.active { border-color: var(--gold); color: white; }
+        /* Glavni UI koji se otkriva */
+        #main-ui { display: none; transition: 0.5s opacity; }
 
-        /* Napomena za pragove */
+        .tech-data { 
+            margin: 25px 0; 
+            padding: 18px; 
+            border-top: 1px solid #222; 
+            border-bottom: 1px solid #222; 
+            background: rgba(255,255,255,0.02);
+        }
+        
+        .data-line { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 10px; 
+            font-size: 13px; 
+            font-family: monospace; 
+        }
+        
+        .data-label { color: #555; text-transform: uppercase; }
+        .data-val { color: var(--gold); font-weight: bold; }
+
+        .services { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 8px; 
+            margin-top: 10px; 
+        }
+        
+        .opt { 
+            background: #000; 
+            border: 1px solid #222; 
+            padding: 18px; 
+            text-align: center; 
+            cursor: pointer; 
+            font-size: 12px; 
+            color: #555; 
+            font-weight: bold;
+            transition: 0.3s; 
+            letter-spacing: 1px;
+        }
+        
+        .opt.active { 
+            border-color: var(--gold); 
+            color: white; 
+            background: #111;
+        }
+
         .notice { 
             background: rgba(212, 175, 55, 0.05); 
             border: 1px solid rgba(212, 175, 55, 0.2); 
-            padding: 12px; 
-            margin-top: 15px; 
+            padding: 15px; 
+            margin-top: 20px; 
             font-size: 11px; 
             color: #ccc; 
             display: none; 
-            line-height: 1.4;
+            line-height: 1.5;
+            text-align: left;
         }
 
-        .price-panel { margin-top: 30px; text-align: right; }
-        .price-label { font-size: 10px; color: #444; text-transform: uppercase; }
-        .price-val { display: block; font-size: 40px; color: var(--gold); font-weight: 900; }
+        .price-panel { 
+            margin-top: 40px; 
+            text-align: right; 
+            display: none;
+        }
         
-        .btn { background: var(--gold); color: black; border: none; padding: 20px; width: 100%; margin-top: 25px; cursor: pointer; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; display: none; }
+        .price-label { 
+            font-size: 10px; 
+            color: #666; 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+        }
+        
+        .price-val { 
+            display: block; 
+            font-size: 45px; 
+            color: var(--gold); 
+            font-weight: 900; 
+            line-height: 1;
+            margin-top: 5px;
+        }
+        
+        .btn { 
+            background: var(--gold); 
+            color: black; 
+            border: none; 
+            padding: 22px; 
+            width: 100%; 
+            margin-top: 30px; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            font-weight: 900; 
+            letter-spacing: 2px; 
+            display: none;
+        }
+        
+        .btn:active { opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -86,11 +216,11 @@
                 <div class="opt" id="btn-u" onclick="toggle('u')">UNUTRAŠNJOST</div>
             </div>
             <div id="pragovi-notice" class="notice">
-                ⚠️ Napomena: Cena pranja je korigovana za 100 RSD zbog detaljnog pranja pragova i posebnog pristupa detaljima školjke.
+                ⚠️ Napomena: Cena je korigovana za 100 RSD radi osiguranja standarda čistoće pragova i detalja školjke koji se tretiraju i pri parcijalnom održavanju.
             </div>
         </div>
 
-        <div id="price-panel" class="price-panel" style="display: none;">
+        <div id="price-panel" class="price-panel">
             <span class="price-label">Cena održavanja</span>
             <span class="price-val" id="total">0 RSD</span>
         </div>
@@ -100,11 +230,13 @@
 </div>
 
 <script>
+// Baza: Model|CenaSpolja|CenaUnutra|Dužina|Širina|Vreme
 const db = {
     "Volkswagen": [
         "Polo (2017-2024)|850|750|405|175|55",
         "Golf 7 (2012-2020)|900|800|425|179|65",
         "Passat B8 (2014-2023)|1000|900|476|183|85",
+        "Passat Variant B8 (Karavan)|1050|950|477|183|100",
         "Touareg (2018-2024)|1200|1100|487|198|130"
     ],
     "BMW": [
@@ -118,6 +250,12 @@ const db = {
         "A4 B9 (2015-2024)|1000|900|472|184|85",
         "A6 C8 (2018-2024)|1050|950|493|188|110",
         "Q7 4M (2015-2024)|1300|1200|506|197|145"
+    ],
+    "Skoda": [
+        "Fabia (2014-2021)|850|750|399|173|55",
+        "Octavia A7 (2013-2020)|1000|900|466|181|85",
+        "Superb B8 (2015-2024)|1050|950|486|186|110",
+        "Kodiaq (2016-2024)|1200|1100|469|188|125"
     ]
 };
 
@@ -138,46 +276,52 @@ function updateModels() {
 
 function showUI() {
     document.getElementById("main-ui").style.display = "block";
-    resetSelection();
-    calculate();
-}
-
-function resetSelection() {
     activeS = false;
     activeU = false;
-    document.getElementById('btn-s').className = 'opt';
-    document.getElementById('btn-u').className = 'opt';
+    updateButtons();
+    calculate();
 }
 
 function toggle(type) {
     if(type === 's') activeS = !activeS; else activeU = !activeU;
+    updateButtons();
+    calculate();
+}
+
+function updateButtons() {
     document.getElementById('btn-s').className = activeS ? 'opt active' : 'opt';
     document.getElementById('btn-u').className = activeU ? 'opt active' : 'opt';
-    calculate();
 }
 
 function calculate() {
     const m = document.getElementById("marka").value;
     const idx = document.getElementById("model").value;
-    if (idx === "" || (!activeS && !activeU)) {
+    
+    if (idx === "") return;
+
+    const [name, pS, pU, len, wid, time] = db[m][idx].split('|');
+
+    // Tehnički prikaz
+    document.getElementById("len").innerText = len + " cm";
+    document.getElementById("wid").innerText = wid + " cm";
+    
+    if (!activeS && !activeU) {
+        document.getElementById("time").innerText = "-- min";
         document.getElementById("price-panel").style.display = "none";
         document.getElementById("booking-btn").style.display = "none";
         document.getElementById("pragovi-notice").style.display = "none";
         return;
     }
 
-    const [name, pS, pU, len, wid, time] = db[m][idx].split('|');
-
-    document.getElementById("len").innerText = len + " cm";
-    document.getElementById("wid").innerText = wid + " cm";
     document.getElementById("time").innerText = Math.round((activeS ? time*0.6 : 0) + (activeU ? time*0.4 : 0)) + " min";
 
     let total = 0;
     if(activeS) total += parseInt(pS);
     if(activeU) total += parseInt(pU);
     
-    // Provera za doplatu i obaveštenje
+    // Logika za pragove: Prikazuje se ako je odabrana SAMO spoljašnjost ili SAMO unutrašnjost
     const isSingle = (activeS && !activeU) || (!activeS && activeU);
+    
     if(isSingle) {
         total += 100;
         document.getElementById("pragovi-notice").style.display = "block";
