@@ -3,94 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>KORICA | Precision Auto Care</title>
+    <title>KORICA | Auto nega</title>
     <style>
-        :root { --gold: #d4af37; --black: #0a0a0a; --dark: #151515; --accent: #00ffcc; }
-        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        :root { --gold: #d4af37; --black: #0a0a0a; --dark: #111; }
+        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--black); color: white; display: flex; justify-content: center; padding: 15px; margin: 0; min-height: 100vh; }
-        .card { background: var(--dark); padding: 25px; border-radius: 30px; border: 1px solid var(--gold); width: 100%; max-width: 500px; position: relative; }
+        .card { background: var(--dark); padding: 30px; border-radius: 5px; border-left: 3px solid var(--gold); width: 100%; max-width: 500px; }
         
-        /* Fiksni Info Panel - Ono što si tražio da bude stalno na ekranu */
-        .tech-info { 
-            background: rgba(0, 0, 0, 0.5); 
-            border: 1px dashed var(--gold); 
-            padding: 15px; 
-            border-radius: 15px; 
-            margin-bottom: 20px; 
-            font-size: 12px; 
-            text-align: left;
-        }
-        .tech-line { display: flex; justify-content: space-between; margin-bottom: 5px; color: #888; }
-        .tech-val { color: var(--accent); font-weight: bold; }
+        .header { margin-bottom: 40px; }
+        h1 { color: var(--gold); margin: 0; letter-spacing: 8px; text-transform: uppercase; font-size: 35px; font-weight: 900; line-height: 1; }
+        .tagline { color: #fff; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; display: block; margin-top: 5px; }
+        .synonym { color: #555; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
 
-        h1 { color: var(--gold); margin: 0; letter-spacing: 5px; text-transform: uppercase; font-size: 28px; text-align: center; }
-        .subtitle { color: #888; font-size: 10px; letter-spacing: 3px; text-align: center; margin-bottom: 20px; display: block; }
+        .tech-monitor { background: #000; padding: 20px; border: 1px solid #222; margin-bottom: 25px; }
+        .tech-header { font-size: 10px; color: var(--gold); letter-spacing: 2px; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 5px; }
+        .data-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; font-family: monospace; }
+        .data-label { color: #666; }
+        .data-value { color: #eee; }
 
-        select { width: 100%; padding: 15px; background: #000; color: white; border: 1px solid #333; border-radius: 12px; margin-bottom: 15px; outline: none; }
-        .services { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
-        .service-item { background: #000; padding: 15px; border-radius: 12px; border: 1px solid #333; text-align: center; cursor: pointer; }
-        .service-item input { display: none; }
-        .service-item.active { border-color: var(--gold); background: rgba(212, 175, 55, 0.1); }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; color: #444; font-size: 10px; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
+        select { width: 100%; padding: 12px; background: #000; color: white; border: 1px solid #333; border-radius: 0; font-size: 14px; outline: none; appearance: none; }
 
-        .price-display { margin-top: 20px; padding: 20px; background: #000; border-radius: 20px; text-align: center; border: 1px solid var(--gold); }
-        .total-price { font-size: 42px; font-weight: 900; color: var(--gold); display: block; }
-        .btn { background: var(--gold); color: black; border: none; padding: 20px; width: 100%; border-radius: 15px; font-weight: 900; margin-top: 20px; cursor: pointer; text-transform: uppercase; }
+        .service-select { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 10px; }
+        .opt { background: #000; border: 1px solid #222; padding: 15px; text-align: center; cursor: pointer; font-size: 12px; color: #555; transition: 0.2s; }
+        .opt.selected { border-color: var(--gold); color: white; background: #111; }
+
+        .calculation-panel { margin-top: 30px; border-top: 1px solid #222; padding-top: 20px; text-align: right; }
+        .label-price { font-size: 10px; color: #555; letter-spacing: 1px; }
+        .final-val { display: block; font-size: 38px; color: var(--gold); font-weight: 900; line-height: 1; }
+
+        .btn-send { background: none; border: 1px solid var(--gold); color: var(--gold); padding: 18px; width: 100%; margin-top: 30px; cursor: pointer; text-transform: uppercase; font-weight: bold; letter-spacing: 2px; transition: 0.3s; }
+        .btn-send:hover { background: var(--gold); color: black; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h1>KORICA</h1>
-    <span class="subtitle">Sistem preciznog održavanja</span>
-
-    <div class="tech-info" id="techPanel">
-        <div class="tech-line">Analiza površine školjke: <span class="tech-val" id="povrsina">0 m²</span></div>
-        <div class="tech-line">Složenost enterijera: <span class="tech-val" id="slozenost">0%</span></div>
-        <div class="tech-line">Utrošak preparata: <span class="tech-val" id="utrosak">0.00 L</span></div>
-        <div class="tech-line">Vreme tretmana: <span class="tech-val" id="vreme">0 min</span></div>
+    <div class="header">
+        <h1>KORICA</h1>
+        <span class="tagline">Auto nega</span>
+        <span class="synonym">Sinonim kvaliteta</span>
     </div>
 
-    <label style="font-size: 11px; color: var(--gold);">MARKA VOZILA</label>
-    <select id="marka" onchange="updateModels()"></select>
-
-    <label style="font-size: 11px; color: var(--gold);">MODEL I GODIŠTE</label>
-    <select id="model" onchange="calculate()"></select>
-
-    <div class="services">
-        <div class="service-item active" id="btnS" onclick="toggleS('spolja')">SPOLJAŠNJOST</div>
-        <div class="service-item active" id="btnU" onclick="toggleS('unutra')">UNUTRAŠNJOST</div>
+    <div class="tech-monitor" id="monitor">
+        <div class="tech-header">TEHNIČKE INFORMACIJE VOZILA</div>
+        <div class="data-row"><span class="data-label">Spoljašnja površina:</span> <span class="data-value" id="val-m2">-- m²</span></div>
+        <div class="data-row"><span class="data-label">Koeficijent enterijera:</span> <span class="data-value" id="val-int">-- %</span></div>
+        <div class="data-row"><span class="data-label">Potrošnja preparata:</span> <span class="data-value" id="val-cons">-- L</span></div>
+        <div class="data-row"><span class="data-label">Vremenski normativ:</span> <span class="data-value" id="val-time">-- min</span></div>
     </div>
 
-    <div class="price-display">
-        <span style="font-size: 10px; color: #888; letter-spacing: 2px;">PRECIZNA CENA ODRŽAVANJA</span>
-        <span class="total-price" id="finalnaCena">0 RSD</span>
+    <div class="input-group">
+        <label>Marka vozila</label>
+        <select id="marka" onchange="updateModels()"></select>
     </div>
 
-    <button class="btn" onclick="sendWA()">Rezerviši termin</button>
+    <div class="input-group">
+        <label>Model i godište</label>
+        <select id="model" onchange="calculate()"></select>
+    </div>
+
+    <label>Konfiguracija tretmana</label>
+    <div class="service-select">
+        <div class="opt selected" id="opt-s" onclick="toggle('s')">SPOLJAŠNJOST</div>
+        <div class="opt selected" id="opt-u" onclick="toggle('u')">UNUTRAŠNJOST</div>
+    </div>
+
+    <div class="calculation-panel">
+        <span class="label-price">OBRAČUNATA CENA ODRŽAVANJA</span>
+        <span class="final-val" id="final-price">0 RSD</span>
+    </div>
+
+    <button class="btn-send" onclick="sendWA()">Rezerviši termin</button>
 </div>
 
 <script>
-// Dodao sam koeficijente koji simuliraju tvoj "skener" vozila
-const data = {
+const db = {
     "Volkswagen": [
-        "Golf 7 (2012-2020)|1000|900|12.5|60|65", // Model|C.Spolja|C.Unutra|Površina m2|Složenost %|Vreme min
-        "Passat B8 (2014-2023)|1100|1000|14.2|75|85",
-        "Passat B8 Variant (Karavan)|1200|1100|16.5|80|100",
-        "Touareg (2018-2024)|1400|1300|22.8|95|140"
+        "Golf 7 (2012-2020)|1000|900|12.8|65|70",
+        "Passat B8 (2014-2023)|1100|1000|14.5|75|90",
+        "Passat Variant B8 (Karavan)|1200|1100|16.2|80|110",
+        "Touareg (2018-2024)|1400|1300|22.5|95|140"
     ],
     "BMW": [
-        "Serija 3 G20 (2019-2024)|1100|1000|13.8|70|85",
-        "Serija 5 G30 (2017-2023)|1200|1100|15.5|85|110",
-        "X5 G05 (2018-2024)|1400|1300|21.5|95|135"
+        "Serija 3 G20 (2019-2024)|1100|1000|13.8|70|90",
+        "Serija 5 G30 (2017-2023)|1200|1100|15.4|85|110",
+        "X5 G05 (2018-2024)|1400|1300|21.8|95|145"
+    ],
+    "Audi": [
+        "A4 B9 (2015-2024)|1100|1000|14.1|75|90",
+        "A6 C8 (2018-2024)|1200|1100|15.8|85|115",
+        "Q7 4M (2015-2024)|1400|1300|22.2|95|150"
     ]
 };
 
-let spoljaActive = true;
-let unutraActive = true;
+let activeS = true;
+let activeU = true;
 
 function init() {
     const mSel = document.getElementById("marka");
-    Object.keys(data).sort().forEach(m => mSel.options.add(new Option(m, m)));
+    Object.keys(db).sort().forEach(m => mSel.options.add(new Option(m, m)));
     updateModels();
 }
 
@@ -98,46 +111,41 @@ function updateModels() {
     const m = document.getElementById("marka").value;
     const modSel = document.getElementById("model");
     modSel.innerHTML = "";
-    data[m].forEach((item, index) => modSel.options.add(new Option(item.split('|')[0], index)));
+    db[m].forEach((item, index) => modSel.options.add(new Option(item.split('|')[0], index)));
     calculate();
 }
 
-function toggleS(tip) {
-    if(tip === 'spolja') {
-        spoljaActive = !spoljaActive;
-        document.getElementById('btnS').classList.toggle('active');
-    } else {
-        unutraActive = !unutraActive;
-        document.getElementById('btnU').classList.toggle('active');
-    }
+function toggle(type) {
+    if(type === 's') activeS = !activeS; else activeU = !activeU;
+    document.getElementById('opt-s').className = activeS ? 'opt selected' : 'opt';
+    document.getElementById('opt-u').className = activeU ? 'opt selected' : 'opt';
     calculate();
 }
 
 function calculate() {
     const m = document.getElementById("marka").value;
     const idx = document.getElementById("model").value;
-    const [ime, cS, cU, m2, complex, min] = data[m][idx].split('|');
+    const [name, pS, pU, area, complex, time] = db[m][idx].split('|');
 
     let total = 0;
-    if(spoljaActive) total += parseInt(cS);
-    if(unutraActive) total += parseInt(cU);
-    if((spoljaActive && !unutraActive) || (!spoljaActive && unutraActive)) total += 100;
+    if(activeS) total += parseInt(pS);
+    if(activeU) total += parseInt(pU);
+    if((activeS && !activeU) || (!activeS && activeU)) total += 100;
 
-    // Ažuriranje tehničkog panela (Ono što klijent vidi non-stop)
-    document.getElementById("povrsina").innerText = spoljaActive ? m2 + " m²" : "0 m²";
-    document.getElementById("slozenost").innerText = unutraActive ? complex + "%" : "0%";
-    document.getElementById("utrosak").innerText = ((spoljaActive ? (m2 * 0.05) : 0) + (unutraActive ? 0.2 : 0)).toFixed(2) + " L";
-    document.getElementById("vreme").innerText = ((spoljaActive ? (min*0.6) : 0) + (unutraActive ? (min*0.4) : 0)).toFixed(0) + " min";
+    // Precizna tehnička kalkulacija
+    document.getElementById("val-m2").innerText = activeS ? area + " m²" : "0.0 m²";
+    document.getElementById("val-int").innerText = activeU ? complex + " %" : "0 %";
+    document.getElementById("val-cons").innerText = ((activeS ? (area * 0.045) : 0) + (activeU ? 0.25 : 0)).toFixed(2) + " L";
+    document.getElementById("val-time").innerText = ((activeS ? (time * 0.6) : 0) + (activeU ? (time * 0.4) : 0)).toFixed(0) + " min";
     
-    document.getElementById("finalnaCena").innerText = total.toLocaleString() + " RSD";
+    document.getElementById("final-price").innerText = total.toLocaleString() + " RSD";
 }
 
 function sendWA() {
-    const cena = document.getElementById("finalnaCena").innerText;
     const m = document.getElementById("marka").value;
     const mod = document.getElementById("model").options[document.getElementById("model").selectedIndex].text;
-    const msg = `KORICA - Upit za termin: ${m} ${mod}. Precizna cena: ${cena}.`;
-    window.open(`https://wa.me/38164XXXXXXX?text=${encodeURIComponent(msg)}`);
+    const price = document.getElementById("final-price").innerText;
+    window.open(`https://wa.me/38164XXXXXXX?text=KORICA - Rezervacija: ${m} ${mod}. Cena: ${price}.`);
 }
 
 window.onload = init;
