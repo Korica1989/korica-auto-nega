@@ -16,6 +16,10 @@
         .group { margin-bottom: 20px; }
         label { display: block; color: #666; font-size: 10px; text-transform: uppercase; margin-bottom: 8px; }
         select { width: 100%; padding: 15px; background: #000; color: white; border: 1px solid #333; border-radius: 0; font-size: 14px; outline: none; appearance: none; }
+        
+        /* Panel je sakriven dok se ne izabere model */
+        #tech-panel, #price-panel, #booking-btn { display: none; }
+
         .tech-data { margin: 20px 0; padding: 15px; border-top: 1px solid #222; border-bottom: 1px solid #222; }
         .data-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; font-family: monospace; }
         .data-label { color: #444; text-transform: uppercase; }
@@ -40,21 +44,25 @@
 
     <div class="group">
         <label>Marka vozila</label>
-        <select id="marka" onchange="updateModels()"></select>
+        <select id="marka" onchange="updateModels()">
+            <option value="" disabled selected>Izaberite marku...</option>
+        </select>
     </div>
 
     <div class="group">
         <label>Model i godište</label>
-        <select id="model" onchange="calculate()"></select>
+        <select id="model" onchange="calculate()">
+            <option value="" disabled selected>Prvo izaberite marku...</option>
+        </select>
     </div>
 
-    <div class="tech-data">
+    <div id="tech-panel" class="tech-data">
         <div class="data-line"><span class="data-label">Dužina vozila:</span> <span class="data-val" id="len">-- cm</span></div>
         <div class="data-line"><span class="data-label">Širina vozila:</span> <span class="data-val" id="wid">-- cm</span></div>
         <div class="data-line"><span class="data-label">Vremenski normativ:</span> <span class="data-val" id="time">-- min</span></div>
     </div>
 
-    <div class="group">
+    <div id="service-group" class="group" style="display:none;">
         <label>Konfiguracija tretmana</label>
         <div class="services">
             <div class="opt active" id="btn-s" onclick="toggle('s')">SPOLJAŠNJOST</div>
@@ -62,16 +70,15 @@
         </div>
     </div>
 
-    <div class="price-panel">
+    <div id="price-panel" class="price-panel">
         <span class="price-label">Cena održavanja</span>
         <span class="price-val" id="total">0 RSD</span>
     </div>
 
-    <button class="btn" onclick="sendWA()">Rezerviši termin</button>
+    <button id="booking-btn" class="btn" onclick="sendWA()">Rezerviši termin</button>
 </div>
 
 <script>
-// Baza: Model|Spolja|Unutra|Dužina|Širina|Vreme
 const db = {
     "Volkswagen": [
         "Polo (2017-2024)|850|750|405|175|55",
@@ -91,21 +98,6 @@ const db = {
         "A4 B9 (2015-2024)|1000|900|472|184|85",
         "A6 C8 (2018-2024)|1050|950|493|188|110",
         "Q7 4M (2015-2024)|1300|1200|506|197|145"
-    ],
-    "Skoda": [
-        "Fabia (2014-2021)|850|750|399|173|55",
-        "Octavia A7 (2013-2020)|1000|900|466|181|85",
-        "Superb B8 (2015-2024)|1050|950|486|186|110",
-        "Kodiaq (2016-2024)|1200|1100|469|188|125"
-    ],
-    "Opel": [
-        "Corsa F (2019-2024)|850|750|406|176|55",
-        "Astra K (2015-2021)|950|850|437|180|75",
-        "Insignia B (2017-2022)|1050|950|489|186|110"
-    ],
-    "Fiat": [
-        "500 (2007-2024)|800|700|357|162|50",
-        "Tipo (2015-2024)|1000|900|453|179|80"
     ]
 };
 
@@ -114,15 +106,19 @@ let activeS = true, activeU = true;
 function init() {
     const mSel = document.getElementById("marka");
     Object.keys(db).sort().forEach(m => mSel.options.add(new Option(m, m)));
-    updateModels();
 }
 
 function updateModels() {
     const m = document.getElementById("marka").value;
     const modSel = document.getElementById("model");
-    modSel.innerHTML = "";
+    modSel.innerHTML = '<option value="" disabled selected>Izaberite model...</option>';
     db[m].forEach((item, index) => modSel.options.add(new Option(item.split('|')[0], index)));
-    calculate();
+    
+    // Sakrij panele ako klijent promeni marku
+    document.getElementById("tech-panel").style.display = "none";
+    document.getElementById("service-group").style.display = "none";
+    document.getElementById("price-panel").style.display = "none";
+    document.getElementById("booking-btn").style.display = "none";
 }
 
 function toggle(type) {
@@ -135,7 +131,15 @@ function toggle(type) {
 function calculate() {
     const m = document.getElementById("marka").value;
     const idx = document.getElementById("model").value;
+    if (idx === "") return;
+
     const [name, pS, pU, len, wid, time] = db[m][idx].split('|');
+
+    // Prikaži panele kada je model izabran
+    document.getElementById("tech-panel").style.display = "block";
+    document.getElementById("service-group").style.display = "block";
+    document.getElementById("price-panel").style.display = "block";
+    document.getElementById("booking-btn").style.display = "block";
 
     let total = 0;
     if(activeS) total += parseInt(pS);
