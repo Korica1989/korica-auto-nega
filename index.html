@@ -51,6 +51,7 @@
             letter-spacing: 3px; 
             display: block; 
             margin-top: 2px; 
+            opacity: 0.8;
         }
 
         .group { margin-bottom: 25px; }
@@ -73,6 +74,7 @@
             font-size: 15px; 
             outline: none; 
             appearance: none;
+            cursor: pointer;
         }
 
         #main-ui { display: none; }
@@ -82,6 +84,7 @@
             padding: 18px; 
             border-top: 1px solid #222; 
             border-bottom: 1px solid #222; 
+            background: rgba(255,255,255,0.02);
         }
         
         .data-line { 
@@ -93,7 +96,7 @@
         }
         
         .data-label { color: #555; text-transform: uppercase; }
-        .data-val { color: var(--gold); }
+        .data-val { color: var(--gold); font-weight: bold; }
 
         .services { 
             display: grid; 
@@ -108,14 +111,14 @@
             text-align: center; 
             cursor: pointer; 
             font-size: 12px; 
-            color: #666; 
+            color: #777; 
             font-weight: bold;
             transition: 0.3s; 
         }
         
         .opt.active { 
             border-color: var(--gold); 
-            color: #ffffff; 
+            color: #ffffff !important; 
             background: #111;
         }
 
@@ -205,21 +208,31 @@
 </div>
 
 <script>
+// Vraćene originalne cene i modeli
 const db = {
     "Audi": [
-        "A3 8V (2012-2020)|850|850|431|178|70",
-        "A4 B9 (2015-2024)|1000|1000|472|184|85",
-        "A6 C8 (2018-2024)|1050|1050|493|188|110"
+        "A3 8V (2012-2020)|950|850|431|178|70",
+        "A4 B9 (2015-2024)|1000|900|472|184|85",
+        "A6 C8 (2018-2024)|1050|950|493|188|110",
+        "Q7 4M (2015-2024)|1300|1200|506|197|145"
     ],
     "BMW": [
-        "Serija 1|850|850|432|176|70",
-        "Serija 3|1000|1000|470|182|85",
-        "Serija 5|1050|1050|493|186|110"
+        "Serija 1 F20|950|850|432|176|70",
+        "Serija 3 G20|1000|900|470|182|85",
+        "Serija 5 G30|1050|950|493|186|110",
+        "X5 G05|1250|1150|492|200|135"
     ],
     "Volkswagen": [
-        "Polo|750|750|405|175|55",
-        "Golf 7|850|850|425|179|65",
-        "Passat B8|1000|1000|476|183|85"
+        "Polo|850|750|405|175|55",
+        "Golf 7|900|800|425|179|65",
+        "Passat B8|1000|900|476|183|85",
+        "Touareg|1200|1100|487|198|130"
+    ],
+    "Skoda": [
+        "Fabia|850|750|399|173|55",
+        "Octavia A7|1000|900|466|181|85",
+        "Superb B8|1050|950|486|186|110",
+        "Kodiaq|1200|1100|469|188|125"
     ]
 };
 
@@ -266,6 +279,7 @@ function calculate() {
     document.getElementById("wid").innerText = wid + " cm";
     
     if (!activeS && !activeU) {
+        document.getElementById("time").innerText = "-- min";
         document.getElementById("price-panel").style.display = "none";
         document.getElementById("booking-btn").style.display = "none";
         document.getElementById("pragovi-notice").style.display = "none";
@@ -282,7 +296,7 @@ function calculate() {
     if(activeS) total += parseInt(pS);
     if(activeU) total += parseInt(pU);
     
-    // KLJUČNA ISPRAVKA: Napomena i doplata idu SAMO za Spoljašnjost
+    // ISPRAVKA LOGIKE: Napomena i doplata idu SAMO za Spoljašnjost
     if(activeS && !activeU) {
         total += 100;
         document.getElementById("pragovi-notice").style.display = "block";
