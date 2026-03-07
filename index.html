@@ -1,43 +1,171 @@
-// REVIDIRANA BAZA: BMW 5 i Audi A6 sada imaju realnu cenu
-    // Format: "Model|Spolja (Faktor laka)|Unutra (Kubikaža)|Minuti"
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KORICA Auto Nega | Rezervacija</title>
+    <style>
+        :root { --gold: #d4af37; --black: #0a0a0a; --dark: #111; }
+        body {
+            background: var(--black); color: white; font-family: 'Poppins', sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; margin: 0; padding: 20px;
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
+        }
+        .card {
+            background: rgba(20, 20, 20, 0.98); padding: 30px; border-radius: 25px;
+            border: 1px solid var(--gold); width: 100%; max-width: 480px; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+        }
+        h1 { color: var(--gold); margin: 0; letter-spacing: 5px; text-transform: uppercase; font-size: 32px; font-weight: 800; }
+        .subtitle { color: #888; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 25px; }
+        
+        .group { text-align: left; margin-bottom: 20px; }
+        label { display: block; color: var(--gold); margin-bottom: 8px; font-weight: 600; font-size: 11px; text-transform: uppercase; }
+        
+        select {
+            width: 100%; padding: 15px; background: var(--dark); color: white;
+            border: 1px solid #333; border-radius: 12px; font-size: 16px; outline: none; cursor: pointer;
+        }
+        
+        .info-tag {
+            display: none; margin-top: 10px; padding: 12px; 
+            background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px; font-size: 13px; color: #ddd; text-align: left; line-height: 1.5;
+        }
+        .info-tag b { color: var(--gold); }
+
+        .services-container {
+            background: var(--dark); padding: 15px; border-radius: 12px; border: 1px solid #333;
+            display: flex; flex-direction: column; gap: 12px;
+        }
+        .service-item { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 15px; }
+        input[type="checkbox"] { accent-color: var(--gold); width: 22px; height: 22px; cursor: pointer; }
+
+        .price-box {
+            margin: 25px 0; padding: 25px; background: rgba(212, 175, 55, 0.05);
+            border-radius: 15px; border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .price-tag { font-size: 48px; color: var(--gold); font-weight: 800; }
+        .time-info { color: #00ffcc; font-size: 13px; margin-top: 8px; font-weight: 600; text-transform: uppercase; }
+
+        .btn {
+            background: linear-gradient(135deg, var(--gold), #b8860b);
+            color: black; border: none; padding: 20px; width: 100%;
+            border-radius: 15px; font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 16px;
+            transition: 0.3s;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(212,175,55,0.2); }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="card">
+    <h1>KORICA</h1>
+    <div class="subtitle">Auto Nega | Sremčica</div>
+    
+    <div class="group">
+        <label>1. Odaberi brend</label>
+        <select id="markaSel" onchange="azurirajModele()">
+            <option value="" selected disabled>Izaberi marku...</option>
+        </select>
+    </div>
+
+    <div class="group">
+        <label>2. Odaberi model</label>
+        <select id="modelSel" onchange="izracunaj()">
+            <option value="">Prvo odaberi marku...</option>
+        </select>
+        <div id="detalji" class="info-tag"></div>
+    </div>
+
+    <div class="group">
+        <label>3. Usluge</label>
+        <div class="services-container">
+            <label class="service-item"><input type="checkbox" id="spolja" onchange="izracunaj()" checked> Spoljašnje pranje (Faktor laka)</label>
+            <label class="service-item"><input type="checkbox" id="unutra" onchange="izracunaj()" checked> Enterijer (Kubikaža kabine)</label>
+        </div>
+    </div>
+
+    <div class="price-box">
+        <div class="price-tag" id="rezultat">0 RSD</div>
+        <div class="time-info" id="vreme">Spreman za rad</div>
+    </div>
+
+    <button class="btn" onclick="zakazi()">Rezerviši Termin</button>
+</div>
+
+<script>
+    // BAZA: "Model | Cena Spolja | Cena Unutra | Minuti"
     const baza = {
-        "BMW": [
-            "Serija 1|800|600|30",
-            "Serija 3|900|700|40",
-            "Serija 5|1100|900|45", // Ukupno 2000 RSD - Realna premium cena
-            "Serija 7|1400|1200|65",
-            "X1|1000|800|40",
-            "X3|1200|900|50",
-            "X5|1500|1000|60",
-            "X7|1800|1500|80"
-        ],
-        "Audi": [
-            "A1|700|500|25",
-            "A3|800|600|35",
-            "A4|1000|800|45",
-            "A6|1100|900|45", // Ukupno 2000 RSD - Isto kao BMW 5
-            "A8|1400|1200|65",
-            "Q3|1000|800|40",
-            "Q5|1200|900|50",
-            "Q7|1700|1400|75"
-        ],
-        "Mercedes-Benz": [
-            "A Klasa|800|600|30",
-            "C Klasa|1000|800|40",
-            "E Klasa|1100|900|45", // Ukupno 2000 RSD - Standard klase
-            "S Klasa|1400|1200|65",
-            "GLE|1500|1000|60",
-            "GLS|1800|1500|80"
-        ],
-        "Volkswagen": [
-            "Polo|700|500|25",
-            "Golf|850|650|35",
-            "Passat|1000|800|45",
-            "Tiguan|1100|900|50",
-            "Touareg|1500|1000|60"
-        ],
-        "Zastava": [
-            "Yugo|500|400|20",
-            "Fića|400|300|15"
-        ]
+        "Audi": ["A1|700|500|25", "A3|800|600|35", "A4|1000|800|45", "A6|1100|900|45", "A8|1400|1200|65", "Q3|1000|800|40", "Q5|1200|900|50", "Q7|1700|1400|75"],
+        "BMW": ["Serija 1|800|600|30", "Serija 3|900|700|40", "Serija 5|1100|900|45", "Serija 7|1400|1200|65", "X1|1000|800|40", "X3|1200|900|50", "X5|1500|1000|60", "X7|1800|1500|80"],
+        "Mercedes-Benz": ["A Klasa|800|600|30", "C Klasa|1000|800|40", "E Klasa|1100|900|45", "S Klasa|1400|1200|65", "GLA|1000|800|40", "GLC|1200|900|50", "GLE|1500|1000|60", "GLS|1800|1500|80"],
+        "Volkswagen": ["Polo|700|500|25", "Golf|850|650|35", "Passat|1000|800|45", "Tiguan|1100|900|50", "Touareg|1500|1000|60", "Caddy|1200|1000|50"],
+        "Toyota": ["Yaris|700|500|25", "Corolla|900|700|40", "Rav4|1200|900|50", "Land Cruiser|1700|1300|75", "Hilux|1700|700|55"],
+        "Ford": ["Fiesta|700|500|25", "Focus|900|700|40", "Mondeo|1000|800|45", "Kuga|1100|900|50", "Ranger|1700|700|55"],
+        "Skoda": ["Fabia|700|500|25", "Octavia|900|700|40", "Superb|1100|900|45", "Kodiaq|1500|1200|60"],
+        "Peugeot": ["208|700|500|25", "308|900|700|40", "508|1000|800|45", "3008|1100|900|50", "5008|1300|1200|60"],
+        "Renault": ["Clio|700|500|25", "Megane|900|700|40", "Talisman|1100|900|45", "Captur|900|700|40", "Kadjar|1100|900|50"],
+        "Fiat": ["Punto|600|500|25", "Tipo|900|700|40", "500L|1000|900|45", "Doblo|1200|1000|50"],
+        "Zastava": ["Yugo|500|400|20", "Fića|400|300|15", "101 Stojadin|600|500|25"]
     };
+
+    function inicijalizuj() {
+        const mSel = document.getElementById("markaSel");
+        mSel.innerHTML = '<option value="" disabled selected>Marka...</option>';
+        Object.keys(baza).sort().forEach(m => {
+            let o = document.createElement("option"); o.value = m; o.text = m; mSel.appendChild(o);
+        });
+    }
+
+    function azurirajModele() {
+        const m = document.getElementById("markaSel").value;
+        const modSel = document.getElementById("modelSel");
+        const det = document.getElementById("detalji");
+        modSel.innerHTML = '<option value="" disabled selected>Model...</option>';
+        det.style.display = "none";
+        
+        baza[m].sort().forEach(mo => {
+            let [ime] = mo.split('|');
+            let o = document.createElement("option"); o.value = mo; o.text = ime; modSel.appendChild(o);
+        });
+        izracunaj();
+    }
+
+    function izracunaj() {
+        const val = document.getElementById("modelSel").value;
+        const det = document.getElementById("detalji");
+        if(!val) {
+            document.getElementById("rezultat").innerText = "0 RSD";
+            document.getElementById("vreme").innerText = "Spreman za rad";
+            return;
+        }
+
+        let [ime, cS, cU, min] = val.split('|');
+        det.style.display = "block";
+        det.innerHTML = `Analiza: Spoljašnost (<b>${cS} RSD</b>) + Kabina (<b>${cU} RSD</b>)`;
+
+        let ukupno = 0;
+        let t = 0;
+        if(document.getElementById("spolja").checked) { ukupno += parseInt(cS); t += parseInt(min) * 0.45; }
+        if(document.getElementById("unutra").checked) { ukupno += parseInt(cU); t += parseInt(min) * 0.55; }
+
+        document.getElementById("rezultat").innerText = ukupno.toLocaleString() + " RSD";
+        document.getElementById("vreme").innerText = t > 0 ? "Trajanje: ~" + Math.round(t) + " min" : "Spreman";
+    }
+
+    function zakazi() {
+        const m = document.getElementById("markaSel").value;
+        const moRaw = document.getElementById("modelSel").value;
+        if(!moRaw) { alert("Odaberite vozilo!"); return; }
+        const cena = document.getElementById("rezultat").innerText;
+        const mo = moRaw.split('|')[0];
+        window.open(`https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url&entry.345073777=${encodeURIComponent(m + " " + mo)}&entry.988818818=${encodeURIComponent(cena)}`, '_blank');
+    }
+
+    inicijalizuj();
+</script>
+</body>
+</html>
