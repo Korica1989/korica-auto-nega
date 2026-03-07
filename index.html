@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>KORICA Auto Nega | Booking</title>
+    <title>KORICA Auto Nega | Precizni Kalkulator</title>
     <style>
         :root { --gold: #d4af37; --black: #0a0a0a; --dark: #111; }
-        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background: var(--black); color: white; display: flex; justify-content: center; padding: 15px; margin: 0; min-height: 100vh; background-image: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%); }
         .card { background: rgba(15, 15, 15, 0.98); padding: 25px; border-radius: 25px; border: 1px solid var(--gold); width: 100%; max-width: 600px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
-        h1 { color: var(--gold); margin: 0; letter-spacing: 5px; text-transform: uppercase; font-size: 30px; font-weight: 800; }
+        h1 { color: var(--gold); margin: 0; letter-spacing: 5px; text-transform: uppercase; font-size: 28px; font-weight: 800; }
         .subtitle { color: #888; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 25px; }
         .group { text-align: left; margin-bottom: 15px; }
         label { display: block; color: var(--gold); margin-bottom: 5px; font-weight: 600; font-size: 10px; text-transform: uppercase; }
         select { width: 100%; padding: 14px; background: var(--dark); color: white; border: 1px solid #333; border-radius: 12px; font-size: 14px; outline: none; appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 15px center; background-size: 12px; }
+        .info-box { display: none; margin-top: 10px; padding: 10px; background: #1a1a1a; border-radius: 10px; border-left: 3px solid var(--gold); text-align: left; font-size: 12px; color: #aaa; }
         .services { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
         .service-item { background: #111; padding: 14px; border-radius: 12px; border: 1px solid #333; display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 14px; }
-        .note-box { display: none; margin-top: 15px; padding: 12px; border-radius: 12px; font-size: 11px; text-align: left; background: rgba(212, 175, 55, 0.08); border: 1px dashed var(--gold); color: #eee; line-height: 1.4; }
         .price-box { margin: 25px 0; padding: 25px; background: rgba(212, 175, 55, 0.04); border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.15); }
         .price-tag { font-size: 46px; color: var(--gold); font-weight: 800; display: block; }
         .time-tag { color: #00ffcc; font-size: 12px; font-weight: 700; text-transform: uppercase; }
@@ -40,8 +40,9 @@
     </div>
 
     <div class="group">
-        <label>3. Verzija / Godište</label>
+        <label>3. Godište i Tip</label>
         <select id="specSel" onchange="calculate()"></select>
+        <div id="dimInfo" class="info-box"></div>
     </div>
 
     <div class="group">
@@ -49,9 +50,6 @@
         <div class="services">
             <label class="service-item"><input type="checkbox" id="spolja" checked onchange="calculate()"> Spolja</label>
             <label class="service-item"><input type="checkbox" id="unutra" checked onchange="calculate()"> Unutra</label>
-        </div>
-        <div id="pragoviNote" class="note-box">
-            ✨ <b>KORICA Standard:</b> Detaljno čišćenje pragova uključeno u cenu (+100 RSD).
         </div>
     </div>
 
@@ -64,65 +62,56 @@
 </div>
 
 <script>
+/* FORMAT: [Naziv|Spolja|Unutra|Minuti|Dužina] */
 const data = {
     "Audi": {
-        "A3": ["Hatchback (1996-2012)|800|750|55", "Hatchback (2012-Danas)|900|850|65", "Sedan (Sve god.)|950|900|70"],
-        "A4": ["Limuzina (1994-2008)|950|900|75", "Limuzina (2008-Danas)|1050|1000|85", "Karavan (Sve god.)|1150|1100|95"],
-        "A6": ["Limuzina (1997-2011)|1200|1100|95", "Limuzina (2011-Danas)|1350|1250|110", "Karavan (Sve god.)|1450|1350|120"],
-        "Q5": ["Sve generacije|1250|1150|90"],
-        "Q7/Q8": ["Sve generacije|1650|1550|130"]
+        "A4": [
+            "Limuzina (1994-2008)|950|900|75|4.58m",
+            "Limuzina (2008-Danas)|1050|1000|85|4.76m",
+            "Karavan / Avant (Sve god.)|1150|1100|95|4.76m"
+        ],
+        "A6": [
+            "Limuzina (1997-2011)|1200|1100|95|4.92m",
+            "Limuzina (2011-Danas)|1350|1250|110|4.95m",
+            "Karavan / Avant (Sve god.)|1450|1350|120|4.95m"
+        ]
     },
     "BMW": {
-        "Serija 1": ["Hatchback (Sve god.)|850|800|60"],
-        "Serija 3": ["Limuzina (Do 2012)|1000|950|80", "Limuzina (2012-Danas)|1100|1050|85", "Karavan (Sve god.)|1200|1150|95"],
-        "Serija 5": ["Limuzina (Do 2010)|1250|1150|100", "Limuzina (2010-Danas)|1350|1250|110", "Karavan (Sve god.)|1450|1350|120"],
-        "X3/X4": ["Sve generacije|1250|1150|90"],
-        "X5/X6": ["Sve generacije|1600|1500|125"]
+        "Serija 3": [
+            "Limuzina (Do 2012)|1000|950|80|4.52m",
+            "Limuzina (2012-Danas)|1100|1050|85|4.71m",
+            "Touring / Karavan (Sve god.)|1200|1150|95|4.71m"
+        ],
+        "Serija 5": [
+            "Limuzina (Do 2010)|1250|1150|100|4.84m",
+            "Limuzina (2010-Danas)|1350|1250|115|4.96m",
+            "Touring / Karavan (Sve god.)|1450|1350|125|4.96m"
+        ]
     },
     "Volkswagen": {
-        "Golf": ["Golf 1/2/3/4|750|700|50", "Golf 5/6/7|850|800|60", "Golf 8|950|900|65"],
-        "Passat": ["Limuzina (Do 2014)|1100|1000|85", "Limuzina (2014-Danas)|1250|1150|95", "Karavan (Sve god.)|1350|1250|105"],
-        "Polo": ["Sve generacije|700|650|45"],
-        "Tiguan": ["Sve generacije|1150|1050|85"],
-        "Amarok": ["Double Cab (Pickup)|1400|1250|115"]
+        "Golf": [
+            "Hatchback (Do 2003)|750|700|50|4.15m",
+            "Hatchback (2003-2012)|850|800|60|4.20m",
+            "Hatchback (2012-Danas)|950|900|65|4.28m",
+            "Variant / Karavan (Sve god.)|1050|1000|80|4.63m"
+        ],
+        "Passat": [
+            "Limuzina (Do 2014)|1100|1000|85|4.77m",
+            "Limuzina (2014-Danas)|1250|1150|95|4.77m",
+            "Variant / Karavan (Sve god.)|1350|1250|105|4.77m"
+        ]
     },
     "Mercedes-Benz": {
-        "A/B Klasa": ["Sve generacije|850|800|60"],
-        "C-Klasa": ["Limuzina (Do 2014)|1050|1000|80", "Limuzina (2014-Danas)|1150|1100|90", "Karavan|1250|1200|100"],
-        "E-Klasa": ["Limuzina (Do 2016)|1250|1200|105", "Limuzina (2016-Danas)|1350|1300|115", "Karavan|1450|1400|125"],
-        "GLE/GLS": ["Sve generacije|1700|1600|140"]
-    },
-    "Skoda": {
-        "Fabia": ["Sve generacije|750|700|55"],
-        "Octavia": ["Limuzina (Sve god.)|1050|1000|85", "Karavan (Sve god.)|1150|1100|95"],
-        "Superb": ["Limuzina (Sve god.)|1250|1200|105", "Karavan (Sve god.)|1350|1300|115"]
-    },
-    "Peugeot": {
-        "206/207/208": ["Hatchback|750|700|55"],
-        "307/308": ["Hatchback|900|850|70", "Karavan|1000|950|85"],
-        "508": ["Limuzina|1150|1100|95", "Karavan|1250|1200|105"]
-    },
-    "Renault": {
-        "Clio": ["Sve generacije|750|700|55"],
-        "Megane": ["Hatchback|900|850|70", "Karavan|1000|950|85"],
-        "Scenic": ["MPV verzije|1100|1050|90"]
-    },
-    "Fiat": {
-        "500/Panda/Punto": ["Mali modeli|700|650|45"],
-        "Tipo": ["Limuzina/Hatch|950|900|75"]
-    },
-    "Toyota": {
-        "Yaris": ["Sve generacije|750|700|55"],
-        "Corolla": ["Sve generacije|1000|950|80"],
-        "Hilux": ["Pickup Double Cab|1450|1350|120"]
-    },
-    "Dacia": {
-        "Sandero/Logan": ["Sve generacije|800|750|60"],
-        "Duster": ["Sve generacije|1050|1000|80"]
-    },
-    "Hyundai/Kia": {
-        "i20/Ceed/i30": ["Hatchback|900|850|70"],
-        "Tucson/Sportage": ["Sve generacije|1200|1100|90"]
+        "C-Klasa": [
+            "Limuzina (Do 2014)|1050|1000|80|4.59m",
+            "Limuzina (2014-Danas)|1150|1100|90|4.75m",
+            "Karavan (Sve god.)|1250|1200|100|4.75m"
+        ],
+        "E-Klasa": [
+            "Limuzina (Do 2016)|1250|1200|105|4.87m",
+            "Limuzina (2016-Danas)|1400|1300|115|4.94m",
+            "Karavan (Sve god.)|1500|1400|125|4.95m"
+        ]
     }
 };
 
@@ -143,7 +132,7 @@ function updateSpecs() {
     const m = document.getElementById("markaSel").value;
     const mod = document.getElementById("modelSel").value;
     const sSel = document.getElementById("specSel");
-    sSel.innerHTML = '<option value="" disabled selected>Godište / Verzija...</option>';
+    sSel.innerHTML = '<option value="" disabled selected>Godište i Tip...</option>';
     data[m][mod].forEach((s, idx) => { sSel.options.add(new Option(s.split('|')[0], idx)); });
 }
 
@@ -153,7 +142,7 @@ function calculate() {
     const idx = document.getElementById("specSel").value;
     if (idx === "" || !m || !mod) return;
 
-    const [ime, cS, cU, min] = data[m][mod][idx].split('|');
+    const [ime, cS, cU, min, duz] = data[m][mod][idx].split('|');
     let ukupno = 0;
     const isSpolja = document.getElementById("spolja").checked;
     const isUnutra = document.getElementById("unutra").checked;
@@ -161,23 +150,22 @@ function calculate() {
     if(isSpolja) ukupno += parseInt(cS);
     if(isUnutra) ukupno += parseInt(cU);
     
-    if(isSpolja && !isUnutra) {
-        ukupno += 100;
-        document.getElementById("pragoviNote").style.display = "block";
-    } else {
-        document.getElementById("pragoviNote").style.display = "none";
-    }
+    // Pragovi +100 ako ide samo spolja (KORICA Standard)
+    if(isSpolja && !isUnutra) { ukupno += 100; }
 
     document.getElementById("rezultat").innerText = ukupno.toLocaleString() + " RSD";
     document.getElementById("vreme").innerText = (isSpolja || isUnutra) ? "~" + min + " MINUTA" : "ODABERITE USLUGU";
+    
+    const info = document.getElementById("dimInfo");
+    info.style.display = "block";
+    info.innerHTML = `<b>Specifikacija:</b> Dužina vozila cca ${duz}. <br>Vreme rada prilagođeno gabaritima modela.`;
 }
 
 function sendWA() {
     const m = document.getElementById("markaSel").value;
     const mod = document.getElementById("modelSel").value;
     const cena = document.getElementById("rezultat").innerText;
-    if(!m || !mod) return;
-    window.open(`https://wa.me/38164XXXXXXX?text=${encodeURIComponent("Pozdrav Korica! Rezervisao bih pranje: " + m + " " + mod + " (" + cena + ")")}`);
+    window.open(`https://wa.me/38164XXXXXXX?text=${encodeURIComponent("Rezervacija: " + m + " " + mod + " (" + cena + ")")}`);
 }
 
 window.onload = init;
