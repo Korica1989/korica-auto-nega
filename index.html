@@ -3,168 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>KORICA Auto Nega | Booking</title>
+    <title>KORICA | Precision Auto Care</title>
     <style>
-        :root { --gold: #d4af37; --black: #0a0a0a; --dark: #111; --accent: #00ffcc; }
-        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--black); color: white; display: flex; justify-content: center; padding: 15px; margin: 0; min-height: 100vh; background-image: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%); }
-        .card { background: rgba(15, 15, 15, 0.98); padding: 25px; border-radius: 25px; border: 1px solid var(--gold); width: 100%; max-width: 550px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
-        h1 { color: var(--gold); margin: 0; letter-spacing: 6px; text-transform: uppercase; font-size: 32px; font-weight: 900; }
-        .subtitle { color: #888; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 25px; }
-        .group { text-align: left; margin-bottom: 20px; }
-        label { display: block; color: var(--gold); margin-bottom: 8px; font-weight: 600; font-size: 11px; text-transform: uppercase; }
-        select { width: 100%; padding: 15px; background: var(--dark); color: white; border: 1px solid #333; border-radius: 12px; font-size: 15px; outline: none; appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 15px center; background-size: 14px; }
-        .services { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
-        .service-item { background: #111; padding: 16px; border-radius: 12px; border: 1px solid #333; display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 14px; }
-        .price-box { margin: 30px 0; padding: 25px; background: rgba(212, 175, 55, 0.03); border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.1); }
-        .price-tag { font-size: 48px; color: var(--gold); font-weight: 900; display: block; }
-        .btn { background: linear-gradient(135deg, var(--gold), #b8860b); color: black; border: none; padding: 20px; width: 100%; border-radius: 18px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 16px; transition: 0.3s; }
+        :root { --gold: #d4af37; --black: #0a0a0a; --dark: #151515; --accent: #00ffcc; }
+        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: var(--black); color: white; display: flex; justify-content: center; padding: 15px; margin: 0; min-height: 100vh; }
+        .card { background: var(--dark); padding: 25px; border-radius: 30px; border: 1px solid var(--gold); width: 100%; max-width: 500px; position: relative; }
+        
+        /* Fiksni Info Panel - Ono što si tražio da bude stalno na ekranu */
+        .tech-info { 
+            background: rgba(0, 0, 0, 0.5); 
+            border: 1px dashed var(--gold); 
+            padding: 15px; 
+            border-radius: 15px; 
+            margin-bottom: 20px; 
+            font-size: 12px; 
+            text-align: left;
+        }
+        .tech-line { display: flex; justify-content: space-between; margin-bottom: 5px; color: #888; }
+        .tech-val { color: var(--accent); font-weight: bold; }
+
+        h1 { color: var(--gold); margin: 0; letter-spacing: 5px; text-transform: uppercase; font-size: 28px; text-align: center; }
+        .subtitle { color: #888; font-size: 10px; letter-spacing: 3px; text-align: center; margin-bottom: 20px; display: block; }
+
+        select { width: 100%; padding: 15px; background: #000; color: white; border: 1px solid #333; border-radius: 12px; margin-bottom: 15px; outline: none; }
+        .services { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
+        .service-item { background: #000; padding: 15px; border-radius: 12px; border: 1px solid #333; text-align: center; cursor: pointer; }
+        .service-item input { display: none; }
+        .service-item.active { border-color: var(--gold); background: rgba(212, 175, 55, 0.1); }
+
+        .price-display { margin-top: 20px; padding: 20px; background: #000; border-radius: 20px; text-align: center; border: 1px solid var(--gold); }
+        .total-price { font-size: 42px; font-weight: 900; color: var(--gold); display: block; }
+        .btn { background: var(--gold); color: black; border: none; padding: 20px; width: 100%; border-radius: 15px; font-weight: 900; margin-top: 20px; cursor: pointer; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <h1>KORICA</h1>
-    <div class="subtitle">Premium Auto Nega | Sremčica</div>
-    
-    <div class="group">
-        <label>1. Marka Vozila</label>
-        <select id="markaSel" onchange="updateModels()">
-            <option value="" disabled selected>Izaberite marku...</option>
-        </select>
+    <span class="subtitle">Sistem preciznog održavanja</span>
+
+    <div class="tech-info" id="techPanel">
+        <div class="tech-line">Analiza površine školjke: <span class="tech-val" id="povrsina">0 m²</span></div>
+        <div class="tech-line">Složenost enterijera: <span class="tech-val" id="slozenost">0%</span></div>
+        <div class="tech-line">Utrošak preparata: <span class="tech-val" id="utrosak">0.00 L</span></div>
+        <div class="tech-line">Vreme tretmana: <span class="tech-val" id="vreme">0 min</span></div>
     </div>
 
-    <div class="group">
-        <label>2. Model i Godište</label>
-        <select id="modelSel" onchange="calculate()">
-            <option value="" disabled selected>Prvo izaberite marku...</option>
-        </select>
+    <label style="font-size: 11px; color: var(--gold);">MARKA VOZILA</label>
+    <select id="marka" onchange="updateModels()"></select>
+
+    <label style="font-size: 11px; color: var(--gold);">MODEL I GODIŠTE</label>
+    <select id="model" onchange="calculate()"></select>
+
+    <div class="services">
+        <div class="service-item active" id="btnS" onclick="toggleS('spolja')">SPOLJAŠNJOST</div>
+        <div class="service-item active" id="btnU" onclick="toggleS('unutra')">UNUTRAŠNJOST</div>
     </div>
 
-    <div class="group">
-        <label>3. Izaberite Usluge</label>
-        <div class="services">
-            <label class="service-item"><input type="checkbox" id="spolja" checked onchange="calculate()"> Spolja</label>
-            <label class="service-item"><input type="checkbox" id="unutra" checked onchange="calculate()"> Unutra</label>
-        </div>
+    <div class="price-display">
+        <span style="font-size: 10px; color: #888; letter-spacing: 2px;">PRECIZNA CENA ODRŽAVANJA</span>
+        <span class="total-price" id="finalnaCena">0 RSD</span>
     </div>
 
-    <div class="price-box">
-        <div class="price-tag" id="rezultat">0 RSD</div>
-        <div id="vreme" style="color: var(--accent); font-size: 12px; margin-top: 5px; font-weight: bold;">ODABERITE VOZILO</div>
-    </div>
-
-    <button class="btn" onclick="sendWA()">Rezerviši Termin</button>
+    <button class="btn" onclick="sendWA()">Rezerviši termin</button>
 </div>
 
 <script>
+// Dodao sam koeficijente koji simuliraju tvoj "skener" vozila
 const data = {
     "Volkswagen": [
-        "Polo (2009 - 2017)|850|750|55",
-        "Polo (2017 - 2024)|900|800|55",
-        "Golf 6 (2008 - 2013)|950|850|65",
-        "Golf 7 (2012 - 2020)|1000|900|65",
-        "Golf 8 (2020 - 2024)|1050|950|65",
-        "Passat B6 (2005 - 2010)|1000|900|85",
-        "Passat B7 (2010 - 2014)|1050|950|85",
-        "Passat B8 (2014 - 2023)|1100|1000|90",
-        "Passat Variant B8 (Karavan)|1150|1050|110",
-        "Tiguan (2016 - 2024)|1200|1100|95",
-        "Touareg (2010 - 2018)|1300|1200|130",
-        "Touareg (2018 - 2024)|1400|1300|140",
-        "Multivan T6|1600|1400|140"
+        "Golf 7 (2012-2020)|1000|900|12.5|60|65", // Model|C.Spolja|C.Unutra|Površina m2|Složenost %|Vreme min
+        "Passat B8 (2014-2023)|1100|1000|14.2|75|85",
+        "Passat B8 Variant (Karavan)|1200|1100|16.5|80|100",
+        "Touareg (2018-2024)|1400|1300|22.8|95|140"
     ],
     "BMW": [
-        "Serija 1 F20 (2011 - 2019)|950|850|60",
-        "Serija 3 E90 (2005 - 2013)|1000|900|85",
-        "Serija 3 F30 (2012 - 2019)|1050|950|85",
-        "Serija 3 G20 (2019 - 2024)|1100|1000|90",
-        "Serija 3 Touring G21 (Karavan)|1150|1050|115",
-        "Serija 5 F10 (2010 - 2017)|1100|1000|110",
-        "Serija 5 G30 (2017 - 2023)|1200|1100|115",
-        "Serija 5 Touring G31 (Karavan)|1250|1150|130",
-        "X3 G01 (2017 - 2024)|1250|1150|100",
-        "X5 F15 (2013 - 2018)|1300|1200|130",
-        "X5 G05 (2018 - 2024)|1400|1300|145"
-    ],
-    "Audi": [
-        "A3 8V (2012 - 2020)|1000|900|65",
-        "A4 B8 (2008 - 2016)|1050|950|85",
-        "A4 B9 (2015 - 2024)|1100|1000|90",
-        "A4 Avant B9 (Karavan)|1150|1050|110",
-        "A6 C7 (2011 - 2018)|1150|1050|115",
-        "A6 C8 (2018 - 2024)|1200|1100|120",
-        "A6 Avant C8 (Karavan)|1250|1150|130",
-        "Q5 FY (2017 - 2024)|1250|1150|105",
-        "Q7 4M (2015 - 2024)|1400|1300|145"
-    ],
-    "Mercedes-Benz": [
-        "A-Klasa W176 (2012 - 2018)|950|850|65",
-        "A-Klasa W177 (2018 - 2024)|1000|900|65",
-        "C-Klasa W205 (2014 - 2021)|1100|1000|90",
-        "C-Klasa T W205 (Karavan)|1150|1050|110",
-        "E-Klasa W213 (2016 - 2023)|1200|1100|115",
-        "E-Klasa T W213 (Karavan)|1250|1150|130",
-        "S-Klasa W222 (2013 - 2020)|1300|1200|140",
-        "GLE W167 (2019 - 2024)|1400|1300|145"
-    ],
-    "Skoda": [
-        "Octavia A7 (2013 - 2020)|1000|900|85",
-        "Octavia Combi A7 (Karavan)|1050|950|105",
-        "Octavia A8 (2020 - 2024)|1100|1000|90",
-        "Superb B8 (2015 - 2024)|1150|1050|115",
-        "Superb Combi B8 (Karavan)|1200|1100|125",
-        "Kodiaq (2016 - 2024)|1300|1200|120"
-    ],
-    "Fiat": [
-        "Punto Evo (2009 - 2012)|850|750|55",
-        "500 (2007 - 2024)|800|700|50",
-        "Tipo (2015 - 2024)|1000|900|80",
-        "Tipo Station Wagon (Karavan)|1100|1000|105",
-        "Ducato (Kombi)|2100|1700|170"
+        "Serija 3 G20 (2019-2024)|1100|1000|13.8|70|85",
+        "Serija 5 G30 (2017-2023)|1200|1100|15.5|85|110",
+        "X5 G05 (2018-2024)|1400|1300|21.5|95|135"
     ]
 };
 
+let spoljaActive = true;
+let unutraActive = true;
+
 function init() {
-    const mSel = document.getElementById("markaSel");
+    const mSel = document.getElementById("marka");
     Object.keys(data).sort().forEach(m => mSel.options.add(new Option(m, m)));
+    updateModels();
 }
 
 function updateModels() {
-    const m = document.getElementById("markaSel").value;
-    const modSel = document.getElementById("modelSel");
+    const m = document.getElementById("marka").value;
+    const modSel = document.getElementById("model");
     modSel.innerHTML = "";
     data[m].forEach((item, index) => modSel.options.add(new Option(item.split('|')[0], index)));
     calculate();
 }
 
+function toggleS(tip) {
+    if(tip === 'spolja') {
+        spoljaActive = !spoljaActive;
+        document.getElementById('btnS').classList.toggle('active');
+    } else {
+        unutraActive = !unutraActive;
+        document.getElementById('btnU').classList.toggle('active');
+    }
+    calculate();
+}
+
 function calculate() {
-    const m = document.getElementById("markaSel").value;
-    const idx = document.getElementById("modelSel").value;
-    if (!m || idx === "") return;
+    const m = document.getElementById("marka").value;
+    const idx = document.getElementById("model").value;
+    const [ime, cS, cU, m2, complex, min] = data[m][idx].split('|');
 
-    const [ime, cS, cU, min] = data[m][idx].split('|');
-    const isS = document.getElementById("spolja").checked;
-    const isU = document.getElementById("unutra").checked;
-    
     let total = 0;
-    if (isS) total += parseInt(cS);
-    if (isU) total += parseInt(cU);
-    
-    // KORICA Standard za pragove (+100 RSD ako ide samo jedna usluga)
-    if ((isS && !isU) || (!isS && isU)) total += 100;
+    if(spoljaActive) total += parseInt(cS);
+    if(unutraActive) total += parseInt(cU);
+    if((spoljaActive && !unutraActive) || (!spoljaActive && unutraActive)) total += 100;
 
-    document.getElementById("rezultat").innerText = total.toLocaleString() + " RSD";
-    document.getElementById("vreme").innerText = (isS || isU) ? "~ " + min + " MINUTA RADA" : "IZABERITE USLUGU";
+    // Ažuriranje tehničkog panela (Ono što klijent vidi non-stop)
+    document.getElementById("povrsina").innerText = spoljaActive ? m2 + " m²" : "0 m²";
+    document.getElementById("slozenost").innerText = unutraActive ? complex + "%" : "0%";
+    document.getElementById("utrosak").innerText = ((spoljaActive ? (m2 * 0.05) : 0) + (unutraActive ? 0.2 : 0)).toFixed(2) + " L";
+    document.getElementById("vreme").innerText = ((spoljaActive ? (min*0.6) : 0) + (unutraActive ? (min*0.4) : 0)).toFixed(0) + " min";
+    
+    document.getElementById("finalnaCena").innerText = total.toLocaleString() + " RSD";
 }
 
 function sendWA() {
-    const m = document.getElementById("markaSel").value;
-    const mod = document.getElementById("modelSel").options[document.getElementById("modelSel").selectedIndex].text;
-    const cena = document.getElementById("rezultat").innerText;
-    if (cena === "0 RSD") { alert("Molimo izaberite vozilo i uslugu."); return; }
-    
-    const msg = `Pozdrav! Rezervisao bih pranje kod Korice: ${m} ${mod}. Cena: ${cena}.`;
+    const cena = document.getElementById("finalnaCena").innerText;
+    const m = document.getElementById("marka").value;
+    const mod = document.getElementById("model").options[document.getElementById("model").selectedIndex].text;
+    const msg = `KORICA - Upit za termin: ${m} ${mod}. Precizna cena: ${cena}.`;
     window.open(`https://wa.me/38164XXXXXXX?text=${encodeURIComponent(msg)}`);
 }
 
