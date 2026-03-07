@@ -44,9 +44,9 @@
         input[type="checkbox"] { accent-color: var(--gold); width: 24px; height: 24px; cursor: pointer; }
 
         .note-box {
-            display: none; margin-top: 15px; padding: 12px; 
+            display: none; margin-top: 15px; padding: 15px; 
             background: rgba(0, 255, 204, 0.05); border: 1px dashed #00ffcc;
-            border-radius: 10px; font-size: 12px; color: #00ffcc; text-align: left; line-height: 1.4;
+            border-radius: 12px; font-size: 12px; color: #00ffcc; text-align: left; line-height: 1.5;
         }
 
         .price-box {
@@ -70,7 +70,7 @@
 
 <div class="card">
     <h1>KORICA</h1>
-    <div class="subtitle">Premium Auto Nega | Sremčica</div>
+    <div class="subtitle">Auto Nega | Sremčica</div>
     
     <div class="group">
         <label>1. Odaberi brend</label>
@@ -94,7 +94,7 @@
             <label class="service-item"><input type="checkbox" id="unutra" onchange="izracunaj()" checked> Nega kabine (Enterijer)</label>
         </div>
         <div id="pragoviNote" class="note-box">
-            ✨ <b>Premium dodatak:</b> Budući da ste odabrali samo spoljašnje pranje, uključili smo detaljno brisanje pragova (+100 RSD) kako bi ulazak u vozilo bio besprekoran.
+            ✨ <b>KORICA Standard:</b> Budući da se radi samo spoljašnost, u cenu smo uključili i detaljno čišćenje pragova (+100 RSD). Ne želimo da bilo koji detalj ostane zapostavljen, kako bi Vaš ulazak u čist automobil bio potpun.
         </div>
     </div>
 
@@ -107,7 +107,6 @@
 </div>
 
 <script>
-    // Baza: "Model | Cena Spolja | Cena Unutra | Minuti"
     const baza = {
         "Audi": ["A1|700|500|25", "A3|800|600|35", "A4|1000|800|45", "A6|1100|900|45", "A8|1400|1200|65", "Q3|1000|800|40", "Q5|1200|900|50", "Q7|1700|1400|75"],
         "BMW": ["Serija 1|800|600|30", "Serija 3|900|700|40", "Serija 5|1100|900|45", "Serija 7|1400|1200|65", "X1|1000|800|40", "X3|1200|900|50", "X5|1500|1000|60", "X7|1800|1500|80"],
@@ -171,17 +170,16 @@
             analizaText += (analizaText ? " + " : "") + `Nega kabine: <b>${cU} RSD</b>`;
         }
 
-        // Specijalna logika za pragove (samo ako je spolja ON, a unutra OFF)
         if(isSpolja && !isUnutra) {
             ukupno += 100;
             note.style.display = "block";
-            analizaText += ` + Pragovi: <b>100 RSD</b>`;
+            analizaText += ` + Čišćenje pragova: <b>100 RSD</b>`;
         } else {
             note.style.display = "none";
         }
 
         det.style.display = "block";
-        det.innerHTML = `Analiza cena za ${ime}: <br>${analizaText}`;
+        det.innerHTML = `Analiza tretmana za ${ime}: <br>${analizaText}`;
 
         document.getElementById("rezultat").innerText = ukupno.toLocaleString() + " RSD";
         document.getElementById("vreme").innerText = t > 0 ? "Očekivano vreme: ~" + Math.round(t) + " min" : "Spreman";
