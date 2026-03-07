@@ -5,37 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>KORICA | Auto nega</title>
     <style>
-        :root { --gold: #d4af37; --black: #0a0a0a; --dark: #111; }
+        :root { --gold: #d4af37; --black: #0a0a0a; --dark: #121212; --accent: #d4af37; }
         * { box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--black); color: white; display: flex; justify-content: center; padding: 15px; margin: 0; min-height: 100vh; }
-        .card { background: var(--dark); padding: 30px; border-radius: 2px; border: 1px solid #222; width: 100%; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        body { background: var(--black); color: white; display: flex; justify-content: center; padding: 15px; margin: 0; min-height: 100vh; background-image: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%); }
         
-        .header { margin-bottom: 35px; border-bottom: 1px solid #222; padding-bottom: 20px; }
-        h1 { color: var(--gold); margin: 0; letter-spacing: 10px; text-transform: uppercase; font-size: 38px; font-weight: 900; line-height: 1; }
-        .tagline { color: #fff; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; display: block; margin-top: 8px; font-weight: 300; }
-        .synonym { color: #d4af37; font-size: 10px; text-transform: uppercase; letter-spacing: 4px; margin-top: 5px; opacity: 0.8; }
+        .card { background: var(--dark); padding: 35px; border-radius: 25px; border: 1px solid rgba(212, 175, 55, 0.3); width: 100%; max-width: 500px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+        
+        .header { margin-bottom: 30px; }
+        h1 { color: var(--gold); margin: 0; letter-spacing: 8px; text-transform: uppercase; font-size: 36px; font-weight: 900; }
+        .tagline { color: #fff; font-size: 15px; letter-spacing: 2px; text-transform: uppercase; display: block; margin-top: 5px; }
+        .synonym { color: var(--gold); font-size: 10px; text-transform: uppercase; letter-spacing: 4px; margin-top: 4px; opacity: 0.7; }
 
-        .tech-data-panel { background: #000; padding: 20px; border: 1px solid #333; margin-bottom: 25px; position: relative; }
-        .tech-label-main { position: absolute; top: -10px; left: 15px; background: #000; padding: 0 10px; color: var(--gold); font-size: 9px; letter-spacing: 2px; }
-        .data-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px; letter-spacing: 1px; }
-        .data-label { color: #555; text-transform: uppercase; }
-        .data-value { color: #fff; font-family: monospace; font-weight: bold; }
+        .group { text-align: left; margin-bottom: 20px; }
+        label { display: block; color: var(--gold); margin-bottom: 8px; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* Lepši padajući meni */
+        select { 
+            width: 100%; padding: 16px; background: #000; color: white; border: 1px solid #333; border-radius: 15px; 
+            font-size: 15px; outline: none; appearance: none; cursor: pointer; transition: 0.3s;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat; background-position: right 15px center; background-size: 16px;
+        }
+        select:focus { border-color: var(--gold); box-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
 
-        .input-group { margin-bottom: 20px; }
-        label { display: block; color: #666; font-size: 9px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-        select { width: 100%; padding: 14px; background: #080808; color: white; border: 1px solid #222; border-radius: 0; font-size: 14px; outline: none; appearance: none; cursor: pointer; }
-        select:focus { border-color: var(--gold); }
+        /* Tehnički panel ispod vozila */
+        .tech-sheet { 
+            background: rgba(0,0,0,0.4); border: 1px solid #222; padding: 20px; border-radius: 15px; 
+            margin-bottom: 25px; display: none; /* Skriven dok se ne izabere vozilo */
+        }
+        .data-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px; }
+        .data-label { color: #666; text-transform: uppercase; font-size: 10px; }
+        .data-value { color: #fff; font-weight: bold; font-family: 'Courier New', monospace; }
 
-        .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 10px; }
-        .config-btn { background: #080808; border: 1px solid #222; padding: 15px; text-align: center; cursor: pointer; font-size: 11px; color: #444; letter-spacing: 1px; transition: 0.3s; }
-        .config-btn.active { border-color: var(--gold); color: #fff; background: #111; }
+        .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .config-btn { 
+            background: #111; border: 1px solid #333; padding: 15px; border-radius: 12px; 
+            text-align: center; cursor: pointer; font-size: 12px; color: #666; transition: 0.3s; font-weight: bold;
+        }
+        .config-btn.active { border-color: var(--gold); color: #fff; background: rgba(212, 175, 55, 0.1); }
 
-        .price-panel { margin-top: 40px; text-align: right; }
-        .price-label { font-size: 9px; color: #555; letter-spacing: 2px; text-transform: uppercase; }
-        .price-value { display: block; font-size: 42px; color: var(--gold); font-weight: 900; line-height: 1; }
+        .price-section { margin-top: 35px; border-top: 1px solid #222; padding-top: 25px; }
+        .price-label { font-size: 10px; color: #555; letter-spacing: 2px; text-transform: uppercase; }
+        .price-value { display: block; font-size: 45px; color: var(--gold); font-weight: 900; line-height: 1; margin-top: 5px; }
 
-        .btn-booking { background: var(--gold); color: black; border: none; padding: 20px; width: 100%; margin-top: 30px; cursor: pointer; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; }
-        .btn-booking:active { transform: scale(0.98); }
+        .btn-booking { 
+            background: linear-gradient(135deg, var(--gold), #b8860b); color: black; border: none; 
+            padding: 22px; width: 100%; border-radius: 18px; margin-top: 30px; 
+            cursor: pointer; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; transition: 0.3s;
+        }
+        .btn-booking:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3); }
     </style>
 </head>
 <body>
@@ -47,14 +65,23 @@
         <span class="synonym">Sinonim kvaliteta</span>
     </div>
 
-    <div class="tech-data-panel">
-        <div class="tech-label-main">TEHNIČKE SPECIFIKACIJE VOZILA</div>
+    <div class="group">
+        <label>Marka vozila</label>
+        <select id="marka" onchange="updateModels()"></select>
+    </div>
+
+    <div class="group">
+        <label>Model i godište</label>
+        <select id="model" onchange="calculate()"></select>
+    </div>
+
+    <div class="tech-sheet" id="techSheet">
         <div class="data-row">
-            <span class="data-label">Dužina vozila:</span>
+            <span class="data-label">Dužina:</span>
             <span class="data-value" id="val-duzina">-- cm</span>
         </div>
         <div class="data-row">
-            <span class="data-label">Širina vozila:</span>
+            <span class="data-label">Širina:</span>
             <span class="data-value" id="val-sirina">-- cm</span>
         </div>
         <div class="data-row">
@@ -63,24 +90,16 @@
         </div>
     </div>
 
-    <div class="input-group">
-        <label>Odaberite marku</label>
-        <select id="marka" onchange="updateModels()"></select>
+    <div class="group">
+        <label>Konfiguracija tretmana</label>
+        <div class="config-grid">
+            <div class="config-btn active" id="btn-s" onclick="toggle('s')">SPOLJA</div>
+            <div class="config-btn active" id="btn-u" onclick="toggle('u')">UNUTRA</div>
+        </div>
     </div>
 
-    <div class="input-group">
-        <label>Odaberite model i godište</label>
-        <select id="model" onchange="calculate()"></select>
-    </div>
-
-    <label>Konfiguracija tretmana</label>
-    <div class="config-grid">
-        <div class="config-btn active" id="btn-s" onclick="toggle('s')">SPOLJAŠNJOST</div>
-        <div class="config-btn active" id="btn-u" onclick="toggle('u')">UNUTRAŠNJOST</div>
-    </div>
-
-    <div class="price-panel">
-        <span class="price-label">Ukupna cena održavanja</span>
+    <div class="price-section">
+        <span class="price-label">Obračunata cena</span>
         <span class="price-value" id="final-price">0 RSD</span>
     </div>
 
@@ -88,29 +107,24 @@
 </div>
 
 <script>
-// Baza podataka: Model|C.Spolja|C.Unutra|Dužina(cm)|Širina(cm)|Normativ(min)
 const db = {
     "Volkswagen": [
         "Golf 7 (2012-2020)|1000|900|425|179|70",
         "Passat B8 (2014-2023)|1100|1000|476|183|90",
         "Passat Variant B8 (Karavan)|1200|1100|477|183|110",
-        "Tiguan (2016-2024)|1200|1100|448|183|100",
         "Touareg (2018-2024)|1400|1300|487|198|140"
     ],
     "BMW": [
-        "Serija 1 F20 (2011-2019)|950|850|432|176|70",
         "Serija 3 G20 (2019-2024)|1100|1000|470|182|90",
-        "Serija 5 G30 (2017-2023)|1200|1100|493|186|110",
+        "Serija 5 G30 (2017-2023)|1200|1100|493|186|115",
         "X5 G05 (2018-2024)|1400|1300|492|200|140"
     ],
     "Audi": [
-        "A3 8V (2012-2020)|1000|900|431|178|70",
         "A4 B9 (2015-2024)|1100|1000|472|184|90",
-        "A6 C8 (2018-2024)|1200|1100|493|188|115",
+        "A6 C8 (2018-2024)|1200|1100|493|188|120",
         "Q7 4M (2015-2024)|1400|1300|506|197|150"
     ],
     "Mercedes-Benz": [
-        "A-Klasa W177 (2018-2024)|1000|900|441|179|70",
         "C-Klasa W205 (2014-2021)|1100|1000|468|181|90",
         "E-Klasa W213 (2016-2023)|1200|1100|492|185|115",
         "GLE W167 (2019-2024)|1400|1300|492|194|145"
@@ -151,11 +165,11 @@ function calculate() {
     if(activeU) total += parseInt(pU);
     if((activeS && !activeU) || (!activeS && activeU)) total += 100;
 
-    // Prikaz tehničkih cm i minuta
+    // Ažuriranje tehničkih podataka i prikaz panela
+    document.getElementById("techSheet").style.display = "block";
     document.getElementById("val-duzina").innerText = len + " cm";
     document.getElementById("val-sirina").innerText = wid + " cm";
     
-    // Normativ vremena se prilagođava izboru usluge
     let currentTime = 0;
     if(activeS) currentTime += (time * 0.6);
     if(activeU) currentTime += (time * 0.4);
