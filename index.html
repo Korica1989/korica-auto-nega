@@ -8,37 +8,24 @@
         :root { --gold: #d4af37; --black: #000; --dark: #111; }
         * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background: var(--black); color: white; display: flex; justify-content: center; padding: 20px; margin: 0; }
-        
         .card { width: 100%; max-width: 450px; }
-        
         .header { margin-bottom: 30px; border-left: 4px solid var(--gold); padding-left: 20px; }
         h1 { color: var(--gold); margin: 0; letter-spacing: 10px; text-transform: uppercase; font-size: 38px; font-weight: 900; }
         .tagline { color: #fff; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; display: block; margin-top: 5px; }
         .synonym { color: #fff; font-size: 12px; text-transform: uppercase; letter-spacing: 3px; display: block; margin-top: 2px; }
-
         .group { margin-bottom: 20px; }
         label { display: block; color: #666; font-size: 10px; text-transform: uppercase; margin-bottom: 8px; }
-        
-        select { 
-            width: 100%; padding: 15px; background: #000; color: white; border: 1px solid #333; 
-            border-radius: 0; font-size: 14px; outline: none; appearance: none;
-        }
-
-        .tech-data { 
-            margin: 20px 0; padding: 15px; border-top: 1px solid #222; border-bottom: 1px solid #222;
-        }
+        select { width: 100%; padding: 15px; background: #000; color: white; border: 1px solid #333; border-radius: 0; font-size: 14px; outline: none; appearance: none; }
+        .tech-data { margin: 20px 0; padding: 15px; border-top: 1px solid #222; border-bottom: 1px solid #222; }
         .data-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; font-family: monospace; }
         .data-label { color: #444; text-transform: uppercase; }
         .data-val { color: var(--gold); }
-
         .services { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
         .opt { background: #000; border: 1px solid #222; padding: 15px; text-align: center; cursor: pointer; font-size: 12px; color: #444; }
         .opt.active { border-color: var(--gold); color: white; }
-
         .price-panel { margin-top: 40px; text-align: right; }
         .price-label { font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 1px; }
         .price-val { display: block; font-size: 40px; color: var(--gold); font-weight: 900; }
-
         .btn { background: var(--gold); color: black; border: none; padding: 20px; width: 100%; margin-top: 25px; cursor: pointer; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; }
     </style>
 </head>
@@ -84,28 +71,41 @@
 </div>
 
 <script>
-// Format: Model|Cena_Spolja|Cena_Unutra|Dužina|Širina|Vreme
+// Baza: Model|Spolja|Unutra|Dužina|Širina|Vreme
 const db = {
     "Volkswagen": [
+        "Polo (2017-2024)|850|750|405|175|55",
         "Golf 7 (2012-2020)|900|800|425|179|65",
         "Passat B8 (2014-2023)|1000|900|476|183|85",
         "Passat Variant B8 (Karavan)|1050|950|477|183|100",
         "Touareg (2018-2024)|1200|1100|487|198|130"
     ],
     "BMW": [
+        "Serija 1 F20 (2011-2019)|950|850|432|176|70",
         "Serija 3 G20 (2019-2024)|1000|900|470|182|85",
-        "Serija 5 G30 (2017-2023)|1050|950|493|186|110", // 1050 + 950 = 2000 RSD
+        "Serija 5 G30 (2017-2023)|1050|950|493|186|110",
         "X5 G05 (2018-2024)|1250|1150|492|200|135"
     ],
     "Audi": [
+        "A3 8V (2012-2020)|950|850|431|178|70",
         "A4 B9 (2015-2024)|1000|900|472|184|85",
         "A6 C8 (2018-2024)|1050|950|493|188|110",
         "Q7 4M (2015-2024)|1300|1200|506|197|145"
     ],
-    "Mercedes-Benz": [
-        "C-Klasa W205 (2014-2021)|1000|900|468|181|85",
-        "E-Klasa W213 (2016-2023)|1050|950|492|185|110",
-        "GLE W167 (2019-2024)|1300|1200|492|194|140"
+    "Skoda": [
+        "Fabia (2014-2021)|850|750|399|173|55",
+        "Octavia A7 (2013-2020)|1000|900|466|181|85",
+        "Superb B8 (2015-2024)|1050|950|486|186|110",
+        "Kodiaq (2016-2024)|1200|1100|469|188|125"
+    ],
+    "Opel": [
+        "Corsa F (2019-2024)|850|750|406|176|55",
+        "Astra K (2015-2021)|950|850|437|180|75",
+        "Insignia B (2017-2022)|1050|950|489|186|110"
+    ],
+    "Fiat": [
+        "500 (2007-2024)|800|700|357|162|50",
+        "Tipo (2015-2024)|1000|900|453|179|80"
     ]
 };
 
@@ -140,8 +140,6 @@ function calculate() {
     let total = 0;
     if(activeS) total += parseInt(pS);
     if(activeU) total += parseInt(pU);
-    
-    // Korica doplata za pojedinačnu uslugu (100 RSD)
     if((activeS && !activeU) || (!activeS && activeU)) total += 100;
 
     document.getElementById("len").innerText = len + " cm";
