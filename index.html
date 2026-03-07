@@ -51,7 +51,6 @@
             letter-spacing: 3px; 
             display: block; 
             margin-top: 2px; 
-            opacity: 0.8;
         }
 
         .group { margin-bottom: 25px; }
@@ -62,7 +61,6 @@
             font-size: 10px; 
             text-transform: uppercase; 
             margin-bottom: 10px; 
-            letter-spacing: 1px;
         }
         
         select { 
@@ -75,20 +73,15 @@
             font-size: 15px; 
             outline: none; 
             appearance: none;
-            cursor: pointer;
         }
-        
-        select:focus { border-color: var(--gold); }
 
-        /* Glavni UI koji se otkriva */
-        #main-ui { display: none; transition: 0.5s opacity; }
+        #main-ui { display: none; }
 
         .tech-data { 
             margin: 25px 0; 
             padding: 18px; 
             border-top: 1px solid #222; 
             border-bottom: 1px solid #222; 
-            background: rgba(255,255,255,0.02);
         }
         
         .data-line { 
@@ -100,13 +93,12 @@
         }
         
         .data-label { color: #555; text-transform: uppercase; }
-        .data-val { color: var(--gold); font-weight: bold; }
+        .data-val { color: var(--gold); }
 
         .services { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
             gap: 8px; 
-            margin-top: 10px; 
         }
         
         .opt { 
@@ -116,15 +108,14 @@
             text-align: center; 
             cursor: pointer; 
             font-size: 12px; 
-            color: #555; 
+            color: #666; 
             font-weight: bold;
             transition: 0.3s; 
-            letter-spacing: 1px;
         }
         
         .opt.active { 
             border-color: var(--gold); 
-            color: white; 
+            color: #ffffff; 
             background: #111;
         }
 
@@ -137,7 +128,6 @@
             color: #ccc; 
             display: none; 
             line-height: 1.5;
-            text-align: left;
         }
 
         .price-panel { 
@@ -146,21 +136,8 @@
             display: none;
         }
         
-        .price-label { 
-            font-size: 10px; 
-            color: #666; 
-            text-transform: uppercase; 
-            letter-spacing: 2px;
-        }
-        
-        .price-val { 
-            display: block; 
-            font-size: 45px; 
-            color: var(--gold); 
-            font-weight: 900; 
-            line-height: 1;
-            margin-top: 5px;
-        }
+        .price-label { font-size: 10px; color: #666; text-transform: uppercase; }
+        .price-val { display: block; font-size: 45px; color: var(--gold); font-weight: 900; }
         
         .btn { 
             background: var(--gold); 
@@ -175,8 +152,6 @@
             letter-spacing: 2px; 
             display: none;
         }
-        
-        .btn:active { opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -216,7 +191,7 @@
                 <div class="opt" id="btn-u" onclick="toggle('u')">UNUTRAŠNJOST</div>
             </div>
             <div id="pragovi-notice" class="notice">
-                ⚠️ Napomena: Cena je korigovana za 100 RSD radi osiguranja standarda čistoće pragova i detalja školjke koji se tretiraju i pri parcijalnom održavanju.
+                ⚠️ Napomena: Cena pranja će porasti za 100 dinara zbog detaljnog pranja pragova jer se vodi računa o detaljima.
             </div>
         </div>
 
@@ -230,32 +205,21 @@
 </div>
 
 <script>
-// Baza: Model|CenaSpolja|CenaUnutra|Dužina|Širina|Vreme
 const db = {
-    "Volkswagen": [
-        "Polo (2017-2024)|850|750|405|175|55",
-        "Golf 7 (2012-2020)|900|800|425|179|65",
-        "Passat B8 (2014-2023)|1000|900|476|183|85",
-        "Passat Variant B8 (Karavan)|1050|950|477|183|100",
-        "Touareg (2018-2024)|1200|1100|487|198|130"
+    "Audi": [
+        "A3 8V (2012-2020)|850|850|431|178|70",
+        "A4 B9 (2015-2024)|1000|1000|472|184|85",
+        "A6 C8 (2018-2024)|1050|1050|493|188|110"
     ],
     "BMW": [
-        "Serija 1 F20 (2011-2019)|950|850|432|176|70",
-        "Serija 3 G20 (2019-2024)|1000|900|470|182|85",
-        "Serija 5 G30 (2017-2023)|1050|950|493|186|110",
-        "X5 G05 (2018-2024)|1250|1150|492|200|135"
+        "Serija 1|850|850|432|176|70",
+        "Serija 3|1000|1000|470|182|85",
+        "Serija 5|1050|1050|493|186|110"
     ],
-    "Audi": [
-        "A3 8V (2012-2020)|950|850|431|178|70",
-        "A4 B9 (2015-2024)|1000|900|472|184|85",
-        "A6 C8 (2018-2024)|1050|950|493|188|110",
-        "Q7 4M (2015-2024)|1300|1200|506|197|145"
-    ],
-    "Skoda": [
-        "Fabia (2014-2021)|850|750|399|173|55",
-        "Octavia A7 (2013-2020)|1000|900|466|181|85",
-        "Superb B8 (2015-2024)|1050|950|486|186|110",
-        "Kodiaq (2016-2024)|1200|1100|469|188|125"
+    "Volkswagen": [
+        "Polo|750|750|405|175|55",
+        "Golf 7|850|850|425|179|65",
+        "Passat B8|1000|1000|476|183|85"
     ]
 };
 
@@ -276,8 +240,7 @@ function updateModels() {
 
 function showUI() {
     document.getElementById("main-ui").style.display = "block";
-    activeS = false;
-    activeU = false;
+    activeS = false; activeU = false;
     updateButtons();
     calculate();
 }
@@ -296,33 +259,31 @@ function updateButtons() {
 function calculate() {
     const m = document.getElementById("marka").value;
     const idx = document.getElementById("model").value;
-    
     if (idx === "") return;
-
     const [name, pS, pU, len, wid, time] = db[m][idx].split('|');
 
-    // Tehnički prikaz
     document.getElementById("len").innerText = len + " cm";
     document.getElementById("wid").innerText = wid + " cm";
     
     if (!activeS && !activeU) {
-        document.getElementById("time").innerText = "-- min";
         document.getElementById("price-panel").style.display = "none";
         document.getElementById("booking-btn").style.display = "none";
         document.getElementById("pragovi-notice").style.display = "none";
         return;
     }
 
-    document.getElementById("time").innerText = Math.round((activeS ? time*0.6 : 0) + (activeU ? time*0.4 : 0)) + " min";
-
+    let finalTime = 0;
+    if (activeS && activeU) finalTime = time;
+    else if (activeS) finalTime = Math.round(time * 0.6);
+    else if (activeU) finalTime = Math.round(time * 0.4);
+    document.getElementById("time").innerText = finalTime + " min";
+    
     let total = 0;
     if(activeS) total += parseInt(pS);
     if(activeU) total += parseInt(pU);
     
-    // Logika za pragove: Prikazuje se ako je odabrana SAMO spoljašnjost ili SAMO unutrašnjost
-    const isSingle = (activeS && !activeU) || (!activeS && activeU);
-    
-    if(isSingle) {
+    // KLJUČNA ISPRAVKA: Napomena i doplata idu SAMO za Spoljašnjost
+    if(activeS && !activeU) {
         total += 100;
         document.getElementById("pragovi-notice").style.display = "block";
     } else {
