@@ -13,24 +13,40 @@
         h1 { color: var(--gold); margin: 0; letter-spacing: 10px; text-transform: uppercase; font-size: 38px; font-weight: 900; }
         .tagline { color: #fff; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; display: block; margin-top: 5px; }
         .synonym { color: #fff; font-size: 12px; text-transform: uppercase; letter-spacing: 3px; display: block; margin-top: 2px; }
+        
         .group { margin-bottom: 20px; }
         label { display: block; color: #666; font-size: 10px; text-transform: uppercase; margin-bottom: 8px; }
         select { width: 100%; padding: 15px; background: #000; color: white; border: 1px solid #333; border-radius: 0; font-size: 14px; outline: none; appearance: none; }
         
-        /* Panel je sakriven dok se ne izabere model */
-        #tech-panel, #price-panel, #booking-btn { display: none; }
+        /* Skriveni elementi do selekcije */
+        #main-ui { display: none; }
 
         .tech-data { margin: 20px 0; padding: 15px; border-top: 1px solid #222; border-bottom: 1px solid #222; }
         .data-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; font-family: monospace; }
         .data-label { color: #444; text-transform: uppercase; }
         .data-val { color: var(--gold); }
-        .services { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-        .opt { background: #000; border: 1px solid #222; padding: 15px; text-align: center; cursor: pointer; font-size: 12px; color: #444; }
+
+        .services { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 10px; }
+        .opt { background: #000; border: 1px solid #222; padding: 15px; text-align: center; cursor: pointer; font-size: 12px; color: #444; transition: 0.3s; }
         .opt.active { border-color: var(--gold); color: white; }
-        .price-panel { margin-top: 40px; text-align: right; }
-        .price-label { font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Napomena za pragove */
+        .notice { 
+            background: rgba(212, 175, 55, 0.05); 
+            border: 1px solid rgba(212, 175, 55, 0.2); 
+            padding: 12px; 
+            margin-top: 15px; 
+            font-size: 11px; 
+            color: #ccc; 
+            display: none; 
+            line-height: 1.4;
+        }
+
+        .price-panel { margin-top: 30px; text-align: right; }
+        .price-label { font-size: 10px; color: #444; text-transform: uppercase; }
         .price-val { display: block; font-size: 40px; color: var(--gold); font-weight: 900; }
-        .btn { background: var(--gold); color: black; border: none; padding: 20px; width: 100%; margin-top: 25px; cursor: pointer; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; }
+        
+        .btn { background: var(--gold); color: black; border: none; padding: 20px; width: 100%; margin-top: 25px; cursor: pointer; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; display: none; }
     </style>
 </head>
 <body>
@@ -51,31 +67,36 @@
 
     <div class="group">
         <label>Model i godište</label>
-        <select id="model" onchange="calculate()">
+        <select id="model" onchange="showUI()">
             <option value="" disabled selected>Prvo izaberite marku...</option>
         </select>
     </div>
 
-    <div id="tech-panel" class="tech-data">
-        <div class="data-line"><span class="data-label">Dužina vozila:</span> <span class="data-val" id="len">-- cm</span></div>
-        <div class="data-line"><span class="data-label">Širina vozila:</span> <span class="data-val" id="wid">-- cm</span></div>
-        <div class="data-line"><span class="data-label">Vremenski normativ:</span> <span class="data-val" id="time">-- min</span></div>
-    </div>
-
-    <div id="service-group" class="group" style="display:none;">
-        <label>Konfiguracija tretmana</label>
-        <div class="services">
-            <div class="opt active" id="btn-s" onclick="toggle('s')">SPOLJAŠNJOST</div>
-            <div class="opt active" id="btn-u" onclick="toggle('u')">UNUTRAŠNJOST</div>
+    <div id="main-ui">
+        <div class="tech-data">
+            <div class="data-line"><span class="data-label">Dužina vozila:</span> <span class="data-val" id="len">-- cm</span></div>
+            <div class="data-line"><span class="data-label">Širina vozila:</span> <span class="data-val" id="wid">-- cm</span></div>
+            <div class="data-line"><span class="data-label">Vremenski normativ:</span> <span class="data-val" id="time">-- min</span></div>
         </div>
-    </div>
 
-    <div id="price-panel" class="price-panel">
-        <span class="price-label">Cena održavanja</span>
-        <span class="price-val" id="total">0 RSD</span>
-    </div>
+        <div class="group">
+            <label>Odaberite uslugu odabirom željenog polja</label>
+            <div class="services">
+                <div class="opt" id="btn-s" onclick="toggle('s')">SPOLJAŠNJOST</div>
+                <div class="opt" id="btn-u" onclick="toggle('u')">UNUTRAŠNJOST</div>
+            </div>
+            <div id="pragovi-notice" class="notice">
+                ⚠️ Napomena: Cena pranja je korigovana za 100 RSD zbog detaljnog pranja pragova i posebnog pristupa detaljima školjke.
+            </div>
+        </div>
 
-    <button id="booking-btn" class="btn" onclick="sendWA()">Rezerviši termin</button>
+        <div id="price-panel" class="price-panel" style="display: none;">
+            <span class="price-label">Cena održavanja</span>
+            <span class="price-val" id="total">0 RSD</span>
+        </div>
+
+        <button id="booking-btn" class="btn" onclick="sendWA()">Rezerviši termin</button>
+    </div>
 </div>
 
 <script>
@@ -84,7 +105,6 @@ const db = {
         "Polo (2017-2024)|850|750|405|175|55",
         "Golf 7 (2012-2020)|900|800|425|179|65",
         "Passat B8 (2014-2023)|1000|900|476|183|85",
-        "Passat Variant B8 (Karavan)|1050|950|477|183|100",
         "Touareg (2018-2024)|1200|1100|487|198|130"
     ],
     "BMW": [
@@ -101,7 +121,7 @@ const db = {
     ]
 };
 
-let activeS = true, activeU = true;
+let activeS = false, activeU = false;
 
 function init() {
     const mSel = document.getElementById("marka");
@@ -113,12 +133,20 @@ function updateModels() {
     const modSel = document.getElementById("model");
     modSel.innerHTML = '<option value="" disabled selected>Izaberite model...</option>';
     db[m].forEach((item, index) => modSel.options.add(new Option(item.split('|')[0], index)));
-    
-    // Sakrij panele ako klijent promeni marku
-    document.getElementById("tech-panel").style.display = "none";
-    document.getElementById("service-group").style.display = "none";
-    document.getElementById("price-panel").style.display = "none";
-    document.getElementById("booking-btn").style.display = "none";
+    document.getElementById("main-ui").style.display = "none";
+}
+
+function showUI() {
+    document.getElementById("main-ui").style.display = "block";
+    resetSelection();
+    calculate();
+}
+
+function resetSelection() {
+    activeS = false;
+    activeU = false;
+    document.getElementById('btn-s').className = 'opt';
+    document.getElementById('btn-u').className = 'opt';
 }
 
 function toggle(type) {
@@ -131,25 +159,35 @@ function toggle(type) {
 function calculate() {
     const m = document.getElementById("marka").value;
     const idx = document.getElementById("model").value;
-    if (idx === "") return;
+    if (idx === "" || (!activeS && !activeU)) {
+        document.getElementById("price-panel").style.display = "none";
+        document.getElementById("booking-btn").style.display = "none";
+        document.getElementById("pragovi-notice").style.display = "none";
+        return;
+    }
 
     const [name, pS, pU, len, wid, time] = db[m][idx].split('|');
-
-    // Prikaži panele kada je model izabran
-    document.getElementById("tech-panel").style.display = "block";
-    document.getElementById("service-group").style.display = "block";
-    document.getElementById("price-panel").style.display = "block";
-    document.getElementById("booking-btn").style.display = "block";
-
-    let total = 0;
-    if(activeS) total += parseInt(pS);
-    if(activeU) total += parseInt(pU);
-    if((activeS && !activeU) || (!activeS && activeU)) total += 100;
 
     document.getElementById("len").innerText = len + " cm";
     document.getElementById("wid").innerText = wid + " cm";
     document.getElementById("time").innerText = Math.round((activeS ? time*0.6 : 0) + (activeU ? time*0.4 : 0)) + " min";
+
+    let total = 0;
+    if(activeS) total += parseInt(pS);
+    if(activeU) total += parseInt(pU);
+    
+    // Provera za doplatu i obaveštenje
+    const isSingle = (activeS && !activeU) || (!activeS && activeU);
+    if(isSingle) {
+        total += 100;
+        document.getElementById("pragovi-notice").style.display = "block";
+    } else {
+        document.getElementById("pragovi-notice").style.display = "none";
+    }
+
     document.getElementById("total").innerText = total.toLocaleString() + " RSD";
+    document.getElementById("price-panel").style.display = "block";
+    document.getElementById("booking-btn").style.display = "block";
 }
 
 function sendWA() {
