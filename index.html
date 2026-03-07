@@ -32,7 +32,7 @@
         .info-tag {
             display: none; margin-top: 12px; padding: 15px; 
             background: rgba(212, 175, 55, 0.07); border-left: 4px solid var(--gold);
-            border-radius: 4px 12px 12px 4px; font-size: 14px; color: #eee; text-align: left;
+            border-radius: 4px 12px 12px 4px; font-size: 13px; color: #eee; text-align: left; line-height: 1.6;
         }
         .info-tag b { color: var(--gold); }
 
@@ -41,7 +41,7 @@
             display: flex; flex-direction: column; gap: 14px;
         }
         .service-item { display: flex; align-items: center; gap: 14px; cursor: pointer; font-size: 15px; }
-        input[type="checkbox"] { accent-color: var(--gold); width: 24px; height: 24px; cursor: pointer; }
+        input[type="checkbox"] { accent-color: var(--gold); width: 22px; height: 22px; cursor: pointer; }
 
         .note-box {
             display: none; margin-top: 15px; padding: 15px; 
@@ -50,19 +50,20 @@
         }
 
         .price-box {
-            margin: 30px 0; padding: 30px; background: rgba(212, 175, 55, 0.05);
+            margin: 25px 0; padding: 25px; background: rgba(212, 175, 55, 0.03);
             border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.2);
         }
-        .price-tag { font-size: 52px; color: var(--gold); font-weight: 800; line-height: 1; }
-        .time-info { color: #888; font-size: 13px; margin-top: 10px; text-transform: uppercase; }
+        .price-tag { font-size: 48px; color: var(--gold); font-weight: 800; line-height: 1; }
+        .time-info { color: #00ffcc; font-size: 13px; margin-top: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .disclaimer { font-size: 10px; color: #666; margin-top: 5px; font-style: italic; }
 
         .btn {
             background: linear-gradient(135deg, var(--gold), #b8860b);
-            color: black; border: none; padding: 22px; width: 100%;
-            border-radius: 16px; font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 17px;
-            transition: 0.3s;
+            color: black; border: none; padding: 20px; width: 100%;
+            border-radius: 16px; font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 16px;
+            transition: 0.3s; margin-top: 10px;
         }
-        .btn:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(212,175,55,0.3); }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(212,175,55,0.2); }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
@@ -73,25 +74,17 @@
     <div class="subtitle">Auto Nega | Sremčica</div>
     
     <div class="group">
-        <label>1. Odaberi brend</label>
-        <select id="markaSel" onchange="azurirajModele()">
-            <option value="" selected disabled>Izaberi brend...</option>
-        </select>
-    </div>
-
-    <div class="group">
-        <label>2. Odaberi model</label>
-        <select id="modelSel" onchange="izracunaj()">
-            <option value="">Prvo odaberi brend...</option>
-        </select>
+        <label>1. Odaberi brend i model</label>
+        <select id="markaSel" onchange="azurirajModele()"></select>
+        <select id="modelSel" onchange="izracunaj()" style="margin-top:10px;"></select>
         <div id="detalji" class="info-tag"></div>
     </div>
 
     <div class="group">
-        <label>3. Odaberi tretman</label>
+        <label>2. Odaberi vrstu tretmana</label>
         <div class="services-container">
-            <label class="service-item"><input type="checkbox" id="spolja" onchange="izracunaj()" checked> Nega karoserije (Eksterijer)</label>
-            <label class="service-item"><input type="checkbox" id="unutra" onchange="izracunaj()" checked> Nega kabine (Enterijer)</label>
+            <label class="service-item"><input type="checkbox" id="spolja" onchange="izracunaj()" checked> Nega karoserije (Spolja)</label>
+            <label class="service-item"><input type="checkbox" id="unutra" onchange="izracunaj()" checked> Nega kabine (Unutra)</label>
         </div>
         <div id="pragoviNote" class="note-box">
             ✨ <b>KORICA Standard:</b> Budući da se radi samo spoljašnost, u cenu smo uključili i detaljno čišćenje pragova (+100 RSD). Ne želimo da bilo koji detalj ostane zapostavljen, kako bi Vaš ulazak u čist automobil bio potpun.
@@ -100,26 +93,30 @@
 
     <div class="price-box">
         <div class="price-tag" id="rezultat">0 RSD</div>
-        <div class="time-info" id="vreme">Spreman za rad</div>
+        <div id="vremeBox">
+            <div class="time-info" id="vreme">Spreman za rad</div>
+            <div class="disclaimer">*Vremena su informativnog karaktera</div>
+        </div>
     </div>
 
-    <button class="btn" onclick="zakazi()">Zakaži termin</button>
+    <button class="btn" onclick="zakazi()">Rezerviši termin</button>
 </div>
 
 <script>
+    // Baza: "Model | Cena Spolja | Cena Unutra | Prosečni minuti ukupno"
     const baza = {
-        "Audi": ["A1|700|500|25", "A3|800|600|35", "A4|1000|800|45", "A6|1100|900|45", "A8|1400|1200|65", "Q3|1000|800|40", "Q5|1200|900|50", "Q7|1700|1400|75"],
-        "BMW": ["Serija 1|800|600|30", "Serija 3|900|700|40", "Serija 5|1100|900|45", "Serija 7|1400|1200|65", "X1|1000|800|40", "X3|1200|900|50", "X5|1500|1000|60", "X7|1800|1500|80"],
-        "Mercedes-Benz": ["A Klasa|800|600|30", "C Klasa|1000|800|40", "E Klasa|1100|900|45", "S Klasa|1400|1200|65", "GLE|1500|1000|60", "GLS|1800|1500|80"],
-        "Volkswagen": ["Polo|700|500|25", "Golf|850|650|35", "Passat|1000|800|45", "Tiguan|1100|900|50", "Touareg|1500|1000|60"],
-        "Toyota": ["Yaris|700|500|25", "Corolla|900|700|40", "Rav4|1200|900|50", "Hilux|1700|700|55"],
-        "Skoda": ["Fabia|700|500|25", "Octavia|900|700|40", "Superb|1100|900|45", "Kodiaq|1500|1200|60"],
-        "Zastava": ["Yugo|500|400|20", "Fića|400|300|15"]
+        "Audi": ["A1|700|500|40", "A3|800|600|50", "A4|1000|800|60", "A6|1100|900|70", "A8|1400|1200|90", "Q5|1200|900|75", "Q7|1700|1400|100"],
+        "BMW": ["Serija 1|800|600|45", "Serija 3|900|700|55", "Serija 5|1100|900|70", "Serija 7|1400|1200|90", "X3|1200|900|75", "X5|1500|1000|85"],
+        "Mercedes-Benz": ["A Klasa|800|600|45", "C Klasa|1000|800|60", "E Klasa|1100|900|70", "S Klasa|1400|1200|90", "GLE|1500|1000|85"],
+        "Volkswagen": ["Polo|700|500|40", "Golf|850|650|50", "Passat|1000|800|65", "Tiguan|1100|900|70"],
+        "Toyota": ["Yaris|700|500|40", "Corolla|900|700|55", "Rav4|1200|900|75", "Hilux|1700|700|70"],
+        "Skoda": ["Fabia|700|500|40", "Octavia|900|700|55", "Superb|1100|900|70", "Kodiaq|1500|1200|85"],
+        "Zastava": ["Yugo|500|400|30", "Fića|400|300|25"]
     };
 
     function inicijalizuj() {
         const mSel = document.getElementById("markaSel");
-        mSel.innerHTML = '<option value="" disabled selected>Brend vozila...</option>';
+        mSel.innerHTML = '<option value="" disabled selected>Odaberi marku vozila...</option>';
         Object.keys(baza).sort().forEach(m => {
             let o = document.createElement("option"); o.value = m; o.text = m; mSel.appendChild(o);
         });
@@ -128,10 +125,7 @@
     function azurirajModele() {
         const m = document.getElementById("markaSel").value;
         const modSel = document.getElementById("modelSel");
-        const det = document.getElementById("detalji");
-        modSel.innerHTML = '<option value="" disabled selected>Model...</option>';
-        det.style.display = "none";
-        
+        modSel.innerHTML = '<option value="" disabled selected>Odaberi model...</option>';
         baza[m].sort().forEach(mo => {
             let [ime] = mo.split('|');
             let o = document.createElement("option"); o.value = mo; o.text = ime; modSel.appendChild(o);
@@ -147,6 +141,7 @@
         if(!val) {
             document.getElementById("rezultat").innerText = "0 RSD";
             document.getElementById("vreme").innerText = "Spreman";
+            det.style.display = "none";
             return;
         }
 
@@ -160,29 +155,30 @@
 
         if(isSpolja) { 
             ukupno += parseInt(cS); 
-            t += parseInt(min) * 0.45;
+            t += parseInt(min) * 0.5; // Spoljašnost uzima pola vremena
             analizaText += `Nega karoserije: <b>${cS} RSD</b>`;
         }
         
         if(isUnutra) { 
             ukupno += parseInt(cU); 
-            t += parseInt(min) * 0.55;
+            t += parseInt(min) * 0.5; // Unutrašnjost uzima drugu polovinu
             analizaText += (analizaText ? " + " : "") + `Nega kabine: <b>${cU} RSD</b>`;
         }
 
         if(isSpolja && !isUnutra) {
             ukupno += 100;
             note.style.display = "block";
-            analizaText += ` + Čišćenje pragova: <b>100 RSD</b>`;
+            analizaText += ` + Pragovi: <b>100 RSD</b>`;
+            if(t < 30) t = 30; // Minimalno vreme za kvalitetno spoljašnje pranje sa pragovima
         } else {
             note.style.display = "none";
         }
 
         det.style.display = "block";
-        det.innerHTML = `Analiza tretmana za ${ime}: <br>${analizaText}`;
+        det.innerHTML = `Analiza za ${ime}: <br>${analizaText}`;
 
         document.getElementById("rezultat").innerText = ukupno.toLocaleString() + " RSD";
-        document.getElementById("vreme").innerText = t > 0 ? "Očekivano vreme: ~" + Math.round(t) + " min" : "Spreman";
+        document.getElementById("vreme").innerText = t > 0 ? "Okvirno vreme: ~" + Math.round(t) + " min" : "Spreman";
     }
 
     function zakazi() {
@@ -190,7 +186,8 @@
         const moRaw = document.getElementById("modelSel").value;
         if(!moRaw) { alert("Molimo Vas da odaberete vozilo."); return; }
         const cena = document.getElementById("rezultat").innerText;
-        window.open(`https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url&entry.345073777=${encodeURIComponent(m + " " + moRaw.split('|')[0])}&entry.988818818=${encodeURIComponent(cena)}`, '_blank');
+        const mo = moRaw.split('|')[0];
+        window.open(`https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url&entry.345073777=${encodeURIComponent(m + " " + mo)}&entry.988818818=${encodeURIComponent(cena)}`, '_blank');
     }
 
     inicijalizuj();
