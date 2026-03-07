@@ -25,16 +25,14 @@
         
         select {
             width: 100%; padding: 16px; background: var(--dark); color: white;
-            border: 1px solid #333; border-radius: 14px; font-size: 16px; outline: none; transition: 0.3s;
+            border: 1px solid #333; border-radius: 14px; font-size: 16px; outline: none;
         }
-        select:focus { border-color: var(--gold); }
         
         .info-tag {
             display: none; margin-top: 12px; padding: 15px; 
             background: rgba(212, 175, 55, 0.07); border-left: 4px solid var(--gold);
-            border-radius: 4px 12px 12px 4px; font-size: 13px; color: #eee; text-align: left; line-height: 1.6;
+            border-radius: 4px 12px 12px 4px; font-size: 13px; color: #eee; text-align: left;
         }
-        .info-tag b { color: var(--gold); }
 
         .services-container {
             background: var(--dark); padding: 18px; border-radius: 14px; border: 1px solid #333;
@@ -53,16 +51,14 @@
             margin: 25px 0; padding: 25px; background: rgba(212, 175, 55, 0.03);
             border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.2);
         }
-        .price-tag { font-size: 48px; color: var(--gold); font-weight: 800; line-height: 1; }
-        .time-info { color: #00ffcc; font-size: 13px; margin-top: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .price-tag { font-size: 48px; color: var(--gold); font-weight: 800; }
+        .time-info { color: #00ffcc; font-size: 13px; margin-top: 12px; font-weight: 600; text-transform: uppercase; }
 
         .btn {
             background: linear-gradient(135deg, var(--gold), #b8860b);
             color: black; border: none; padding: 20px; width: 100%;
             border-radius: 16px; font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 16px;
-            transition: 0.3s; margin-top: 10px;
         }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(212,175,55,0.2); }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
@@ -73,7 +69,7 @@
     <div class="subtitle">Auto Nega | Sremčica</div>
     
     <div class="group">
-        <label>1. Odaberi brend i model</label>
+        <label>1. Odaberi vozilo</label>
         <select id="markaSel" onchange="azurirajModele()"></select>
         <select id="modelSel" onchange="izracunaj()" style="margin-top:10px;"></select>
         <div id="detalji" class="info-tag"></div>
@@ -86,7 +82,7 @@
             <label class="service-item"><input type="checkbox" id="unutra" onchange="izracunaj()" checked> Nega kabine (Enterijer)</label>
         </div>
         <div id="pragoviNote" class="note-box">
-            ✨ <b>KORICA Standard:</b> Budući da se radi samo spoljašnost, u cenu smo uključili detaljno brisanje pragova i spoljašnjih stakala (+100 RSD). Naš cilj je da svaki detalj bude besprekoran, kako bi Vaš pogled na put bio kristalno jasan.
+            ✨ <b>KORICA Standard:</b> Budući da se radi samo spoljašnost, u cenu smo uključili i detaljno čišćenje pragova (+100 RSD). Ne želimo da bilo koji detalj ostane zapostavljen, kako bi Vaš ulazak u čist automobil bio potpun.
         </div>
     </div>
 
@@ -100,11 +96,11 @@
 
 <script>
     const baza = {
-        "Audi": ["A1|700|500|40", "A3|800|600|50", "A4|1000|800|60", "A6|1100|900|70", "A8|1400|1200|90", "Q5|1200|900|75", "Q7|1700|1400|100"],
-        "BMW": ["Serija 1|800|600|45", "Serija 3|900|700|55", "Serija 5|1100|900|70", "Serija 7|1400|1200|90", "X3|1200|900|75", "X5|1500|1000|85"],
-        "Mercedes-Benz": ["A Klasa|800|600|45", "C Klasa|1000|800|60", "E Klasa|1100|900|70", "S Klasa|1400|1200|90", "GLE|1500|1000|85"],
-        "Volkswagen": ["Polo|700|500|40", "Golf|850|650|50", "Passat|1000|800|65", "Tiguan|1100|900|70"],
-        "Skoda": ["Fabia|700|500|40", "Octavia|900|700|55", "Superb|1100|900|70", "Kodiaq|1500|1200|85"],
+        "Audi": ["A1|700|500|40", "A3|800|600|50", "A4|1000|800|60", "A6|1100|900|70", "A8|1400|1200|90"],
+        "BMW": ["Serija 1|800|600|45", "Serija 3|900|700|55", "Serija 5|1100|900|70", "Serija 7|1400|1200|90"],
+        "Mercedes-Benz": ["A Klasa|800|600|45", "C Klasa|1000|800|60", "E Klasa|1100|900|70", "S Klasa|1400|1200|90"],
+        "Volkswagen": ["Polo|700|500|40", "Golf|850|650|50", "Passat|1000|800|65"],
+        "Skoda": ["Fabia|700|500|40", "Octavia|900|700|55", "Superb|1100|900|70"],
         "Zastava": ["Yugo|500|400|30", "Fića|400|300|25"]
     };
 
@@ -162,8 +158,8 @@
         if(isSpolja && !isUnutra) {
             ukupno += 100;
             note.style.display = "block";
-            analizaText += ` + Pragovi i Stakla: <b>100 RSD</b>`;
-            if(t < 30) t = 35; // Dodatnih 5 min za stakla
+            analizaText += ` + Čišćenje pragova: <b>100 RSD</b>`;
+            if(t < 30) t = 30; 
         } else {
             note.style.display = "none";
         }
