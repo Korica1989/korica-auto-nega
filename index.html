@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KORICA Auto Nega | Rezervacija</title>
+    <title>KORICA Auto Nega | Pametna Rezervacija</title>
     <style>
         :root { --gold: #d4af37; --black: #0a0a0a; --dark: #111; }
         body {
@@ -21,79 +21,64 @@
         .subtitle { color: #888; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 30px; }
         
         .group { text-align: left; margin-bottom: 22px; }
-        label { display: block; color: var(--gold); margin-bottom: 10px; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        label { display: block; color: var(--gold); margin-bottom: 10px; font-weight: 600; font-size: 12px; text-transform: uppercase; }
         
         select {
             width: 100%; padding: 16px; background: var(--dark); color: white;
-            border: 1px solid #333; border-radius: 14px; font-size: 16px; outline: none; cursor: pointer;
-            transition: 0.3s;
+            border: 1px solid #333; border-radius: 14px; font-size: 16px; outline: none;
         }
-        select:focus { border-color: var(--gold); }
-        
-        .info-tag {
-            display: none; margin-top: 12px; padding: 15px; 
-            background: rgba(212, 175, 55, 0.07); border-left: 4px solid var(--gold);
-            border-radius: 4px 12px 12px 4px; font-size: 14px; color: #eee; text-align: left;
-        }
-        .info-tag b { color: var(--gold); }
 
         .services-container {
             background: var(--dark); padding: 18px; border-radius: 14px; border: 1px solid #333;
             display: flex; flex-direction: column; gap: 14px;
         }
-        .service-item { display: flex; align-items: center; gap: 14px; cursor: pointer; font-size: 15px; transition: 0.2s; }
-        .service-item:hover { color: var(--gold); }
-        input[type="checkbox"] { accent-color: var(--gold); width: 24px; height: 24px; cursor: pointer; }
+        .service-item { display: flex; align-items: center; gap: 14px; cursor: pointer; font-size: 15px; }
+        input[type="checkbox"] { accent-color: var(--gold); width: 24px; height: 24px; }
+
+        .note-box {
+            display: none; margin-top: 15px; padding: 12px; 
+            background: rgba(0, 255, 204, 0.05); border: 1px dashed #00ffcc;
+            border-radius: 10px; font-size: 12px; color: #00ffcc; text-align: left;
+        }
 
         .price-box {
             margin: 30px 0; padding: 30px; background: rgba(212, 175, 55, 0.05);
             border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.2);
         }
         .price-tag { font-size: 52px; color: var(--gold); font-weight: 800; line-height: 1; }
-        .time-info { color: #00ffcc; font-size: 14px; margin-top: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-
+        
         .btn {
             background: linear-gradient(135deg, var(--gold), #b8860b);
             color: black; border: none; padding: 22px; width: 100%;
-            border-radius: 16px; font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 17px;
-            box-shadow: 0 10px 25px rgba(212,175,55,0.2); transition: 0.3s;
+            border-radius: 16px; font-weight: 800; cursor: pointer; text-transform: uppercase;
         }
-        .btn:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(212,175,55,0.3); }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div class="card">
     <h1>KORICA</h1>
-    <div class="subtitle">Auto Nega | Sremčica</div>
+    <div class="subtitle">Auto Nega | Detalji prave razliku</div>
     
     <div class="group">
-        <label>1. Odaberi brend</label>
-        <select id="markaSel" onchange="azurirajModele()">
-            <option value="" selected disabled>Izaberi brend...</option>
-        </select>
+        <label>Vozilo</label>
+        <select id="markaSel" onchange="azurirajModele()"></select>
+        <select id="modelSel" onchange="izracunaj()" style="margin-top:10px;"></select>
     </div>
 
     <div class="group">
-        <label>2. Odaberi model</label>
-        <select id="modelSel" onchange="izracunaj()">
-            <option value="">Prvo odaberi brend...</option>
-        </select>
-        <div id="detalji" class="info-tag"></div>
-    </div>
-
-    <div class="group">
-        <label>3. Odaberi uslugu</label>
+        <label>Usluga</label>
         <div class="services-container">
-            <label class="service-item"><input type="checkbox" id="spolja" onchange="izracunaj()" checked> Nega karoserije (Spoljašnjost)</label>
-            <label class="service-item"><input type="checkbox" id="unutra" onchange="izracunaj()" checked> Nega kabine (Enterijer)</label>
+            <label class="service-item"><input type="checkbox" id="spolja" onchange="izracunaj()" checked> Nega karoserije</label>
+            <label class="service-item"><input type="checkbox" id="unutra" onchange="izracunaj()" checked> Nega kabine</label>
+        </div>
+        <div id="pragoviNote" class="note-box">
+            ✨ <b>Premium dodatak:</b> Budući da ste odabrali samo spoljašnje pranje, uključili smo detaljno brisanje pragova (+100 RSD) kako bi ulazak u vozilo bio besprekoran.
         </div>
     </div>
 
     <div class="price-box">
         <div class="price-tag" id="rezultat">0 RSD</div>
-        <div class="time-info" id="vreme">Spreman za rad</div>
     </div>
 
     <button class="btn" onclick="zakazi()">Zakaži termin</button>
@@ -101,18 +86,15 @@
 
 <script>
     const baza = {
-        "Audi": ["A1|700|500|25", "A3|800|600|35", "A4|1000|800|45", "A6|1100|900|45", "A8|1400|1200|65", "Q3|1000|800|40", "Q5|1200|900|50", "Q7|1700|1400|75"],
-        "BMW": ["Serija 1|800|600|30", "Serija 3|900|700|40", "Serija 5|1100|900|45", "Serija 7|1400|1200|65", "X1|1000|800|40", "X3|1200|900|50", "X5|1500|1000|60", "X7|1800|1500|80"],
-        "Mercedes-Benz": ["A Klasa|800|600|30", "C Klasa|1000|800|40", "E Klasa|1100|900|45", "S Klasa|1400|1200|65", "GLE|1500|1000|60", "GLS|1800|1500|80"],
-        "Volkswagen": ["Polo|700|500|25", "Golf|850|650|35", "Passat|1000|800|45", "Tiguan|1100|900|50", "Touareg|1500|1000|60"],
-        "Toyota": ["Yaris|700|500|25", "Corolla|900|700|40", "Rav4|1200|900|50", "Hilux|1700|700|55"],
-        "Skoda": ["Fabia|700|500|25", "Octavia|900|700|40", "Superb|1100|900|45", "Kodiaq|1500|1200|60"],
-        "Zastava": ["Yugo|500|400|20", "Fića|400|300|15"]
+        "Audi": ["A1|700|500", "A3|800|600", "A4|1000|800", "A6|1100|900", "A8|1400|1200"],
+        "BMW": ["Serija 1|800|600", "Serija 3|900|700", "Serija 5|1100|900", "Serija 7|1400|1200"],
+        "Mercedes-Benz": ["A Klasa|800|600", "C Klasa|1000|800", "E Klasa|1100|900", "S Klasa|1400|1200"],
+        "Volkswagen": ["Polo|700|500", "Golf|850|650", "Passat|1000|800"]
     };
 
     function inicijalizuj() {
         const mSel = document.getElementById("markaSel");
-        mSel.innerHTML = '<option value="" disabled selected>Marka automobila...</option>';
+        mSel.innerHTML = '<option value="" disabled selected>Marka...</option>';
         Object.keys(baza).sort().forEach(m => {
             let o = document.createElement("option"); o.value = m; o.text = m; mSel.appendChild(o);
         });
@@ -121,11 +103,8 @@
     function azurirajModele() {
         const m = document.getElementById("markaSel").value;
         const modSel = document.getElementById("modelSel");
-        const det = document.getElementById("detalji");
         modSel.innerHTML = '<option value="" disabled selected>Model...</option>';
-        det.style.display = "none";
-        
-        baza[m].sort().forEach(mo => {
+        baza[m].forEach(mo => {
             let [ime] = mo.split('|');
             let o = document.createElement("option"); o.value = mo; o.text = ime; modSel.appendChild(o);
         });
@@ -134,32 +113,31 @@
 
     function izracunaj() {
         const val = document.getElementById("modelSel").value;
-        const det = document.getElementById("detalji");
-        if(!val) {
-            document.getElementById("rezultat").innerText = "0 RSD";
-            document.getElementById("vreme").innerText = "Odaberite vozilo";
-            return;
+        if(!val) return;
+        let [ime, cS, cU] = val.split('|');
+        
+        const isSpolja = document.getElementById("spolja").checked;
+        const isUnutra = document.getElementById("unutra").checked;
+        const note = document.getElementById("pragoviNote");
+        
+        let ukupno = 0;
+        if(isSpolja) ukupno += parseInt(cS);
+        if(isUnutra) ukupno += parseInt(cU);
+
+        // LOGIKA ZA PRAGOVE: Samo ako je spolja ON, a unutra OFF
+        if(isSpolja && !isUnutra) {
+            ukupno += 100;
+            note.style.display = "block";
+        } else {
+            note.style.display = "none";
         }
 
-        let [ime, cS, cU, min] = val.split('|');
-        det.style.display = "block";
-        det.innerHTML = `Analiza tretmana: <b>${cS} RSD</b> (Karoserija) + <b>${cU} RSD</b> (Kabina)`;
-
-        let ukupno = 0;
-        let t = 0;
-        if(document.getElementById("spolja").checked) { ukupno += parseInt(cS); t += parseInt(min) * 0.45; }
-        if(document.getElementById("unutra").checked) { ukupno += parseInt(cU); t += parseInt(min) * 0.55; }
-
         document.getElementById("rezultat").innerText = ukupno.toLocaleString() + " RSD";
-        document.getElementById("vreme").innerText = t > 0 ? "Vreme rada: ~" + Math.round(t) + " min" : "Čekamo Vas";
     }
 
     function zakazi() {
-        const m = document.getElementById("markaSel").value;
-        const moRaw = document.getElementById("modelSel").value;
-        if(!moRaw) { alert("Molimo Vas da odaberete vozilo."); return; }
         const cena = document.getElementById("rezultat").innerText;
-        window.open(`https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url&entry.345073777=${encodeURIComponent(m + " " + moRaw.split('|')[0])}&entry.988818818=${encodeURIComponent(cena)}`, '_blank');
+        alert("Termin rezervisan! Cena: " + cena);
     }
 
     inicijalizuj();
