@@ -8,153 +8,28 @@
         :root { --gold: #d4af37; --black: #000; --dark: #111; }
         * { box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
         
-        body { 
-            background: var(--black); 
-            color: white; 
-            display: flex; 
-            justify-content: center; 
-            padding: 20px; 
-            margin: 0; 
-            min-height: 100vh;
-        }
-
+        body { background: var(--black); color: white; display: flex; justify-content: center; padding: 20px; margin: 0; min-height: 100vh; }
         .card { width: 100%; max-width: 450px; }
-        
-        .header { 
-            margin-bottom: 30px; 
-            border-left: 4px solid var(--gold); 
-            padding-left: 20px; 
-        }
-        
-        h1 { 
-            color: var(--gold); 
-            margin: 0; 
-            letter-spacing: 10px; 
-            text-transform: uppercase; 
-            font-size: 38px; 
-            font-weight: 900; 
-        }
-        
-        .tagline { 
-            color: #fff; 
-            font-size: 16px; 
-            letter-spacing: 2px; 
-            text-transform: uppercase; 
-            display: block; 
-            margin-top: 5px; 
-        }
-        
-        .synonym { 
-            color: #fff; 
-            font-size: 12px; 
-            text-transform: uppercase; 
-            letter-spacing: 3px; 
-            display: block; 
-            margin-top: 2px; 
-            opacity: 0.8;
-        }
-
+        .header { margin-bottom: 30px; border-left: 4px solid var(--gold); padding-left: 20px; }
+        h1 { color: var(--gold); margin: 0; letter-spacing: 10px; text-transform: uppercase; font-size: 38px; font-weight: 900; }
+        .tagline { color: #fff; font-size: 16px; letter-spacing: 2px; text-transform: uppercase; display: block; margin-top: 5px; }
+        .synonym { color: #fff; font-size: 12px; text-transform: uppercase; letter-spacing: 3px; display: block; margin-top: 2px; opacity: 0.8; }
         .group { margin-bottom: 25px; }
-        
-        label { 
-            display: block; 
-            color: #666; 
-            font-size: 10px; 
-            text-transform: uppercase; 
-            margin-bottom: 10px; 
-        }
-        
-        select { 
-            width: 100%; 
-            padding: 16px; 
-            background: #000; 
-            color: white; 
-            border: 1px solid #333; 
-            border-radius: 0; 
-            font-size: 15px; 
-            outline: none; 
-            appearance: none;
-            cursor: pointer;
-        }
-
+        label { display: block; color: #666; font-size: 10px; text-transform: uppercase; margin-bottom: 10px; }
+        select { width: 100%; padding: 16px; background: #000; color: white; border: 1px solid #333; border-radius: 0; font-size: 15px; outline: none; appearance: none; cursor: pointer; }
         #main-ui { display: none; }
-
-        .tech-data { 
-            margin: 25px 0; 
-            padding: 18px; 
-            border-top: 1px solid #222; 
-            border-bottom: 1px solid #222; 
-            background: rgba(255,255,255,0.02);
-        }
-        
-        .data-line { 
-            display: flex; 
-            justify-content: space-between; 
-            margin-bottom: 10px; 
-            font-size: 13px; 
-            font-family: monospace; 
-        }
-        
+        .tech-data { margin: 25px 0; padding: 18px; border-top: 1px solid #222; border-bottom: 1px solid #222; background: rgba(255,255,255,0.02); }
+        .data-line { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13px; font-family: monospace; }
         .data-label { color: #555; text-transform: uppercase; }
         .data-val { color: var(--gold); font-weight: bold; }
-
-        .services { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 8px; 
-        }
-        
-        .opt { 
-            background: #000; 
-            border: 1px solid #222; 
-            padding: 18px; 
-            text-align: center; 
-            cursor: pointer; 
-            font-size: 12px; 
-            color: #777; 
-            font-weight: bold;
-            transition: 0.3s; 
-        }
-        
-        .opt.active { 
-            border-color: var(--gold); 
-            color: #ffffff !important; 
-            background: #111;
-        }
-
-        .notice { 
-            background: rgba(212, 175, 55, 0.05); 
-            border: 1px solid rgba(212, 175, 55, 0.2); 
-            padding: 15px; 
-            margin-top: 20px; 
-            font-size: 11px; 
-            color: #ccc; 
-            display: none; 
-            line-height: 1.5;
-        }
-
-        .price-panel { 
-            margin-top: 40px; 
-            text-align: right; 
-            display: none;
-        }
-        
+        .services { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .opt { background: #000; border: 1px solid #222; padding: 18px; text-align: center; cursor: pointer; font-size: 12px; color: #777; font-weight: bold; transition: 0.3s; }
+        .opt.active { border-color: var(--gold); color: #ffffff !important; background: #111; }
+        .notice { background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.2); padding: 15px; margin-top: 20px; font-size: 11px; color: #ccc; display: none; line-height: 1.5; }
+        .price-panel { margin-top: 40px; text-align: right; display: none; }
         .price-label { font-size: 10px; color: #666; text-transform: uppercase; }
         .price-val { display: block; font-size: 45px; color: var(--gold); font-weight: 900; }
-        
-        .btn { 
-            background: var(--gold); 
-            color: black; 
-            border: none; 
-            padding: 22px; 
-            width: 100%; 
-            margin-top: 30px; 
-            cursor: pointer; 
-            text-transform: uppercase; 
-            font-weight: 900; 
-            letter-spacing: 2px; 
-            display: none;
-        }
+        .btn { background: var(--gold); color: black; border: none; padding: 22px; width: 100%; margin-top: 30px; cursor: pointer; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; display: none; }
     </style>
 </head>
 <body>
@@ -188,7 +63,7 @@
         </div>
 
         <div class="group">
-            <label>Odaberite uslugu odabirom željenog polja</label>
+            <label>Odaberite uslugu</label>
             <div class="services">
                 <div class="opt" id="btn-s" onclick="toggle('s')">SPOLJAŠNJOST</div>
                 <div class="opt" id="btn-u" onclick="toggle('u')">UNUTRAŠNJOST</div>
@@ -208,32 +83,25 @@
 </div>
 
 <script>
-// Vraćene originalne cene i modeli
+// Proširena baza podataka - Marka: [ "Model|Spolja|Unutra|Dužina|Širina|Vreme" ]
 const db = {
-    "Audi": [
-        "A3 8V (2012-2020)|950|850|431|178|70",
-        "A4 B9 (2015-2024)|1000|900|472|184|85",
-        "A6 C8 (2018-2024)|1050|950|493|188|110",
-        "Q7 4M (2015-2024)|1300|1200|506|197|145"
-    ],
-    "BMW": [
-        "Serija 1 F20|950|850|432|176|70",
-        "Serija 3 G20|1000|900|470|182|85",
-        "Serija 5 G30|1050|950|493|186|110",
-        "X5 G05|1250|1150|492|200|135"
-    ],
-    "Volkswagen": [
-        "Polo|850|750|405|175|55",
-        "Golf 7|900|800|425|179|65",
-        "Passat B8|1000|900|476|183|85",
-        "Touareg|1200|1100|487|198|130"
-    ],
-    "Skoda": [
-        "Fabia|850|750|399|173|55",
-        "Octavia A7|1000|900|466|181|85",
-        "Superb B8|1050|950|486|186|110",
-        "Kodiaq|1200|1100|469|188|125"
-    ]
+    "Alfa Romeo": ["Giulietta|900|800|435|180|70", "Giulia|1000|900|464|186|85", "Stelvio|1100|1000|468|190|100"],
+    "Audi": ["A1|850|750|403|174|60", "A3 8V|950|850|431|178|70", "A4 B9|1000|900|472|184|85", "A6 C8|1050|950|493|188|110", "Q7 4M|1300|1200|506|197|145"],
+    "BMW": ["Serija 1 F20|950|850|432|176|70", "Serija 3 G20|1000|900|470|182|85", "Serija 5 G30|1050|950|493|186|110", "X5 G05|1250|1150|492|200|135"],
+    "Citroen": ["C3|850|750|399|175|60", "C4|950|850|436|180|75", "Berlingo|1050|950|440|185|90", "Jumper (Kombi)|1600|1400|541|205|160"],
+    "Dacia": ["Sandero|850|750|408|173|60", "Duster|1000|900|434|180|85", "Dokker (Kombi)|1050|950|436|175|90"],
+    "Fiat": ["500|800|700|357|163|55", "Tipo|950|850|437|179|75", "Doblo (Kombi)|1050|950|440|183|90", "Ducato (Kombi)|1600|1400|541|205|160"],
+    "Ford": ["Fiesta|850|750|404|173|60", "Focus|950|850|437|182|75", "Mondeo|1050|950|487|185|95", "Transit (Kombi)|1600|1400|553|206|170"],
+    "Hyundai": ["i20|850|750|404|177|60", "i30|950|850|434|179|75", "Tucson|1100|1000|450|186|100", "H350 (Kombi)|1700|1500|550|203|180"],
+    "Iveco": ["Daily (Kombi)|1700|1500|556|201|180"],
+    "Mercedes-Benz": ["A-Klasa|950|850|441|180|75", "C-Klasa|1050|950|468|181|90", "E-Klasa|1150|1050|492|185|110", "S-Klasa|1300|1200|525|190|130", "Sprinter (Kombi)|1700|1500|593|202|180", "Vito (Kombi)|1300|1200|489|190|140"],
+    "Opel": ["Corsa|850|750|406|176|60", "Astra|950|850|437|181|75", "Insignia|1100|1000|489|186|100", "Vivaro (Kombi)|1300|1200|495|192|140"],
+    "Peugeot": ["208|850|750|405|174|60", "308|950|850|425|180|75", "508|1100|1000|475|186|100", "Boxer (Kombi)|1600|1400|541|205|160"],
+    "Renault": ["Clio|850|750|405|173|60", "Megane|950|850|435|181|75", "Talisman|1100|1000|485|187|100", "Master (Kombi)|1700|1500|555|207|180", "Trafic (Kombi)|1300|1200|499|195|140"],
+    "Skoda": ["Fabia|850|750|399|173|55", "Octavia|1000|900|466|181|85", "Superb|1050|950|486|186|110", "Kodiaq|1200|1100|469|188|125"],
+    "Toyota": ["Yaris|850|750|394|174|60", "Corolla|1000|900|437|179|80", "RAV4|1150|1050|460|185|105", "Proace (Kombi)|1300|1200|495|192|140"],
+    "Volkswagen": ["Polo|850|750|405|175|55", "Golf|950|850|425|179|65", "Passat|1000|900|476|183|85", "Tiguan|1100|1000|448|184|100", "Transporter T6 (Kombi)|1300|1200|490|190|140", "Crafter (Kombi)|1700|1500|598|204|180"],
+    "Zastava": ["Yugo|750|650|349|154|45", "101|800|700|383|159|50"]
 };
 
 let activeS = false, activeU = false;
@@ -289,14 +157,13 @@ function calculate() {
     let finalTime = 0;
     if (activeS && activeU) finalTime = time;
     else if (activeS) finalTime = Math.round(time * 0.6);
-    else if (activeU) finalTime = Math.round(time * 0.4);
+    else if (activeU) finalTime = Math.round(time * 0.5);
     document.getElementById("time").innerText = finalTime + " min";
     
     let total = 0;
     if(activeS) total += parseInt(pS);
     if(activeU) total += parseInt(pU);
     
-    // ISPRAVKA LOGIKE: Napomena i doplata idu SAMO za Spoljašnjost
     if(activeS && !activeU) {
         total += 100;
         document.getElementById("pragovi-notice").style.display = "block";
