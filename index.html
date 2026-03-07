@@ -3,134 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>KORICA | Baza Vozila</title>
+    <title>KORICA | Automotive Expert System</title>
     <style>
-        :root { --gold: #d4af37; --black: #000; --dark: #111; }
+        :root { --gold: #d4af37; --black: #000; --dark: #0a0a0a; --gray: #1a1a1a; }
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--black); color: white; margin: 0; padding: 20px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 500px; }
-        .header { border-left: 5px solid var(--gold); padding-left: 20px; margin-bottom: 40px; }
-        h1 { color: var(--gold); margin: 0; letter-spacing: 8px; text-transform: uppercase; font-size: 32px; font-weight: 900; }
-        .tagline { display: block; letter-spacing: 2px; font-size: 14px; margin-top: 5px; opacity: 0.8; }
-        
+        body { background: var(--black); color: white; margin: 0; padding: 15px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 600px; background: var(--dark); border: 1px solid #222; padding: 25px; border-radius: 8px; }
+        .header { border-left: 6px solid var(--gold); padding-left: 20px; margin-bottom: 30px; }
+        h1 { color: var(--gold); margin: 0; letter-spacing: 6px; text-transform: uppercase; font-size: 28px; font-weight: 900; }
+        .tagline { display: block; letter-spacing: 3px; font-size: 12px; margin-top: 5px; color: var(--gold); opacity: 0.7; }
+        .section-title { color: var(--gold); font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin: 25px 0 12px 0; display: flex; align-items: center; }
+        .section-title::after { content: ""; flex: 1; height: 1px; background: var(--gray); margin-left: 15px; }
         .group { margin-bottom: 20px; }
-        label { display: block; color: #555; font-size: 11px; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px; }
-        select { width: 100%; padding: 15px; background: var(--dark); color: white; border: 1px solid #333; border-radius: 4px; font-size: 16px; outline: none; appearance: none; }
-        select:focus { border-color: var(--gold); }
-
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 30px; display: none; }
-        .info-card { background: #080808; border: 1px solid #222; padding: 15px; border-radius: 4px; }
-        .info-label { font-size: 10px; color: #555; text-transform: uppercase; display: block; }
-        .info-val { color: var(--gold); font-size: 18px; font-weight: bold; margin-top: 5px; display: block; }
-        
-        .divider { height: 1px; background: #222; margin: 30px 0; }
+        label { display: block; color: #555; font-size: 10px; text-transform: uppercase; margin-bottom: 8px; font-weight: bold; }
+        select { width: 100%; padding: 16px; background: #111; color: white; border: 1px solid #333; border-radius: 5px; font-size: 16px; outline: none; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        .opt-card { background: #111; border: 1px solid #333; padding: 15px 10px; border-radius: 5px; cursor: pointer; text-align: center; font-size: 11px; font-weight: 800; text-transform: uppercase; color: #888; }
+        .opt-card.active { border-color: var(--gold); background: rgba(212, 175, 55, 0.05); color: var(--gold); }
+        .addon-box { margin-top: 15px; display: none; padding: 18px; background: #0c0c0c; border: 1px solid #222; border-radius: 5px; align-items: center; }
+        .checkbox-custom { width: 22px; height: 22px; accent-color: var(--gold); }
+        .results-panel { margin-top: 30px; padding-top: 20px; border-top: 2px solid var(--gray); display: none; }
+        .price-display { background: #050505; padding: 30px; border-radius: 5px; text-align: center; border: 1px solid #222; margin-top: 20px; }
+        .price-amt { font-size: 48px; color: var(--gold); font-weight: 900; display: block; }
+        .btn-reserve { background: var(--gold); color: black; border: none; padding: 20px; width: 100%; border-radius: 5px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; margin-top: 20px; }
     </style>
 </head>
 <body>
-
 <div class="container">
-    <div class="header">
-        <h1>KORICA</h1>
-        <span class="tagline">SINONIM KVALITETA</span>
-    </div>
-
+    <div class="header"><h1>KORICA</h1><span class="tagline">SINONIM KVALITETA</span></div>
+    <div class="section-title">Vozilo</div>
     <div class="group">
-        <label>Marka vozila</label>
-        <select id="marka" onchange="loadModels()">
-            <option value="" disabled selected>Izaberite marku...</option>
-        </select>
+        <label>Marka</label>
+        <select id="marka" onchange="loadModels()"><option value="" disabled selected>Učitavanje baze...</option></select>
     </div>
-
     <div class="group">
-        <label>Model i godište (Generacija)</label>
-        <select id="model" onchange="showData()">
-            <option value="" disabled selected>Prvo izaberite marku...</option>
-        </select>
+        <label>Model i godište</label>
+        <select id="model" onchange="calculate()"></select>
     </div>
-
-    <div class="info-grid" id="data-display">
-        <div class="info-card">
-            <span class="info-label">Dužina (cm)</span>
-            <span class="info-val" id="v-len">--</span>
+    <div class="section-title">Usluga</div>
+    <div class="options-grid">
+        <div class="opt-card" id="opt-spolja" onclick="setMode('spolja')">Spolja</div>
+        <div class="opt-card" id="opt-unutra" onclick="setMode('unutra')">Unutra</div>
+        <div class="opt-card" id="opt-zajedno" onclick="setMode('zajedno')">Komplet</div>
+    </div>
+    <div class="addon-box" id="pragovi-box">
+        <label style="flex:1; cursor:pointer;" onclick="togglePragovi()">Doplata za pragove (+200 RSD)</label>
+        <input type="checkbox" id="pragovi-check" class="checkbox-custom" onchange="calculate()">
+    </div>
+    <div class="results-panel" id="results">
+        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+            <span style="color:#555; font-size:11px;">DIMENZIJE:</span>
+            <span id="res-dim" style="font-weight:bold;"></span>
         </div>
-        <div class="info-card">
-            <span class="info-label">Širina (cm)</span>
-            <span class="info-val" id="v-wid">--</span>
+        <div class="price-display">
+            <span class="price-amt" id="res-price">0 RSD</span>
+            <span id="res-time" style="color:#888; font-size:13px;"></span>
         </div>
-        <div class="info-card" style="grid-column: span 2;">
-            <span class="info-label">Gabaritna kategorija</span>
-            <span class="info-val" id="v-cat">--</span>
-        </div>
+        <button class="btn-reserve" onclick="sendOrder()">Rezerviši</button>
     </div>
 </div>
 
-<script>
-// Baza podataka - tačno 1000 modela sa godištima i gabaritima
-const db = {
+<script id="database-script">
+    const masterDB = {}; // Ovde se spajaju svi modeli
+</script>
+// MODUL B - Ubaciti u <script> tag ispod masterDB
+const db_Part1 = {
     "Alfa Romeo": [
-        "147 (2000-2010)|422|173|Kompakt",
-        "156 Sedan (1997-2007)|443|174|Limuzina",
-        "156 Sportwagon (1997-2007)|444|174|Karavan",
-        "159 Sedan (2005-2011)|466|183|Limuzina",
-        "159 Sportwagon (2005-2011)|466|183|Karavan",
-        "166 (1998-2007)|472|181|Velika limuzina",
-        "Giulia (2016-2026)|464|186|Limuzina",
-        "Giulietta (2010-2020)|435|180|Kompakt",
-        "Stelvio (2016-2026)|468|190|SUV",
-        "MiTo (2008-2018)|406|172|Mali gradski",
-        "GT (2003-2010)|448|176|Coupe",
-        "Brera (2005-2010)|441|183|Coupe"
+        "147 (2000-2010)|422|173|1.0", "156 Sedan (1997-2007)|443|174|1.1", "156 Sportwagon (1997-2007)|444|174|1.2",
+        "159 Sedan (2005-2011)|466|183|1.2", "159 Sportwagon (2005-2011)|466|183|1.3", "Giulia (2016-2026)|464|186|1.2",
+        "Giulietta (2010-2020)|435|180|1.1", "Stelvio (2016-2026)|468|190|1.5", "MiTo (2008-2018)|406|172|0.9"
     ],
     "Audi": [
-        "A1 (2010-2018)|395|174|Mali gradski",
-        "A1 (2018-2026)|403|174|Mali gradski",
-        "A3 8L (1996-2003)|415|173|Kompakt",
-        "A3 8P (2003-2013)|423|176|Kompakt",
-        "A3 8V (2012-2020)|431|178|Kompakt",
-        "A3 8Y (2020-2026)|434|181|Kompakt",
-        "A4 B5 (1994-2001)|447|173|Limuzina",
-        "A4 B6 (2000-2004)|454|177|Limuzina",
-        "A4 B7 (2004-2008)|458|177|Limuzina",
-        "A4 B8 (2008-2016)|470|182|Limuzina",
-        "A4 B9 (2016-2024)|476|184|Limuzina",
-        "A6 C5 (1997-2004)|479|181|Velika limuzina",
-        "A6 C6 (2004-2011)|491|185|Velika limuzina",
-        "A6 C7 (2011-2018)|493|187|Velika limuzina",
-        "A6 C8 (2018-2026)|494|188|Velika limuzina",
-        "Q3 G1 (2011-2018)|438|183|SUV",
-        "Q5 G1 (2008-2016)|463|188|SUV",
-        "Q7 G2 (2015-2026)|506|197|Veliki SUV"
+        "A1 (2010-2018)|395|174|0.9", "A3 8P (2003-2012)|424|177|1.1", "A4 B8 Avant (2008-2015)|470|182|1.3",
+        "A6 C7 (2011-2018)|494|187|1.4", "Q5 (2008-2016)|463|188|1.5", "Q7 (2005-2015)|508|198|1.8"
+    ],
+    "BMW": [
+        "Serija 1 E87|422|175|1.0", "Serija 3 E46|447|174|1.1", "Serija 3 E90|452|181|1.2",
+        "Serija 5 F10|489|186|1.4", "X3 F25|465|188|1.5", "X5 G05|492|200|1.8"
+    ],
+    "Citroen": [
+        "C3 G2 (2009-2016)|394|172|0.9", "C4 G2 (2010-2018)|433|179|1.1", "C5 G2 (2008-2017)|478|186|1.3"
+    ],
+    "Fiat": [
+        "Punto G2|384|166|0.8", "500 (2007-)|357|163|0.7", "Tipo (2015-)|436|179|1.1", "Doblo G2|439|183|1.4"
+    ],
+    "Ford": [
+        "Fiesta G6|395|172|0.9", "Focus G3|435|182|1.1", "Mondeo G4|484|188|1.4", "Kuga G2|452|184|1.4"
     ]
-    // Nastavak do 1000 modela...
 };
+Object.assign(masterDB, db_Part1);
+    // MODUL C - Ubaciti na sam kraj <script> taga
+const db_Part2 = {
+    "Mercedes-Benz": [
+        "A-Klasa W169|383|176|0.9", "C-Klasa W204|458|177|1.2", "E-Klasa W212|486|185|1.4", "GLE W166|482|193|1.7"
+    ],
+    "Opel": [
+        "Corsa D|399|171|0.9", "Astra H|424|175|1.1", "Insignia A|483|185|1.4", "Zafira B|446|180|1.3"
+    ],
+    "Renault": [
+        "Clio G3|398|171|0.9", "Megane G3|429|180|1.1", "Laguna G3|469|181|1.3", "Scenic G3|434|180|1.3"
+    ],
+    "Skoda": [
+        "Fabia G2|400|164|0.9", "Octavia G3|466|181|1.2", "Superb G3|486|186|1.4", "Kodiaq|469|188|1.6"
+    ],
+    "Volkswagen": [
+        "Golf 7|425|179|1.1", "Passat B8|477|183|1.3", "Polo G5|397|168|0.9", "Tiguan G2|448|184|1.4"
+    ]
+};
+Object.assign(masterDB, db_Part2);
 
-function init() {
-    const mSel = document.getElementById("marka");
-    Object.keys(db).sort().forEach(m => mSel.options.add(new Option(m, m)));
-}
+// FINALNA LOGIKA
+const base = { spolja: { p: 800, t: 30 }, unutra: { p: 800, t: 35 }, zajedno: { p: 1500, t: 60 } };
+let activeMode = '';
 
 function loadModels() {
     const m = document.getElementById("marka").value;
     const modSel = document.getElementById("model");
-    modSel.innerHTML = '<option value="" disabled selected>Izaberite model...</option>';
-    db[m].forEach((item, index) => {
-        modSel.options.add(new Option(item.split('|')[0], index));
-    });
-    document.getElementById("data-display").style.display = "none";
+    modSel.innerHTML = '<option value="" disabled selected>Model...</option>';
+    masterDB[m].forEach((item, index) => modSel.options.add(new Option(item.split('|')[0], index)));
 }
 
-function showData() {
+function setMode(mode) {
+    activeMode = mode;
+    document.querySelectorAll('.opt-card').forEach(c => c.classList.remove('active'));
+    document.getElementById('opt-' + mode).classList.add('active');
+    document.getElementById('pragovi-box').style.display = (mode === 'spolja') ? 'flex' : 'none';
+    calculate();
+}
+
+function calculate() {
     const m = document.getElementById("marka").value;
     const idx = document.getElementById("model").value;
-    const [name, len, wid, cat] = db[m][idx].split('|');
-
-    document.getElementById("v-len").innerText = len;
-    document.getElementById("v-wid").innerText = wid;
-    document.getElementById("v-cat").innerText = cat;
-    document.getElementById("data-display").style.display = "grid";
+    if(!m || idx==="" || !activeMode) return;
+    const data = masterDB[m][idx].split('|');
+    const k = parseFloat(data[3]);
+    let price = Math.round(base[activeMode].p * k);
+    let time = Math.round(base[activeMode].t * k);
+    if(activeMode === 'spolja' && document.getElementById('pragovi-check').checked) { price += 200; time += 5; }
+    document.getElementById("res-dim").innerText = `${data[1]} x ${data[2]} cm`;
+    document.getElementById("res-price").innerText = price.toLocaleString() + " RSD";
+    document.getElementById("res-time").innerText = `Vreme: cca ${time} min`;
+    document.getElementById("results").style.display = "block";
 }
 
-window.onload = init;
+window.onload = () => {
+    const mSel = document.getElementById("marka");
+    mSel.innerHTML = '<option value="" disabled selected>Marka...</option>';
+    Object.keys(masterDB).sort().forEach(m => mSel.options.add(new Option(m, m)));
+};
 </script>
 </body>
 </html>
