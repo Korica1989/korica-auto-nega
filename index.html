@@ -3,33 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>KORICA Auto Nega | Sremčica</title>
+    <title>KORICA Auto Nega | Rezervacija</title>
     <style>
-        :root { --gold: #d4af37; --black: #0a0a0a; --dark: #111; --accent: #00ffcc; }
-        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        :root { --gold: #d4af37; --black: #0a0a0a; --dark: #111; }
+        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background: var(--black); color: white; display: flex; justify-content: center; padding: 15px; margin: 0; min-height: 100vh; background-image: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%); }
         .card { background: rgba(15, 15, 15, 0.98); padding: 25px; border-radius: 25px; border: 1px solid var(--gold); width: 100%; max-width: 500px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
         h1 { color: var(--gold); margin: 0; letter-spacing: 6px; text-transform: uppercase; font-size: 32px; font-weight: 900; }
         .subtitle { color: #888; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 25px; }
-        
         .group { text-align: left; margin-bottom: 20px; }
-        label { display: block; color: var(--gold); margin-bottom: 8px; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
-        
-        select { width: 100%; padding: 15px; background: var(--dark); color: white; border: 1px solid #333; border-radius: 12px; font-size: 15px; outline: none; appearance: none; cursor: pointer; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 15px center; background-size: 14px; transition: 0.3s; }
-        select:focus { border-color: var(--gold); box-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
-
+        label { display: block; color: var(--gold); margin-bottom: 8px; font-weight: 600; font-size: 11px; text-transform: uppercase; }
+        select { width: 100%; padding: 15px; background: var(--dark); color: white; border: 1px solid #333; border-radius: 12px; font-size: 15px; outline: none; appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 15px center; background-size: 14px; }
         .services { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
-        .service-item { background: #111; padding: 16px; border-radius: 12px; border: 1px solid #333; display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 14px; transition: 0.2s; }
-        .service-item:has(input:checked) { border-color: var(--gold); background: rgba(212, 175, 55, 0.05); }
-
-        .info-panel { display: none; margin-top: 15px; padding: 12px; border-radius: 12px; font-size: 12px; text-align: left; background: rgba(212, 175, 55, 0.05); border: 1px dashed rgba(212, 175, 55, 0.3); color: #ccc; line-height: 1.5; }
-
-        .price-box { margin: 30px 0; padding: 25px; background: rgba(212, 175, 55, 0.03); border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.1); position: relative; }
-        .price-tag { font-size: 48px; color: var(--gold); font-weight: 900; display: block; line-height: 1; }
-        .time-tag { color: var(--accent); font-size: 12px; font-weight: 700; text-transform: uppercase; margin-top: 8px; display: block; letter-spacing: 1px; }
-
-        .btn { background: linear-gradient(135deg, var(--gold), #b8860b); color: black; border: none; padding: 20px; width: 100%; border-radius: 18px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 16px; letter-spacing: 1px; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(212, 175, 55, 0.2); }
+        .service-item { background: #111; padding: 16px; border-radius: 12px; border: 1px solid #333; display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 14px; }
+        .price-box { margin: 30px 0; padding: 25px; background: rgba(212, 175, 55, 0.03); border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.1); }
+        .price-tag { font-size: 48px; color: var(--gold); font-weight: 900; display: block; }
+        .btn { background: linear-gradient(135deg, var(--gold), #b8860b); color: black; border: none; padding: 20px; width: 100%; border-radius: 18px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 16px; }
     </style>
 </head>
 <body>
@@ -39,24 +28,18 @@
     <div class="subtitle">Premium Auto Nega | Sremčica</div>
     
     <div class="group">
-        <label>1. Tip vozila</label>
-        <select id="kategorijaSel" onchange="updateModels()">
-            <option value="" disabled selected>Izaberi kategoriju...</option>
-            <option value="limuzina">Putničko / Limuzina</option>
-            <option value="karavan">Karavan (Touring/Avant)</option>
-            <option value="suv">SUV / Džip</option>
-            <option value="kombi">Kombi Program</option>
+        <label>1. Izaberite Marku</label>
+        <select id="markaSel" onchange="updateModels()">
+            <option value="" disabled selected>Marka vozila...</option>
         </select>
     </div>
 
     <div class="group">
-        <label>2. Marka i Model</label>
+        <label>2. Model i Karoserija</label>
         <select id="modelSel" onchange="calculate()">
-            <option value="" disabled selected>Prvo izaberi tip...</option>
+            <option value="" disabled selected>Prvo izaberite marku...</option>
         </select>
     </div>
-
-    <div id="infoPanel" class="info-panel"></div>
 
     <div class="group">
         <label>3. Usluge</label>
@@ -68,78 +51,98 @@
 
     <div class="price-box">
         <div class="price-tag" id="rezultat">0 RSD</div>
-        <div class="time-tag" id="vreme">Spreman za rad</div>
+        <div id="vreme" style="color: #00ffcc; font-size: 12px; margin-top: 5px;">Spreman</div>
     </div>
 
     <button class="btn" onclick="sendWA()">Rezerviši termin</button>
 </div>
 
 <script>
-// Baza: [Ime|CenaSpolja|CenaUnutra|Minuti|Napomena]
-const db = {
-    "limuzina": [
-        "Golf / A3 / BMW 1|950|850|65|Kompaktna klasa - precizno pranje.",
-        "Passat / BMW 3 / A4 / C-Klasa|1000|900|85|Srednja klasa - fokus na detalje.",
-        "A6 / BMW 5 / E-Klasa|1100|1000|110|Biznis klasa - maksimalna posvećenost."
+// Format: [Prikaz u meniju|CenaSpolja|CenaUnutra|Minuti]
+const data = {
+    "Volkswagen": [
+        "Golf (Limuzina/Hatch)|950|850|65",
+        "Passat (Limuzina)|1000|900|85",
+        "Passat Variant (Karavan)|1050|950|100",
+        "Touareg (SUV)|1300|1200|130",
+        "Tiguan (SUV)|1200|1100|90",
+        "T5/T6 Multivan (Kombi)|1500|1300|120"
     ],
-    "karavan": [
-        "BMW 3 / A4 / Passat (Karavan)|1050|950|100|Povećana površina krova i gepeka.",
-        "BMW 5 / A6 / Superb (Karavan)|1100|900|120|Maksimalna površina karavana."
+    "BMW": [
+        "Serija 1 (Hatchback)|950|850|60",
+        "Serija 3 (Limuzina)|1000|900|85",
+        "Serija 3 Touring (Karavan)|1050|950|100",
+        "Serija 5 (Limuzina)|1150|1050|115",
+        "Serija 5 Touring (Karavan)|1100|900|125",
+        "X5 / X6 (SUV)|1300|1200|130"
     ],
-    "suv": [
-        "Tiguan / Tucson / Q3|1200|1100|90|Kompakt SUV - visoki gabariti.",
-        "Touareg / X5 / Q7 / GLE|1300|1200|130|SUV Grdosija - zahtevan rad i više preparata."
+    "Audi": [
+        "A3 (Sportback/Lim)|950|850|65",
+        "A4 (Limuzina)|1000|900|85",
+        "A4 Avant (Karavan)|1050|950|100",
+        "A6 (Limuzina)|1100|1000|110",
+        "A6 Avant (Karavan)|1100|900|120",
+        "Q7 / Q8 (SUV)|1300|1200|130"
     ],
-    "kombi": [
-        "Vito / V-Klasa / Multivan|1500|1300|120|Putnički kombi - veliki unutrašnji prostor.",
-        "Sprinter / Crafter / Ducato|2200|1800|180|Veliki teretni kombi - rad sa merdevinama."
+    "Mercedes-Benz": [
+        "A / B Klasa|950|850|60",
+        "C-Klasa (Limuzina)|1000|900|90",
+        "C-Klasa T (Karavan)|1050|950|100",
+        "E-Klasa (Limuzina)|1150|1050|115",
+        "GLE / GLS (SUV)|1300|1200|140",
+        "Vito / V-Klasa (Kombi)|1500|1300|120"
+    ],
+    "Skoda": [
+        "Fabia|950|850|55",
+        "Octavia (Limuzina)|1000|900|85",
+        "Octavia Combi (Karavan)|1050|950|100",
+        "Superb Combi (Karavan)|1050|950|115",
+        "Kodiaq (SUV)|1250|1150|110"
     ]
 };
 
+function init() {
+    const mSel = document.getElementById("markaSel");
+    Object.keys(data).sort().forEach(m => { mSel.options.add(new Option(m, m)); });
+}
+
 function updateModels() {
-    const kat = document.getElementById("kategorijaSel").value;
+    const m = document.getElementById("markaSel").value;
     const modSel = document.getElementById("modelSel");
     modSel.innerHTML = "";
-    
-    db[kat].forEach((item, index) => {
-        let name = item.split('|')[0];
-        modSel.options.add(new Option(name, index));
+    data[m].forEach((item, index) => {
+        modSel.options.add(new Option(item.split('|')[0], index));
     });
     calculate();
 }
 
 function calculate() {
-    const kat = document.getElementById("kategorijaSel").value;
-    const modIdx = document.getElementById("modelSel").value;
-    if (!kat || modIdx === "") return;
+    const m = document.getElementById("markaSel").value;
+    const idx = document.getElementById("modelSel").value;
+    if (!m || idx === "") return;
 
-    const [ime, cS, cU, min, napomena] = db[kat][modIdx].split('|');
-    const isSpolja = document.getElementById("spolja").checked;
-    const isUnutra = document.getElementById("unutra").checked;
+    const [ime, cS, cU, min] = data[m][idx].split('|');
+    const isS = document.getElementById("spolja").checked;
+    const isU = document.getElementById("unutra").checked;
     
     let total = 0;
-    if (isSpolja) total += parseInt(cS);
-    if (isUnutra) total += parseInt(cU);
-    
-    // KORICA Standard: +100 ako ide samo spolja
-    if (isSpolja && !isUnutra) total += 100;
+    if (isS) total += parseInt(cS);
+    if (isU) total += parseInt(cU);
+    if (isS && !isU) total += 100; // KORICA Standard pragovi
 
     document.getElementById("rezultat").innerText = total.toLocaleString() + " RSD";
-    document.getElementById("vreme").innerText = (isSpolja || isUnutra) ? "~" + min + " MINUTA RADA" : "ODABERITE USLUGU";
-    
-    const panel = document.getElementById("infoPanel");
-    panel.style.display = "block";
-    panel.innerHTML = `✨ <b>KORICA Info:</b> ${napomena}<br><small>U cenu je uračunato detaljno čišćenje pragova.</small>`;
+    document.getElementById("vreme").innerText = "~" + min + " MINUTA RADA";
 }
 
 function sendWA() {
-    const kat = document.getElementById("kategorijaSel").options[document.getElementById("kategorijaSel").selectedIndex].text;
+    const m = document.getElementById("markaSel").value;
     const mod = document.getElementById("modelSel").options[document.getElementById("modelSel").selectedIndex].text;
     const cena = document.getElementById("rezultat").innerText;
-    const poruka = `Pozdrav Korica! Rezervisao bih pranje za ${kat} (${mod}). Cena: ${cena}.`;
-    window.open(`https://wa.me/38164XXXXXXX?text=${encodeURIComponent(poruka)}`);
+    const msg = `Pozdrav Korica! Rezervisao bih pranje: ${m} ${mod}. Cena: ${cena}.`;
+    window.open(`https://wa.me/38164XXXXXXX?text=${encodeURIComponent(msg)}`);
 }
-</script>
 
+window.onload = init;
+</script>
 </body>
 </html>
