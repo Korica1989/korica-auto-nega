@@ -238,15 +238,13 @@
         ],
         "Chevrolet": [
             "Aveo T300|404|173|1.00", "Cruze Sedan|460|179|1.25", "Captiva|467|185|1.65", "Spark M300|364|160|0.75", "Orlando|465|183|1.50"
-        ]
-    }; // Ovim se završava masterDB
+   }; // Ovde se završava tvoja masterDB baza
 
-    // LOGIKA I AKTIVACIJA SISTEMA
+    // --- KLJUČNA LOGIKA I AKTIVACIJA ---
     let currentMode = '';
     const cene = { spolja: 800, unutra: 800, komplet: 1500 };
     const vremena = { spolja: 30, unutra: 35, komplet: 60 };
 
-    // 1. FUNKCIJA KOJA PUNI PADAUĆI MENI (OVO TI JE FALILO)
     function initApp() {
         const s = document.getElementById('marka');
         if(!s) return;
@@ -256,13 +254,13 @@
         });
     }
 
-    // 2. AKTIVACIJA PRI UČITAVANJU
+    // Aktiviraj bazu čim se stranica učita
     window.onload = initApp;
 
-    // 3. FUNKCIJA ZA FILTRIRANJE MODELA
     function fillModels() {
         const m = document.getElementById('marka').value;
         const s = document.getElementById('model');
+        if(!s) return;
         s.innerHTML = '<option value="" disabled selected>Izaberi model...</option>';
         if(masterDB[m]) {
             masterDB[m].forEach((item, idx) => {
@@ -272,16 +270,17 @@
         document.getElementById('results').style.display = 'none';
     }
 
-    // 4. FUNKCIJA ZA ODABIR USLUGE
     function setMode(mode) {
         currentMode = mode;
         document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-        document.getElementById('btn-' + mode).classList.add('active');
-        document.getElementById('pragovi-div').style.display = (mode === 'spolja') ? 'flex' : 'none';
+        const btn = document.getElementById('btn-' + mode);
+        if(btn) btn.classList.add('active');
+        
+        const pragoviDiv = document.getElementById('pragovi-div');
+        if(pragoviDiv) pragoviDiv.style.display = (mode === 'spolja') ? 'flex' : 'none';
         calculate();
     }
 
-    // 5. GLAVNI PRORAČUN (CENA + VREME)
     function calculate() {
         const m = document.getElementById('marka').value;
         const i = document.getElementById('model').value;
@@ -293,7 +292,8 @@
         let finalPrice = Math.round(cene[currentMode] * koef);
         let finalTime = Math.round(vremena[currentMode] * koef);
 
-        if(currentMode === 'spolja' && document.getElementById('pragovi-check').checked) {
+        const pragoviCheck = document.getElementById('pragovi-check');
+        if(currentMode === 'spolja' && pragoviCheck && pragoviCheck.checked) {
             finalPrice += 200;
             finalTime += 5;
         }
@@ -304,52 +304,5 @@
         document.getElementById('results').style.display = "block";
     }
 </script>
-
-    function setMode(mode) {
-        currentMode = mode;
-        document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-        document.getElementById('btn-' + mode).classList.add('active');
-        document.getElementById('pragovi-div').style.display = (mode === 'spolja') ? 'flex' : 'none';
-        calculate();
-    }
-
-    function calculate() {
-        const m = document.getElementById('marka').value;
-        const i = document.getElementById('model').value;
-        if(!m || i === "" || !currentMode) return;
-
-        const [name, d, s, k] = masterDB[m][i].split('|');
-        const koef = parseFloat(k);
-        
-        let finalPrice = Math.round(cene[currentMode] * koef);
-        let finalTime = Math.round(vremena[currentMode] * koef);
-
-        if(currentMode === 'spolja' && document.getElementById('pragovi-check').checked) {
-            finalPrice += 200;
-            finalTime += 5;
-        }
-
-        document.getElementById('res-price').innerText = finalPrice + " RSD";
-        document.getElementById('res-time').innerText = "Vreme rada: cca " + finalTime + " min";
-        document.getElementById('res-dim').innerText = "Gabariti: " + d + "x" + s + " cm";
-        document.getElementById('results').style.display = "block";
-    }
-
-    function fillModels() {
-        const m = document.getElementById('marka').value;
-        const s = document.getElementById('model');
-        s.innerHTML = '<option value="" disabled selected>Izaberi model...</option>';
-        masterDB[m].forEach((item, idx) => {
-            s.options.add(new Option(item.split('|')[0], idx));
-        });
-    }
-
-    window.onload = function() {
-        const s = document.getElementById('marka');
-        s.options.add(new Option("Izaberi marku", "", true, true));
-        Object.keys(masterDB).sort().forEach(m => s.options.add(new Option(m, m)));
-    }
-</script>
 </body>
 </html>
-
