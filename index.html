@@ -28,21 +28,21 @@
     <div class="subtitle">Premium Auto Nega | Sremčica</div>
     
     <div class="group">
-        <label>1. Marka Vozila (Imperativ)</label>
+        <label>1. Marka Vozila</label>
         <select id="markaSel" onchange="updateModels()">
             <option value="" disabled selected>Izaberite marku...</option>
         </select>
     </div>
 
     <div class="group">
-        <label>2. Definisan Model i Tip</label>
+        <label>2. Model i Godište</label>
         <select id="modelSel" onchange="calculate()">
-            <option value="" disabled selected>Prvo marka...</option>
+            <option value="" disabled selected>Prvo izaberite marku...</option>
         </select>
     </div>
 
     <div class="group">
-        <label>3. Paket Usluga</label>
+        <label>3. Izaberite Usluge</label>
         <div class="services">
             <label class="service-item"><input type="checkbox" id="spolja" checked onchange="calculate()"> Spolja</label>
             <label class="service-item"><input type="checkbox" id="unutra" checked onchange="calculate()"> Unutra</label>
@@ -60,75 +60,68 @@
 <script>
 const data = {
     "Volkswagen": [
-        "Up! / Polo (Gradski)|850|750|55",
-        "Golf / ID.3 (Hatchback)|950|850|65",
-        "Passat / Arteon (Limuzina)|1000|900|85",
-        "Passat Variant (Karavan)|1050|950|105",
-        "Tiguan / T-Roc (Kompakt SUV)|1200|1100|90",
-        "Touareg (Veliki SUV)|1300|1200|130",
-        "Multivan / Transporter (Kombi)|1500|1300|120",
-        "Crafter (Teretni kombi)|2200|1800|180"
+        "Polo (2009 - 2017)|850|750|55",
+        "Polo (2017 - 2024)|900|800|55",
+        "Golf 6 (2008 - 2013)|950|850|65",
+        "Golf 7 (2012 - 2020)|1000|900|65",
+        "Golf 8 (2020 - 2024)|1050|950|65",
+        "Passat B6 (2005 - 2010)|1000|900|85",
+        "Passat B7 (2010 - 2014)|1050|950|85",
+        "Passat B8 (2014 - 2023)|1100|1000|90",
+        "Passat Variant B8 (Karavan)|1150|1050|110",
+        "Tiguan (2016 - 2024)|1200|1100|95",
+        "Touareg (2010 - 2018)|1300|1200|130",
+        "Touareg (2018 - 2024)|1400|1300|140",
+        "Multivan T6|1600|1400|140"
     ],
     "BMW": [
-        "Serija 1 (Hatchback)|950|850|60",
-        "Serija 3 / 4 (Limuzina)|1000|900|85",
-        "Serija 3 Touring (Karavan)|1050|950|105",
-        "Serija 5 (Limuzina)|1100|1000|110",
-        "Serija 5 Touring (Karavan)|1150|1050|125",
-        "Serija 7 / 8 (Luksuzna)|1250|1150|130",
-        "X1 / X3 / X4 (SUV)|1200|1100|95",
-        "X5 / X6 (Veliki SUV)|1300|1200|130",
-        "X7 (Maksimalni SUV)|1400|1300|150"
+        "Serija 1 F20 (2011 - 2019)|950|850|60",
+        "Serija 3 E90 (2005 - 2013)|1000|900|85",
+        "Serija 3 F30 (2012 - 2019)|1050|950|85",
+        "Serija 3 G20 (2019 - 2024)|1100|1000|90",
+        "Serija 3 Touring G21 (Karavan)|1150|1050|115",
+        "Serija 5 F10 (2010 - 2017)|1100|1000|110",
+        "Serija 5 G30 (2017 - 2023)|1200|1100|115",
+        "Serija 5 Touring G31 (Karavan)|1250|1150|130",
+        "X3 G01 (2017 - 2024)|1250|1150|100",
+        "X5 F15 (2013 - 2018)|1300|1200|130",
+        "X5 G05 (2018 - 2024)|1400|1300|145"
     ],
     "Audi": [
-        "A1 / A3 (Kompakt)|900|800|60",
-        "A4 (Limuzina)|1000|900|85",
-        "A4 Avant (Karavan)|1050|950|105",
-        "A6 (Limuzina)|1100|1000|110",
-        "A6 Avant (Karavan)|1150|1050|125",
-        "A8 / e-tron GT (Luksuzna)|1250|1150|130",
-        "Q3 / Q5 (SUV)|1200|1100|100",
-        "Q7 / Q8 (Veliki SUV)|1300|1200|140"
+        "A3 8V (2012 - 2020)|1000|900|65",
+        "A4 B8 (2008 - 2016)|1050|950|85",
+        "A4 B9 (2015 - 2024)|1100|1000|90",
+        "A4 Avant B9 (Karavan)|1150|1050|110",
+        "A6 C7 (2011 - 2018)|1150|1050|115",
+        "A6 C8 (2018 - 2024)|1200|1100|120",
+        "A6 Avant C8 (Karavan)|1250|1150|130",
+        "Q5 FY (2017 - 2024)|1250|1150|105",
+        "Q7 4M (2015 - 2024)|1400|1300|145"
     ],
     "Mercedes-Benz": [
-        "A / B Klasa / CLA (Kompakt)|950|850|65",
-        "C-Klasa (Limuzina)|1000|900|90",
-        "C-Klasa T (Karavan)|1050|950|105",
-        "E-Klasa (Limuzina)|1100|1000|115",
-        "E-Klasa T (Karavan)|1150|1050|125",
-        "S-Klasa / EQS (Luksuzna)|1250|1150|135",
-        "GLA / GLC (SUV)|1200|1100|100",
-        "GLE / GLS (Veliki SUV)|1300|1200|145",
-        "V-Klasa / Sprinter (Kombi)|1800|1500|160"
+        "A-Klasa W176 (2012 - 2018)|950|850|65",
+        "A-Klasa W177 (2018 - 2024)|1000|900|65",
+        "C-Klasa W205 (2014 - 2021)|1100|1000|90",
+        "C-Klasa T W205 (Karavan)|1150|1050|110",
+        "E-Klasa W213 (2016 - 2023)|1200|1100|115",
+        "E-Klasa T W213 (Karavan)|1250|1150|130",
+        "S-Klasa W222 (2013 - 2020)|1300|1200|140",
+        "GLE W167 (2019 - 2024)|1400|1300|145"
     ],
-    "Škoda": [
-        "Fabia (Gradski)|850|750|55",
-        "Octavia (Limuzina)|1000|900|85",
-        "Octavia Combi (Karavan)|1050|950|105",
-        "Superb (Limuzina)|1100|1000|110",
-        "Superb Combi (Karavan)|1150|1050|125",
-        "Kodiaq (SUV)|1250|1150|115"
+    "Skoda": [
+        "Octavia A7 (2013 - 2020)|1000|900|85",
+        "Octavia Combi A7 (Karavan)|1050|950|105",
+        "Octavia A8 (2020 - 2024)|1100|1000|90",
+        "Superb B8 (2015 - 2024)|1150|1050|115",
+        "Superb Combi B8 (Karavan)|1200|1100|125",
+        "Kodiaq (2016 - 2024)|1300|1200|120"
     ],
-    "Renault / Dacia": [
-        "Clio / Sandero (Gradski)|850|750|55",
-        "Megane / Logan (Hatchback)|950|850|65",
-        "Megane Grandtour (Karavan)|1050|950|105",
-        "Talisman (Limuzina)|1100|1000|110",
-        "Austral / Kadjar / Duster (SUV)|1200|1100|110",
-        "Master / Trafic (Kombi)|1600|1400|150"
-    ],
-    "Toyota / Volvo": [
-        "Yaris / V40 (Kompakt)|900|800|65",
-        "Corolla / S60 (Limuzina)|1050|950|100",
-        "Corolla TS / V60 (Karavan)|1150|1050|115",
-        "RAV4 / XC60 (SUV)|1250|1150|120",
-        "Land Cruiser / XC90 (Veliki SUV)|1350|1250|140"
-    ],
-    "Fiat / Ostalo": [
-        "500 / Panda / Punto|850|750|50",
-        "Tipo (Limuzina)|1000|900|80",
-        "Tipo SW (Karavan)|1050|950|100",
-        "Ducato / Jumper (Kombi)|2100|1700|170"
+    "Fiat": [
+        "Punto Evo (2009 - 2012)|850|750|55",
+        "500 (2007 - 2024)|800|700|50",
+        "Tipo (2015 - 2024)|1000|900|80",
+        "Tipo Station Wagon (Karavan)|1100|1000|105",
+        "Ducato (Kombi)|2100|1700|170"
     ]
 };
 
