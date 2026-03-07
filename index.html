@@ -28,14 +28,18 @@
     <div class="header"><h1>KORICA</h1><small style="color:var(--gold)">SINONIM KVALITETA</small></div>
     
     <div class="section">
-        <label>Marka vozila</label>
-        <select id="marka" onchange="fillModels()"></select>
-    </div>
-    
-    <div class="section">
-        <label>Model i generacija</label>
-        <select id="model" onchange="calculate()"></select>
-    </div>
+    <label>Marka vozila</label>
+    <select id="marka" onchange="fillModels()">
+        <option value="" disabled selected>Učitavanje marki...</option>
+    </select>
+</div>
+
+<div class="section">
+    <label>Model i generacija</label>
+    <select id="model" onchange="calculate()">
+        <option value="" disabled selected>Prvo izaberi marku</option>
+    </select>
+</div>
 
     <div class="section">
         <label>Odaberi uslugu</label>
@@ -308,3 +312,4 @@
 </script>
 </body>
 </html>
+
