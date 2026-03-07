@@ -1,121 +1,43 @@
-<!DOCTYPE html>
-<html lang="sr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KORICA | Inteligentni Cenovnik</title>
-    <style>
-        :root { --gold: #d4af37; --black: #0a0a0a; --dark: #111; }
-        body {
-            background: var(--black); color: white; font-family: 'Poppins', sans-serif;
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; margin: 0; padding: 20px;
-            background-image: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
-        }
-        .card {
-            background: rgba(20, 20, 20, 0.98); padding: 30px; border-radius: 25px;
-            border: 1px solid var(--gold); width: 100%; max-width: 480px; text-align: center;
-        }
-        h1 { color: var(--gold); margin: 0; letter-spacing: 5px; text-transform: uppercase; font-size: 28px; }
-        .subtitle { color: #888; font-size: 10px; letter-spacing: 3px; margin-bottom: 25px; }
-        .group { text-align: left; margin-bottom: 15px; }
-        label { display: block; color: var(--gold); margin-bottom: 5px; font-size: 11px; text-transform: uppercase; }
-        select {
-            width: 100%; padding: 12px; background: var(--dark); color: white;
-            border: 1px solid #333; border-radius: 10px; font-size: 15px;
-        }
-        .info-tag {
-            font-size: 12px; color: #aaa; margin-top: 10px; display: block;
-            padding: 8px; border-left: 3px solid var(--gold); background: #1a1a1a;
-        }
-        .price-box {
-            margin: 20px 0; padding: 20px; background: rgba(212, 175, 55, 0.05);
-            border-radius: 15px; border: 1px solid rgba(212, 175, 55, 0.2);
-        }
-        .price-tag { font-size: 40px; color: var(--gold); font-weight: 800; }
-        .btn {
-            background: linear-gradient(135deg, var(--gold), #b8860b);
-            color: black; border: none; padding: 18px; width: 100%;
-            border-radius: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase;
-        }
-    </style>
-</head>
-<body>
-
-<div class="card">
-    <h1>KORICA</h1>
-    <div class="subtitle">Precizno merenje truda</div>
-
-    <div class="group">
-        <label>Vozilo</label>
-        <select id="markaSel" onchange="azurirajModele()"></select>
-        <select id="modelSel" onchange="izracunaj()" style="margin-top: 10px;"></select>
-    </div>
-
-    <div id="detalji" class="info-tag" style="display:none;"></div>
-
-    <div class="group" style="margin-top:20px;">
-        <label><input type="checkbox" id="spolja" onchange="izracunaj()" checked> Spoljašnje (Faktor laka)</label>
-        <label><input type="checkbox" id="unutra" onchange="izracunaj()" checked> Unutrašnje (Faktor kubikaže)</label>
-    </div>
-
-    <div class="price-box">
-        <div class="price-tag" id="rezultat">0 RSD</div>
-        <div id="vreme" style="font-size: 12px; color: #00ffcc;"></div>
-    </div>
-
-    <button class="btn" onclick="zakazi()">Zakaži termin</button>
-</div>
-
-<script>
-    // Baza sa SPECIFIČNIM CENAMA za spolja i unutra na osnovu realnog truda
-    // Format: "Model|CenaSpolja|CenaUnutra|Minuti"
+// REVIDIRANA BAZA: BMW 5 i Audi A6 sada imaju realnu cenu
+    // Format: "Model|Spolja (Faktor laka)|Unutra (Kubikaža)|Minuti"
     const baza = {
-        "Audi": ["A1|800|600|35", "A3|1100|800|45", "A4|1300|1000|55", "A6|1500|1200|65", "A8|1800|1600|85", "Q5|1600|1100|70", "Q7|2000|1800|90"],
-        "BMW": ["Serija 1|900|700|40", "Serija 3|1200|900|50", "Serija 5|1400|1100|65", "X5|1800|1300|80"],
-        "Mercedes-Benz": ["A Klasa|900|700|40", "C Klasa|1200|950|50", "E Klasa|1400|1150|65", "ML/GLE|1800|1300|75", "S Klasa|1800|1600|85"],
-        "Volkswagen": ["Polo|800|600|35", "Golf|1100|850|45", "Passat|1300|1000|60", "Tiguan|1500|1100|65"],
-        "Zastava": ["Yugo|600|400|30", "Fića|500|300|25"]
+        "BMW": [
+            "Serija 1|800|600|30",
+            "Serija 3|900|700|40",
+            "Serija 5|1100|900|45", // Ukupno 2000 RSD - Realna premium cena
+            "Serija 7|1400|1200|65",
+            "X1|1000|800|40",
+            "X3|1200|900|50",
+            "X5|1500|1000|60",
+            "X7|1800|1500|80"
+        ],
+        "Audi": [
+            "A1|700|500|25",
+            "A3|800|600|35",
+            "A4|1000|800|45",
+            "A6|1100|900|45", // Ukupno 2000 RSD - Isto kao BMW 5
+            "A8|1400|1200|65",
+            "Q3|1000|800|40",
+            "Q5|1200|900|50",
+            "Q7|1700|1400|75"
+        ],
+        "Mercedes-Benz": [
+            "A Klasa|800|600|30",
+            "C Klasa|1000|800|40",
+            "E Klasa|1100|900|45", // Ukupno 2000 RSD - Standard klase
+            "S Klasa|1400|1200|65",
+            "GLE|1500|1000|60",
+            "GLS|1800|1500|80"
+        ],
+        "Volkswagen": [
+            "Polo|700|500|25",
+            "Golf|850|650|35",
+            "Passat|1000|800|45",
+            "Tiguan|1100|900|50",
+            "Touareg|1500|1000|60"
+        ],
+        "Zastava": [
+            "Yugo|500|400|20",
+            "Fića|400|300|15"
+        ]
     };
-
-    function inicijalizuj() {
-        const mSel = document.getElementById("markaSel");
-        mSel.innerHTML = '<option value="" disabled selected>Marka...</option>';
-        Object.keys(baza).sort().forEach(m => {
-            let o = document.createElement("option"); o.value = m; o.text = m; mSel.appendChild(o);
-        });
-    }
-
-    function azurirajModele() {
-        const m = document.getElementById("markaSel").value;
-        const modSel = document.getElementById("modelSel");
-        modSel.innerHTML = '<option value="" disabled selected>Model...</option>';
-        baza[m].forEach(mo => {
-            let [ime] = mo.split('|');
-            let o = document.createElement("option"); o.value = mo; o.text = ime; modSel.appendChild(o);
-        });
-        izracunaj();
-    }
-
-    function izracunaj() {
-        const val = document.getElementById("modelSel").value;
-        if(!val) return;
-        let [ime, cS, cU, min] = val.split('|');
-        
-        let ukupno = 0;
-        let t = 0;
-        if(document.getElementById("spolja").checked) { ukupno += parseInt(cS); t += parseInt(min)*0.45; }
-        if(document.getElementById("unutra").checked) { ukupno += parseInt(cU); t += parseInt(min)*0.55; }
-
-        document.getElementById("rezultat").innerText = ukupno + " RSD";
-        document.getElementById("vreme").innerText = "Trajanje: ~" + Math.round(t) + " min";
-        
-        const det = document.getElementById("detalji");
-        det.style.display = "block";
-        det.innerHTML = `Analiza: Spoljašnji gabarit (${cS} RSD) + Unutrašnja kubikaža (${cU} RSD)`;
-    }
-
-    inicijalizuj();
-</script>
-</body>
-</html>
