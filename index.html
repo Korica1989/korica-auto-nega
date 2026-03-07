@@ -37,8 +37,8 @@
 
         .note-box {
             display: none; margin-top: 15px; padding: 15px; 
-            background: rgba(0, 255, 204, 0.05); border: 1px dashed #00ffcc;
-            border-radius: 12px; font-size: 12px; color: #00ffcc; text-align: left; line-height: 1.5;
+            background: rgba(212, 175, 55, 0.05); border: 1px dashed var(--gold);
+            border-radius: 12px; font-size: 12px; color: var(--gold); text-align: left; line-height: 1.5;
         }
 
         .price-box {
@@ -64,13 +64,14 @@
     
     <div class="group">
         <label>1. Brend vozila</label>
-        <select id="markaSel" onchange="azurirajModele()"></select>
+        <select id="markaSel" onchange="azurirajModele()">
+            </select>
     </div>
 
     <div class="group">
         <label>2. Model</label>
         <select id="modelSel" onchange="izracunaj()">
-            <option value="">Odaberi brend...</option>
+            <option value="">Prvo odaberi brend...</option>
         </select>
     </div>
 
@@ -81,7 +82,7 @@
             <label class="service-item"><input type="checkbox" id="unutra" onchange="izracunaj()" checked> Unutrašnje čišćenje</label>
         </div>
         <div id="pragoviNote" class="note-box">
-            ✨ <b>KORICA Standard:</b> Kod pranja spolja, uvek radimo i detaljno čišćenje pragova (+100 RSD).
+            ✨ <b>KORICA Standard:</b> Uz pranje spolja, uključeno je detaljno čišćenje pragova (+100 RSD).
         </div>
     </div>
 
@@ -178,4 +179,52 @@
         modSel.innerHTML = '<option value="" disabled selected>Odaberi model...</option>';
         baza[m].sort().forEach(mo => {
             let [ime] = mo.split('|');
-            let o = document.createElement("option"); o
+            let o = document.createElement("option"); o.value = mo; o.text = ime; modSel.appendChild(o);
+        });
+        izracunaj();
+    }
+
+    function izracunaj() {
+        const val = document.getElementById("modelSel").value;
+        const note = document.getElementById("pragoviNote");
+        if(!val) {
+            document.getElementById("rezultat").innerText = "0 RSD";
+            document.getElementById("vreme").innerText = "Spreman";
+            return;
+        }
+
+        let [ime, cS, cU, min] = val.split('|');
+        const isSpolja = document.getElementById("spolja").checked;
+        const isUnutra = document.getElementById("unutra").checked;
+        
+        let ukupno = 0;
+        let t = 0;
+
+        if(isSpolja) { ukupno += parseInt(cS); t += parseInt(min) * 0.5; }
+        if(isUnutra) { ukupno += parseInt(cU); t += parseInt(min) * 0.5; }
+
+        if(isSpolja && !isUnutra) {
+            ukupno += 100;
+            note.style.display = "block";
+            if(t < 30) t = 35; 
+        } else {
+            note.style.display = "none";
+        }
+
+        document.getElementById("rezultat").innerText = ukupno.toLocaleString() + " RSD";
+        document.getElementById("vreme").innerText = t > 0 ? "Okvirno: ~" + Math.round(t) + " min" : "Spreman";
+    }
+
+    function zakazi() {
+        const m = document.getElementById("markaSel").value;
+        const moRaw = document.getElementById("modelSel").value;
+        if(!moRaw) { alert("Molimo Vas, odaberite vozilo."); return; }
+        const cena = document.getElementById("rezultat").innerText;
+        window.open(`https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url&entry.345073777=${encodeURIComponent(m + " " + moRaw.split('|')[0])}&entry.988818818=${encodeURIComponent(cena)}`, '_blank');
+    }
+
+    // Ovo pokreće listu odmah čim se stranica učita
+    window.onload = inicijalizuj;
+</script>
+</body>
+</html>
