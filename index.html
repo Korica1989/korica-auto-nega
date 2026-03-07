@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KORICA Auto Nega | Rezervacija Tretmana</title>
+    <title>KORICA Auto Nega | Rezervacija</title>
     <style>
         :root { --gold: #d4af37; --black: #0a0a0a; --dark: #111; }
         body {
@@ -26,7 +26,7 @@
         select {
             width: 100%; padding: 16px; background: var(--dark); color: white;
             border: 1px solid #333; border-radius: 14px; font-size: 16px; outline: none; cursor: pointer;
-            transition: border 0.3s;
+            transition: 0.3s;
         }
         select:focus { border-color: var(--gold); }
         
@@ -48,7 +48,6 @@
         .price-box {
             margin: 30px 0; padding: 30px; background: rgba(212, 175, 55, 0.05);
             border-radius: 20px; border: 1px solid rgba(212, 175, 55, 0.2);
-            transition: transform 0.3s;
         }
         .price-tag { font-size: 52px; color: var(--gold); font-weight: 800; line-height: 1; }
         .time-info { color: #00ffcc; font-size: 14px; margin-top: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
@@ -67,10 +66,10 @@
 
 <div class="card">
     <h1>KORICA</h1>
-    <div class="subtitle">Premium Auto Nega | Sremčica</div>
+    <div class="subtitle">Auto Nega | Sremčica</div>
     
     <div class="group">
-        <label>1. Odaberi brend vozila</label>
+        <label>1. Odaberi brend</label>
         <select id="markaSel" onchange="azurirajModele()">
             <option value="" selected disabled>Izaberi brend...</option>
         </select>
@@ -85,40 +84,35 @@
     </div>
 
     <div class="group">
-        <label>3. Tretman</label>
+        <label>3. Odaberi uslugu</label>
         <div class="services-container">
-            <label class="service-item"><input type="checkbox" id="spolja" onchange="izracunaj()" checked> Eksterijer (Tretman površine)</label>
-            <label class="service-item"><input type="checkbox" id="unutra" onchange="izracunaj()" checked> Enterijer (Nega kabine)</label>
+            <label class="service-item"><input type="checkbox" id="spolja" onchange="izracunaj()" checked> Nega karoserije (Spoljašnjost)</label>
+            <label class="service-item"><input type="checkbox" id="unutra" onchange="izracunaj()" checked> Nega kabine (Enterijer)</label>
         </div>
     </div>
 
     <div class="price-box">
         <div class="price-tag" id="rezultat">0 RSD</div>
-        <div class="time-info" id="vreme">Dobrodošli</div>
+        <div class="time-info" id="vreme">Spreman za rad</div>
     </div>
 
     <button class="btn" onclick="zakazi()">Zakaži termin</button>
 </div>
 
 <script>
-    // BAZA: "Model | Cena Eksterijer | Cena Enterijer | Prosečni Minuti"
     const baza = {
         "Audi": ["A1|700|500|25", "A3|800|600|35", "A4|1000|800|45", "A6|1100|900|45", "A8|1400|1200|65", "Q3|1000|800|40", "Q5|1200|900|50", "Q7|1700|1400|75"],
         "BMW": ["Serija 1|800|600|30", "Serija 3|900|700|40", "Serija 5|1100|900|45", "Serija 7|1400|1200|65", "X1|1000|800|40", "X3|1200|900|50", "X5|1500|1000|60", "X7|1800|1500|80"],
-        "Mercedes-Benz": ["A Klasa|800|600|30", "C Klasa|1000|800|40", "E Klasa|1100|900|45", "S Klasa|1400|1200|65", "GLE|1500|1000|60", "GLS|1800|1500|80", "V-Klasa|1800|1800|90"],
+        "Mercedes-Benz": ["A Klasa|800|600|30", "C Klasa|1000|800|40", "E Klasa|1100|900|45", "S Klasa|1400|1200|65", "GLE|1500|1000|60", "GLS|1800|1500|80"],
         "Volkswagen": ["Polo|700|500|25", "Golf|850|650|35", "Passat|1000|800|45", "Tiguan|1100|900|50", "Touareg|1500|1000|60"],
-        "Toyota": ["Yaris|700|500|25", "Corolla|900|700|40", "Rav4|1200|900|50", "Land Cruiser|1700|1300|75", "Hilux|1700|700|55"],
+        "Toyota": ["Yaris|700|500|25", "Corolla|900|700|40", "Rav4|1200|900|50", "Hilux|1700|700|55"],
         "Skoda": ["Fabia|700|500|25", "Octavia|900|700|40", "Superb|1100|900|45", "Kodiaq|1500|1200|60"],
-        "Fiat": ["Punto|600|500|25", "Tipo|900|700|40", "500L|1000|900|45", "Doblo|1200|1000|50"],
-        "Dacia": ["Sandero|700|500|25", "Duster|1100|900|50", "Logan|900|700|40"],
-        "Zastava": ["Yugo|500|400|20", "Fića|400|300|15", "101 Stojadin|600|500|25"],
-        "Porsche": ["911|1100|700|40", "Cayenne|1600|1100|65", "Panamera|1300|1000|55"],
-        "Bentley": ["Continental GT|1800|1500|70", "Bentayga|2200|2000|90"]
+        "Zastava": ["Yugo|500|400|20", "Fića|400|300|15"]
     };
 
     function inicijalizuj() {
         const mSel = document.getElementById("markaSel");
-        mSel.innerHTML = '<option value="" disabled selected>Brend vozila...</option>';
+        mSel.innerHTML = '<option value="" disabled selected>Marka automobila...</option>';
         Object.keys(baza).sort().forEach(m => {
             let o = document.createElement("option"); o.value = m; o.text = m; mSel.appendChild(o);
         });
@@ -149,7 +143,7 @@
 
         let [ime, cS, cU, min] = val.split('|');
         det.style.display = "block";
-        det.innerHTML = `Analiza: Tretman površine (<b>${cS} RSD</b>) + Nega kabine (<b>${cU} RSD</b>)`;
+        det.innerHTML = `Analiza tretmana: <b>${cS} RSD</b> (Karoserija) + <b>${cU} RSD</b> (Kabina)`;
 
         let ukupno = 0;
         let t = 0;
@@ -165,8 +159,7 @@
         const moRaw = document.getElementById("modelSel").value;
         if(!moRaw) { alert("Molimo Vas da odaberete vozilo."); return; }
         const cena = document.getElementById("rezultat").innerText;
-        const mo = moRaw.split('|')[0];
-        window.open(`https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url&entry.345073777=${encodeURIComponent(m + " " + mo)}&entry.988818818=${encodeURIComponent(cena)}`, '_blank');
+        window.open(`https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url&entry.345073777=${encodeURIComponent(m + " " + moRaw.split('|')[0])}&entry.988818818=${encodeURIComponent(cena)}`, '_blank');
     }
 
     inicijalizuj();
