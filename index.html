@@ -55,7 +55,6 @@
         }
         .price-tag { font-size: 48px; color: var(--gold); font-weight: 800; line-height: 1; }
         .time-info { color: #00ffcc; font-size: 13px; margin-top: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-        .disclaimer { font-size: 10px; color: #666; margin-top: 5px; font-style: italic; }
 
         .btn {
             background: linear-gradient(135deg, var(--gold), #b8860b);
@@ -81,42 +80,37 @@
     </div>
 
     <div class="group">
-        <label>2. Odaberi vrstu tretmana</label>
+        <label>2. Vrsta tretmana</label>
         <div class="services-container">
-            <label class="service-item"><input type="checkbox" id="spolja" onchange="izracunaj()" checked> Nega karoserije (Spolja)</label>
-            <label class="service-item"><input type="checkbox" id="unutra" onchange="izracunaj()" checked> Nega kabine (Unutra)</label>
+            <label class="service-item"><input type="checkbox" id="spolja" onchange="izracunaj()" checked> Nega karoserije (Eksterijer)</label>
+            <label class="service-item"><input type="checkbox" id="unutra" onchange="izracunaj()" checked> Nega kabine (Enterijer)</label>
         </div>
         <div id="pragoviNote" class="note-box">
-            ✨ <b>KORICA Standard:</b> Budući da se radi samo spoljašnost, u cenu smo uključili i detaljno čišćenje pragova (+100 RSD). Ne želimo da bilo koji detalj ostane zapostavljen, kako bi Vaš ulazak u čist automobil bio potpun.
+            ✨ <b>KORICA Standard:</b> Budući da se radi samo spoljašnost, u cenu smo uključili detaljno brisanje pragova i spoljašnjih stakala (+100 RSD). Naš cilj je da svaki detalj bude besprekoran, kako bi Vaš pogled na put bio kristalno jasan.
         </div>
     </div>
 
     <div class="price-box">
         <div class="price-tag" id="rezultat">0 RSD</div>
-        <div id="vremeBox">
-            <div class="time-info" id="vreme">Spreman za rad</div>
-            <div class="disclaimer">*Vremena su informativnog karaktera</div>
-        </div>
+        <div class="time-info" id="vreme">Spreman za rad</div>
     </div>
 
     <button class="btn" onclick="zakazi()">Rezerviši termin</button>
 </div>
 
 <script>
-    // Baza: "Model | Cena Spolja | Cena Unutra | Prosečni minuti ukupno"
     const baza = {
         "Audi": ["A1|700|500|40", "A3|800|600|50", "A4|1000|800|60", "A6|1100|900|70", "A8|1400|1200|90", "Q5|1200|900|75", "Q7|1700|1400|100"],
         "BMW": ["Serija 1|800|600|45", "Serija 3|900|700|55", "Serija 5|1100|900|70", "Serija 7|1400|1200|90", "X3|1200|900|75", "X5|1500|1000|85"],
         "Mercedes-Benz": ["A Klasa|800|600|45", "C Klasa|1000|800|60", "E Klasa|1100|900|70", "S Klasa|1400|1200|90", "GLE|1500|1000|85"],
         "Volkswagen": ["Polo|700|500|40", "Golf|850|650|50", "Passat|1000|800|65", "Tiguan|1100|900|70"],
-        "Toyota": ["Yaris|700|500|40", "Corolla|900|700|55", "Rav4|1200|900|75", "Hilux|1700|700|70"],
         "Skoda": ["Fabia|700|500|40", "Octavia|900|700|55", "Superb|1100|900|70", "Kodiaq|1500|1200|85"],
         "Zastava": ["Yugo|500|400|30", "Fića|400|300|25"]
     };
 
     function inicijalizuj() {
         const mSel = document.getElementById("markaSel");
-        mSel.innerHTML = '<option value="" disabled selected>Odaberi marku vozila...</option>';
+        mSel.innerHTML = '<option value="" disabled selected>Marka vozila...</option>';
         Object.keys(baza).sort().forEach(m => {
             let o = document.createElement("option"); o.value = m; o.text = m; mSel.appendChild(o);
         });
@@ -125,7 +119,7 @@
     function azurirajModele() {
         const m = document.getElementById("markaSel").value;
         const modSel = document.getElementById("modelSel");
-        modSel.innerHTML = '<option value="" disabled selected>Odaberi model...</option>';
+        modSel.innerHTML = '<option value="" disabled selected>Model...</option>';
         baza[m].sort().forEach(mo => {
             let [ime] = mo.split('|');
             let o = document.createElement("option"); o.value = mo; o.text = ime; modSel.appendChild(o);
@@ -155,21 +149,21 @@
 
         if(isSpolja) { 
             ukupno += parseInt(cS); 
-            t += parseInt(min) * 0.5; // Spoljašnost uzima pola vremena
+            t += parseInt(min) * 0.5;
             analizaText += `Nega karoserije: <b>${cS} RSD</b>`;
         }
         
         if(isUnutra) { 
             ukupno += parseInt(cU); 
-            t += parseInt(min) * 0.5; // Unutrašnjost uzima drugu polovinu
+            t += parseInt(min) * 0.5;
             analizaText += (analizaText ? " + " : "") + `Nega kabine: <b>${cU} RSD</b>`;
         }
 
         if(isSpolja && !isUnutra) {
             ukupno += 100;
             note.style.display = "block";
-            analizaText += ` + Pragovi: <b>100 RSD</b>`;
-            if(t < 30) t = 30; // Minimalno vreme za kvalitetno spoljašnje pranje sa pragovima
+            analizaText += ` + Pragovi i Stakla: <b>100 RSD</b>`;
+            if(t < 30) t = 35; // Dodatnih 5 min za stakla
         } else {
             note.style.display = "none";
         }
@@ -184,10 +178,9 @@
     function zakazi() {
         const m = document.getElementById("markaSel").value;
         const moRaw = document.getElementById("modelSel").value;
-        if(!moRaw) { alert("Molimo Vas da odaberete vozilo."); return; }
+        if(!moRaw) { alert("Odaberite vozilo."); return; }
         const cena = document.getElementById("rezultat").innerText;
-        const mo = moRaw.split('|')[0];
-        window.open(`https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url&entry.345073777=${encodeURIComponent(m + " " + mo)}&entry.988818818=${encodeURIComponent(cena)}`, '_blank');
+        window.open(`https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url&entry.345073777=${encodeURIComponent(m + " " + moRaw.split('|')[0])}&entry.988818818=${encodeURIComponent(cena)}`, '_blank');
     }
 
     inicijalizuj();
