@@ -145,4 +145,91 @@
         "Mercedes-Benz": ["A Klasa|850|650|45","B Klasa|1000|800|55","C Klasa|1100|850|65","CLA|1100|850|65","CLS|1300|1100|75","E Klasa|1200|1000|70","G Klasa|2000|1700|120","GLA/GLB|1150|900|70","GLC|1300|1050|75","GLE|1550|1150|85","GLS|2000|1700|115","S Klasa|1600|1400|95","Vito/V Klasa|1900|1500|130","Sprinter|2600|2100|180"],
         "MG": ["ZS|1000|800|60","HS|1200|1000|75","MG4|1000|800|60"],
         "Mini": ["Cooper|800|600|45","Countryman|1050|850|65"],
-        "Mitsubishi": ["ASX|1100|900|65","Outlander|1300|1100|75","L200|1700|1100|8
+        "Mitsubishi": ["ASX|1100|900|65","Outlander|1300|1100|75","L200|1700|1100|85","Pajero|1700|1400|100"],
+        "Nissan": ["Micra|750|550|40","Juke|1000|800|60","Qashqai|1150|950|70","X-Trail|1350|1150|80","Navara|1750|1100|90"],
+        "Opel": ["Adam|750|550|35","Astra|1000|800|55","Corsa|800|600|45","Insignia|1150|1000|70","Mokka|1100|900|65","Vivaro|1900|1500|130"],
+        "Pagani": ["Zonda|5000|4000|200","Huayra|5000|4000|200","Utopia|5000|4000|200"],
+        "Peugeot": ["208|800|600|45","308|1000|800|55","508|1150|1000|70","2008|1050|850|60","3008|1200|1000|75","5008|1450|1200|85","Boxer|2400|2000|170"],
+        "Pontiac": ["Firebird|1300|1100|80","GTO|1400|1200|85"],
+        "Porsche": ["911|1800|1500|70","Panamera|1800|1500|85","Cayenne|2000|1700|95","Macan|1600|1400|80","Taycan|1800|1500|85"],
+        "Renault": ["Clio|800|600|45","Captur|1000|800|55","Espace|1500|1200|95","Kadjar/Austral|1150|950|70","Laguna|1050|850|65","Megane|1000|800|55","Master|2500|2000|170"],
+        "Rimac": ["Nevera|5000|4000|180"],
+        "Rolls-Royce": ["Ghost|4000|3500|150","Cullinan|4500|4000|180","Phantom|4500|4000|180"],
+        "Saab": ["9-3|1000|800|60","9-5|1100|900|70"],
+        "Seat": ["Ibiza|800|600|45","Leon|1000|800|55","Ateca|1150|950|70","Tarraco|1450|1200|85"],
+        "Skoda": ["Fabia|800|600|45","Octavia|1050|850|65","Superb|1150|1000|75","Kodiaq|1550|1250|90","Karoq|1150|950|70"],
+        "Smart": ["Fortwo|600|400|30","Forfour|700|500|35"],
+        "SsangYong": ["Korando|1200|1000|75","Rexton|1500|1200|90"],
+        "Subaru": ["Impreza|1000|800|60","Forester|1300|1000|75","Outback|1350|1100|80"],
+        "Suzuki": ["Swift|750|550|40","Vitara|1100|900|65","Jimny|900|700|50"],
+        "Tata": ["Safari|1200|1000|75"],
+        "Tesla": ["Model 3|1100|900|65","Model S|1300|1100|80","Model X|1600|1400|100","Model Y|1250|1000|75"],
+        "Toyota": ["Corolla|1000|800|55","Yaris|800|600|45","Land Cruiser|2000|1700|120","Rav4|1300|1100|75","Hilux|1750|1100|85"],
+        "UAZ": ["Patriot|1200|900|70","Buhanka|1200|1000|80"],
+        "Volkswagen": ["Golf (svi)|950|750|55","Passat (svi)|1150|950|70","Polo|800|600|45","Tiguan|1200|1000|75","Touareg|1700|1300|90","ID.3/ID.4|1100|900|65","Transporter|2200|1800|150"],
+        "Volvo": ["S60/V60|1100|950|70","S90/V90|1300|1100|80","XC40|1150|950|70","XC60|1350|1150|80","XC90|1600|1300|100"],
+        "Zastava": ["Yugo|550|450|35","Fića|450|350|30","101/Skala|650|500|40","Florida|750|550|45"]
+    };
+
+    function inicijalizuj() {
+        const mSel = document.getElementById("markaSel");
+        mSel.innerHTML = '<option value="" disabled selected>Odaberi brend...</option>';
+        Object.keys(baza).sort().forEach(m => {
+            let o = document.createElement("option"); o.value = m; o.text = m; mSel.appendChild(o);
+        });
+    }
+
+    function azurirajModele() {
+        const m = document.getElementById("markaSel").value;
+        const modSel = document.getElementById("modelSel");
+        modSel.innerHTML = '<option value="" disabled selected>Odaberi model...</option>';
+        baza[m].sort().forEach(mo => {
+            let [ime] = mo.split('|');
+            let o = document.createElement("option"); o.value = mo; o.text = ime; modSel.appendChild(o);
+        });
+        izracunaj();
+    }
+
+    function izracunaj() {
+        const val = document.getElementById("modelSel").value;
+        const note = document.getElementById("pragoviNote");
+        if(!val) {
+            document.getElementById("rezultat").innerText = "0 RSD";
+            document.getElementById("vreme").innerText = "Spreman";
+            return;
+        }
+
+        let [ime, cS, cU, min] = val.split('|');
+        const isSpolja = document.getElementById("spolja").checked;
+        const isUnutra = document.getElementById("unutra").checked;
+        
+        let ukupno = 0;
+        let t = 0;
+
+        if(isSpolja) { ukupno += parseInt(cS); t += parseInt(min) * 0.5; }
+        if(isUnutra) { ukupno += parseInt(cU); t += parseInt(min) * 0.5; }
+
+        if(isSpolja && !isUnutra) {
+            ukupno += 100;
+            note.style.display = "block";
+            if(t < 30) t = 35; 
+        } else {
+            note.style.display = "none";
+        }
+
+        document.getElementById("rezultat").innerText = ukupno.toLocaleString() + " RSD";
+        document.getElementById("vreme").innerText = t > 0 ? "Okvirno vreme: ~" + Math.round(t) + " min" : "Spreman";
+    }
+
+    function zakazi() {
+        const m = document.getElementById("markaSel").value;
+        const moRaw = document.getElementById("modelSel").value;
+        if(!moRaw) { alert("Molimo Vas, odaberite vozilo."); return; }
+        const cena = document.getElementById("rezultat").innerText;
+        window.open(`https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url&entry.345073777=${encodeURIComponent(m + " " + moRaw.split('|')[0])}&entry.988818818=${encodeURIComponent(cena)}`, '_blank');
+    }
+
+    window.onload = inicijalizuj;
+</script>
+</body>
+</html>
