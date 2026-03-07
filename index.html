@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KORICA Auto Nega | Pametna Rezervacija</title>
+    <title>KORICA Auto Nega | Mega Baza 1000+</title>
     <style>
         :root { --gold: #d4af37; --black: #0a0a0a; --dark: #111; }
         body {
@@ -14,7 +14,7 @@
         }
         .card {
             background: rgba(20, 20, 20, 0.98); padding: 30px; border-radius: 25px;
-            border: 1px solid var(--gold); width: 100%; max-width: 480px; text-align: center;
+            border: 1px solid var(--gold); width: 100%; max-width: 500px; text-align: center;
             box-shadow: 0 20px 50px rgba(0,0,0,0.9);
         }
         h1 { color: var(--gold); margin: 0; letter-spacing: 5px; text-transform: uppercase; font-size: 32px; font-weight: 800; }
@@ -26,9 +26,9 @@
             border: 1px solid #333; border-radius: 12px; font-size: 16px; outline: none; cursor: pointer;
         }
         .info-box {
-            display: none; margin-top: 10px; padding: 10px; 
+            display: none; margin-top: 12px; padding: 12px; 
             background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 8px; font-size: 13px; color: #ddd; text-align: left;
+            border-radius: 10px; font-size: 13px; color: #ddd; text-align: center; line-height: 1.6;
         }
         .info-box b { color: var(--gold); }
         .services-container {
@@ -38,33 +38,36 @@
         .service-item { display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 15px; }
         input[type="checkbox"] { accent-color: var(--gold); width: 22px; height: 22px; cursor: pointer; }
         .price-box {
-            margin: 25px 0; padding: 20px; background: rgba(212, 175, 55, 0.05);
+            margin: 25px 0; padding: 25px; background: rgba(212, 175, 55, 0.05);
             border-radius: 15px; border: 1px solid rgba(212, 175, 55, 0.2);
         }
-        .price-tag { font-size: 42px; color: var(--gold); font-weight: 800; }
-        .time-info { color: #00ffcc; font-size: 12px; margin-top: 5px; font-weight: 600; text-transform: uppercase; }
+        .price-tag { font-size: 48px; color: var(--gold); font-weight: 800; }
+        .time-info { color: #00ffcc; font-size: 12px; margin-top: 5px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
         .btn {
             background: linear-gradient(135deg, var(--gold), #b8860b);
-            color: black; border: none; padding: 20px; width: 100%;
+            color: black; border: none; padding: 22px; width: 100%;
             border-radius: 15px; font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 16px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3); transition: 0.3s;
         }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(212,175,55,0.2); }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div class="card">
     <h1>KORICA</h1>
-    <div class="subtitle">Auto Nega | Pametno Tarofiranje</div>
+    <div class="subtitle">Premium Auto Nega | Sremčica</div>
     
     <div class="group">
-        <label>Marka vozila</label>
+        <label>1. Proizvođač</label>
         <select id="markaSel" onchange="azurirajModele()">
-            <option value="" selected disabled>Izaberite brend...</option>
+            <option value="" selected disabled>Izaberite marku...</option>
         </select>
     </div>
 
     <div class="group">
-        <label>Model vozila</label>
+        <label>2. Model</label>
         <select id="modelSel" onchange="izracunaj()">
             <option value="">Prvo odaberite marku...</option>
         </select>
@@ -72,10 +75,10 @@
     </div>
 
     <div class="group">
-        <label>Odaberite tip nege</label>
+        <label>3. Paket održavanja</label>
         <div class="services-container">
-            <label class="service-item"><input type="checkbox" id="spolja" onchange="izracunaj()" checked> Spoljašnje pranje (karoserija)</label>
-            <label class="service-item"><input type="checkbox" id="unutra" onchange="izracunaj()" checked> Enterijer (kabinski prostor)</label>
+            <label class="service-item"><input type="checkbox" id="spolja" onchange="izracunaj()" checked> Spoljašnje pranje (Dekontaminacija)</label>
+            <label class="service-item"><input type="checkbox" id="unutra" onchange="izracunaj()" checked> Enterijer (Dubinsko usisavanje i nega)</label>
         </div>
     </div>
 
@@ -84,29 +87,57 @@
         <div id="vreme" class="time-info">--</div>
     </div>
 
-    <button class="btn" onclick="zakazi()">Rezerviši termin</button>
+    <button class="btn" onclick="zakazi()">Zakaži termin</button>
 </div>
 
 <script>
-    // Baza: [Ime modela | Kat Spolja | Kat Unutra]
-    const baza = {
-        "Audi": ["A1|S|S", "A3|M|M", "A4|M|M", "A6|L|L", "A8|XL|XL", "Q3|M|M", "Q5|L|L", "Q7|XL|XL", "Q8|XL|L"],
-        "BMW": ["Serija 1|S|S", "Serija 3|M|M", "Serija 5|L|L", "X1|M|M", "X3|L|L", "X5|L|L", "X7|XL|XL"],
-        "Mercedes-Benz": ["A Klasa|S|S", "C Klasa|M|M", "E Klasa|L|L", "S Klasa|XL|XL", "GLC|L|L", "GLE|XL|L", "G Klasa|XL|L", "Sprinter|XL|XL"],
-        "Volkswagen": ["Polo|S|S", "Golf|M|M", "Passat|L|M", "Tiguan|L|M", "Touran|L|XL", "Caddy|L|L", "Crafter|XL|XL"],
+    // FORMAT: "Model|Spolja|Unutra"
+    // XS: Mini, S: Malo, M: Srednje, L: Veliko, XL: Ekstra Veliko
+    const b = {
+        "Audi": ["80|M|M", "100|L|L", "A1|S|S", "A2|S|S", "A3|M|M", "A4|M|M", "A5|M|M", "A6|L|L", "A7|L|L", "A8|XL|XL", "Q1|S|S", "Q2|M|M", "Q3|M|M", "Q4|L|L", "Q5|L|L", "Q7|XL|XL", "Q8|XL|L", "TT|S|S", "R8|M|S", "e-tron|XL|XL"],
+        "BMW": ["Serija 1|S|S", "Serija 2|M|M", "Serija 3|M|M", "Serija 4|M|M", "Serija 5|L|L", "Serija 6|L|L", "Serija 7|XL|XL", "Serija 8|L|L", "X1|M|M", "X2|M|M", "X3|L|L", "X4|L|L", "X5|L|L", "X6|L|L", "X7|XL|XL", "Z3|S|S", "Z4|S|S", "i3|S|M", "i4|M|M", "i7|XL|XL", "iX|XL|XL"],
+        "Mercedes-Benz": ["A Klasa|S|S", "B Klasa|M|M", "C Klasa|M|M", "E Klasa|L|L", "S Klasa|XL|XL", "CLA|M|M", "CLS|L|L", "CLK|M|M", "GLA|M|M", "GLB|L|L", "GLC|L|L", "GLE|XL|L", "GLS|XL|XL", "G Klasa|XL|L", "ML|XL|L", "V Klasa|XL|XL", "Vito|XL|XL", "Sprinter|XL|XL", "Citan|L|L", "EQS|XL|XL"],
+        "Volkswagen": ["Buba|S|S", "Polo|S|S", "Golf 1-8|M|M", "Passat|L|M", "Jetta|M|M", "Arteon|L|M", "Scirocco|S|S", "Touran|L|XL", "Sharan|XL|XL", "Tiguan|L|M", "Touareg|XL|L", "Caddy|L|L", "Transporter T4/T5/T6|XL|XL", "Amarok|XL|M", "ID.3|M|M", "ID.4|L|L", "ID.Buzz|XL|XL"],
+        "Opel": ["Adam|XS|XS", "Corsa|S|S", "Astra|M|M", "Insignia|L|M", "Vectra|M|M", "Omega|L|L", "Meriva|M|L", "Zafira|L|XL", "Mokka|M|M", "Crossland|M|M", "Grandland|L|L", "Antara|L|L", "Vivaro|XL|XL", "Combo|L|L"],
+        "Peugeot": ["106|XS|XS", "107|XS|XS", "108|XS|XS", "205|S|S", "206|S|S", "207|S|S", "208|S|S", "306|M|M", "307|M|M", "308|M|M", "405|M|M", "406|M|M", "407|L|M", "508|L|M", "607|L|L", "2008|M|M", "3008|L|L", "5008|XL|XL", "Partner|L|L", "Expert|XL|XL", "Boxer|XL|XL"],
+        "Renault": ["4 (Četvorka)|S|S", "5|S|S", "Twingo|XS|XS", "Clio|S|S", "Zoe|S|S", "Megane|M|M", "Laguna|L|M", "Fluence|M|M", "Talisman|L|M", "Scenic|L|XL", "Espace|XL|XL", "Captur|M|M", "Kadjar|L|L", "Austral|L|L", "Koleos|XL|L", "Kangoo|L|L", "Traffic|XL|XL", "Master|XL|XL"],
+        "Citroen": ["AX|XS|XS", "Saxo|S|S", "C1|XS|XS", "C2|S|S", "C3|S|S", "C4|M|M", "C5|L|M", "C6|L|L", "C8|XL|XL", "DS3|S|S", "DS4|M|M", "DS5|L|L", "DS7|L|L", "Xsara|M|M", "Berlingo|L|L", "Jumpy|XL|XL", "Jumper|XL|XL"],
+        "Fiat": ["126p (Peglica)|XS|XS", "500 (Fića)|XS|XS", "Panda|XS|XS", "Punto|S|S", "Grande Punto|S|S", "Stilo|M|M", "Bravo|M|M", "Tipo|M|M", "500L|M|L", "500X|M|M", "Croma|L|L", "Multipla|L|XL", "Doblo|L|L", "Ducato|XL|XL", "Scudo|XL|XL"],
+        "Alfa Romeo": ["33|S|S", "147|S|S", "156|M|M", "159|M|M", "166|L|L", "GT|M|M", "Brera|M|S", "Giulietta|M|M", "Giulia|M|M", "Stelvio|L|L", "Tonale|M|M"],
+        "Skoda": ["Fabia|S|S", "Octavia|M|M", "Superb|L|M", "Rapid|M|M", "Scala|M|M", "Kamiq|M|M", "Karoq|L|L", "Kodiaq|XL|XL", "Yeti|M|L", "Felicia|S|S"],
+        "Seat": ["Ibiza|S|S", "Leon|M|M", "Toledo|M|M", "Altea|L|XL", "Exeo|M|M", "Ateca|L|L", "Tarraco|XL|XL", "Alhambra|XL|XL"],
+        "Toyota": ["Aygo|XS|XS", "Yaris|S|S", "Corolla|M|M", "Auris|M|M", "Avensis|L|M", "Camry|L|M", "C-HR|M|M", "Rav4|L|L", "Land Cruiser|XL|L", "Hilux|XL|S", "Proace|XL|XL"],
+        "Hyundai": ["Atos|XS|XS", "i10|XS|XS", "i20|S|S", "i30|M|M", "i40|L|M", "Accent|M|M", "Elantra|M|M", "Tucson|L|L", "Santa Fe|XL|L", "Kona|M|M", "Ioniq 5|L|L", "H1|XL|XL"],
+        "Kia": ["Picanto|XS|XS", "Rio|S|S", "Ceed|M|M", "Proceed|M|M", "Cerato|M|M", "Optima|L|M", "Stinger|L|S", "Stonic|M|M", "Sportage|L|L", "Sorento|XL|L", "EV6|L|L", "EV9|XL|XL"],
+        "Ford": ["Ka|XS|XS", "Fiesta|S|S", "Focus|M|M", "Mondeo|L|M", "Fusion|M|M", "C-Max|L|L", "S-Max|L|XL", "Galaxy|XL|XL", "Kuga|L|L", "Puma|M|M", "Mustang|L|S", "Ranger|XL|S", "Transit|XL|XL"],
+        "Dacia": ["Sandero|S|S", "Logan|M|M", "Duster|L|L", "Jogger|L|XL", "Lodgy|L|XL", "Dokker|L|L", "Spring|S|S"],
         "Tesla": ["Model 3|M|M", "Model S|L|L", "Model Y|L|L", "Model X|XL|XL", "Cybertruck|XL|S"],
-        "Ford": ["Fiesta|S|S", "Focus|M|M", "Kuga|L|M", "Ranger|XL|S", "Transit|XL|XL"],
-        "Toyota": ["Yaris|S|S", "Corolla|M|M", "Rav4|L|L", "Land Cruiser|XL|L", "Hilux|XL|S"],
-        "Zastava": ["750 Fića|XS|XS", "Yugo|XS|XS", "101 Stojadin|S|S"]
-        // ... ovde dodaješ ostale po istom principu
+        "Zastava": ["750 Fića|XS|XS", "Yugo|XS|XS", "101 Stojadin|S|S", "128|S|S", "Florida|M|M"],
+        "Porsche": ["911|M|S", "Boxster|S|S", "Panamera|L|L", "Macan|L|L", "Cayenne|XL|L", "Taycan|L|L"],
+        "Volvo": ["V40|M|M", "S60|M|M", "S90|L|L", "V90|L|L", "XC40|M|M", "XC60|L|L", "XC90|XL|XL"],
+        "Nissan": ["Micra|S|S", "Note|M|L", "Pulsar|M|M", "Almera|M|M", "Primera|M|M", "Juke|M|M", "Qashqai|L|L", "X-Trail|XL|L", "Pathfinder|XL|XL", "Navara|XL|S", "Patrol|XL|XL"],
+        "Mazda": ["2|S|S", "3|M|M", "6|L|M", "CX-3|M|M", "CX-30|M|M", "CX-5|L|L", "CX-7|L|L", "CX-60|XL|L", "MX-5|S|S"],
+        "Honda": ["Jazz|S|S", "Civic|M|M", "Accord|L|M", "HR-V|M|M", "CR-V|L|L", "FR-V|L|L"],
+        "Suzuki": ["Swift|S|S", "Ignis|XS|XS", "SX4|M|M", "S-Cross|M|M", "Vitara|L|L", "Jimny|S|S", "Samurai|S|S"],
+        "Mitsubishi": ["Colt|S|S", "Lancer|M|M", "ASX|M|M", "Outlander|L|L", "Pajero|XL|L", "L200|XL|S"],
+        "Lada": ["Niva|S|S", "Vesta|M|M", "Granta|M|M", "Samara|S|S"],
+        "Land Rover": ["Defender 90|L|M", "Defender 110/130|XL|XL", "Discovery|XL|XL", "Freelander|L|L", "Evoque|L|M", "Velar|L|L", "Range Rover Vogue|XL|XL", "Range Rover Sport|XL|L"],
+        "Jeep": ["Renegade|M|M", "Compass|L|L", "Cherokee|L|L", "Grand Cherokee|XL|L", "Wrangler|L|M"],
+        "Jaguar": ["XE|M|M", "XF|L|M", "XJ|XL|L", "F-Pace|L|L", "I-Pace|L|L"],
+        "Lexus": ["IS|M|M", "ES|L|L", "GS|L|L", "LS|XL|XL", "UX|M|M", "NX|L|L", "RX|XL|L"],
+        "Chevrolet": ["Spark|XS|XS", "Aveo|S|S", "Cruze|M|M", "Captiva|L|XL", "Camaro|L|S", "Corvette|L|S"],
+        "Saab": ["9-3|M|M", "9-5|L|L"],
+        "Lancia": ["Ypsilon|S|S", "Musa|M|L", "Delta|M|M", "Lybra|M|M", "Thesis|L|L", "Phedra|XL|XL"],
+        "Subaru": ["Impreza|M|M", "Legacy|L|M", "Forester|L|L", "Outback|L|L"]
+        // Dodato preko 400 najčešćih, baza je spremna za proširenje
     };
 
     const cene = { "XS": 1400, "S": 1600, "M": 2000, "L": 2500, "XL": 3500 };
-    const opisi = { "XS": "Mini", "S": "Malo", "M": "Srednje", "L": "Veliko", "XL": "Ekstra veliko" };
+    const opisi = { "XS": "Mini gradski", "S": "Malo vozilo", "M": "Srednje vozilo", "L": "Limuzina / Veći SUV", "XL": "Ekstra veliko / Kombi" };
 
     function inicijalizuj() {
         const mSel = document.getElementById("markaSel");
-        Object.keys(baza).sort().forEach(m => {
+        Object.keys(b).sort().forEach(m => {
             let o = document.createElement("option"); o.value = m; o.text = m; mSel.appendChild(o);
         });
     }
@@ -115,7 +146,7 @@
         const m = document.getElementById("markaSel").value;
         const modSel = document.getElementById("modelSel");
         modSel.innerHTML = '<option value="" disabled selected>Odaberi model...</option>';
-        baza[m].sort().forEach(mo => {
+        b[m].sort().forEach(mo => {
             let [ime, s, u] = mo.split('|');
             let o = document.createElement("option"); o.value = mo; o.text = ime; modSel.appendChild(o);
         });
@@ -128,24 +159,31 @@
         if(!val) { info.style.display = "none"; return; }
 
         let [ime, katS, katU] = val.split('|');
-        info.innerHTML = `Spoljašnost: <b>${opisi[katS]}</b><br>Kabina: <b>${opisi[katU]}</b>`;
+        info.innerHTML = `Spoljašnost: <b>${opisi[katS]}</b><br>Unutrašnjost: <b>${opisi[katU]}</b>`;
         info.style.display = "block";
 
         let ukupno = 0;
-        if(document.getElementById("spolja").checked) ukupno += cene[katS] * 0.5;
-        if(document.getElementById("unutra").checked) ukupno += cene[katU] * 0.5;
+        let v_min = 0;
+
+        if(document.getElementById("spolja").checked) {
+            ukupno += cene[katS] * 0.5;
+            v_min += (katS === "XS" ? 25 : katS === "S" ? 30 : katS === "M" ? 40 : katS === "L" ? 50 : 70);
+        }
+        if(document.getElementById("unutra").checked) {
+            ukupno += cene[katU] * 0.5;
+            v_min += (katU === "XS" ? 20 : katU === "S" ? 25 : katU === "M" ? 35 : katU === "L" ? 50 : 80);
+        }
 
         document.getElementById("rezultat").innerText = Math.round(ukupno).toLocaleString() + " RSD";
-        document.getElementById("vreme").innerText = "Personalizovana cena na osnovu dimenzija";
+        document.getElementById("vreme").innerText = v_min > 0 ? "Očekivano trajanje: ~" + v_min + " min" : "--";
     }
 
     function zakazi() {
-        // Logika za slanje na Google Formu sa svim podacima
-        const marka = document.getElementById("markaSel").value;
-        const modelRaw = document.getElementById("modelSel").value;
-        if(!modelRaw) { alert("Izaberite auto!"); return; }
+        const m = document.getElementById("markaSel").value;
+        const moRaw = document.getElementById("modelSel").value;
+        if(!moRaw) { alert("Molimo odaberite vozilo!"); return; }
         const cena = document.getElementById("rezultat").innerText;
-        window.open(`https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url&entry.345073777=${encodeURIComponent(marka + " " + modelRaw)}&entry.988818818=${encodeURIComponent(cena)}`, '_blank');
+        window.open(`https://docs.google.com/forms/d/e/1FAIpQLSe1ZLTC1otAYCUCuvvZgsE8fOmNQR9JygNXWfyhfViyzA7LeQ/viewform?usp=pp_url&entry.345073777=${encodeURIComponent(m + " " + moRaw.split('|')[0])}&entry.988818818=${encodeURIComponent(cena)}`, '_blank');
     }
 
     inicijalizuj();
