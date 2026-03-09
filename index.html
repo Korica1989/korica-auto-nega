@@ -10,7 +10,6 @@
         
         body { background: var(--black); color: white; padding-bottom: 50px; }
 
-        /* HEADER - SAMO BREND I SLOGAN */
         .header {
             padding: 70px 20px;
             text-align: center;
@@ -23,7 +22,6 @@
             color: var(--gold); 
             text-transform: uppercase; 
             font-weight: 900;
-            line-height: 1.1;
         }
         .header .slogan { 
             font-size: 14px; 
@@ -35,7 +33,6 @@
             opacity: 0.8;
         }
 
-        /* KALKULATOR STRUKTURA */
         .container { max-width: 450px; margin: 0 auto; padding: 25px; }
         .label-text { display: block; color: #555; font-size: 10px; text-transform: uppercase; margin: 25px 0 10px 0; font-weight: bold; letter-spacing: 1px; }
         
@@ -52,6 +49,8 @@
         .option-card.active { border-color: var(--gold); background: #1a160a; }
         .option-card span { font-weight: bold; text-transform: uppercase; font-size: 13px; color: #888; }
         .option-card.active span { color: var(--gold); }
+        .option-card small { display: block; font-size: 10px; text-transform: none; font-weight: normal; margin-top: 4px; color: #555; }
+        .option-card.active small { color: #886b1a; }
 
         input[type="checkbox"] { width: 24px; height: 24px; accent-color: var(--gold); }
 
@@ -102,6 +101,14 @@
             <input type="checkbox" id="check-unutra" onchange="calculate()" onclick="event.stopPropagation()">
         </div>
 
+        <div class="option-card" id="card-vosak" onclick="toggleOption('vosak')">
+            <div>
+                <span>Ručna zaštita voskom</span>
+                <small>Duboki sjaj i hidrofobni štit protiv kiše i prljavštine.</small>
+            </div>
+            <input type="checkbox" id="check-vosak" onchange="calculate()" onclick="event.stopPropagation()">
+        </div>
+
         <div id="quality-msg" class="quality-alert">
             <strong>Standard Kvaliteta:</strong> Uz samostalno spoljašnje pranje, obavezna je Koch-Chemie zaštita laka i sjaj guma (+100 RSD).
         </div>
@@ -124,6 +131,7 @@
 
     const BAZA_SPOLJA = 900;
     const BAZA_UNUTRA = 800;
+    const BAZA_VOSAK = 500; // Bazna cena voska
 
     (function init() {
         const s = document.getElementById('brand');
@@ -157,11 +165,13 @@
         const mi = document.getElementById('model').value;
         const isS = document.getElementById('check-spolja').checked;
         const isU = document.getElementById('check-unutra').checked;
+        const isV = document.getElementById('check-vosak').checked;
 
         document.getElementById('card-spolja').className = isS ? 'option-card active' : 'option-card';
         document.getElementById('card-unutra').className = isU ? 'option-card active' : 'option-card';
+        document.getElementById('card-vosak').className = isV ? 'option-card active' : 'option-card';
 
-        if(!b || mi === "" || (!isS && !isU)) {
+        if(!b || mi === "" || (!isS && !isU && !isV)) {
             document.getElementById('results').style.display = 'none';
             document.getElementById('quality-msg').style.display = 'none';
             return;
@@ -176,6 +186,12 @@
 
         if(isS) { total += BAZA_SPOLJA * ks; time += 30 * ks; }
         if(isU) { total += BAZA_UNUTRA * ku; time += 35 * ku; }
+        
+        // VOSAK SADA ZAVISI OD VELIČINE VOZILA (ks)
+        if(isV) { 
+            total += BAZA_VOSAK * ks; 
+            time += 20 * ks; 
+        }
 
         if(isS && !isU) {
             total += 100;
@@ -184,7 +200,9 @@
             document.getElementById('quality-msg').style.display = 'none';
         }
 
-        document.getElementById('res-price').innerText = (Math.ceil(total / 50) * 50) + " RSD";
+        let finalP = Math.ceil(total / 50) * 50;
+
+        document.getElementById('res-price').innerText = finalP + " RSD";
         document.getElementById('res-time').innerText = "Vreme: cca " + Math.round(time) + " min";
         document.getElementById('results').style.display = "block";
     }
