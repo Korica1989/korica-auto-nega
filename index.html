@@ -3,79 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>Korica Auto Nega | Sinonim kvaliteta</title>
+    <title>Korica Auto Nega | Kalkulator</title>
     <style>
-        :root { --gold: #d4af37; --black: #000; --dark: #0a0a0a; --grey: #151515; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        
+        :root { --gold: #d4af37; --black: #000; --grey: #151515; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; }
         body { background: var(--black); color: white; padding-bottom: 60px; }
 
-        .header {
-            padding: 60px 20px;
-            text-align: center;
-            background: linear-gradient(to bottom, #1a1a1a, var(--black));
-            border-bottom: 2px solid var(--gold);
-        }
-        .header h1 { 
-            font-size: 30px; 
-            letter-spacing: 4px; 
-            color: var(--gold); 
-            text-transform: uppercase; 
-            font-weight: 900;
-            line-height: 1.1;
-        }
-        .header .slogan { 
-            font-size: 14px; 
-            letter-spacing: 5px; 
-            color: #fff; 
-            text-transform: uppercase; 
-            margin-top: 15px;
-            font-weight: 300;
-            opacity: 0.8;
-        }
+        .header { padding: 50px 20px; text-align: center; border-bottom: 2px solid var(--gold); }
+        .header h1 { font-size: 28px; color: var(--gold); text-transform: uppercase; font-weight: 900; }
+        .header .slogan { font-size: 14px; letter-spacing: 4px; color: #fff; margin-top: 10px; }
 
         .container { max-width: 450px; margin: 0 auto; padding: 20px; }
-        .label-text { display: block; color: #555; font-size: 10px; text-transform: uppercase; margin: 25px 0 10px 0; font-weight: bold; letter-spacing: 1px; }
+        .label-text { display: block; color: #555; font-size: 10px; text-transform: uppercase; margin: 20px 0 8px 0; font-weight: bold; }
         
-        select { 
-            width: 100%; padding: 18px; background: var(--grey); color: white; border: 1px solid #222; 
-            border-radius: 8px; font-size: 16px; outline: none; appearance: none; margin-bottom: 5px;
-        }
+        select { width: 100%; padding: 16px; background: var(--grey); color: white; border: 1px solid #222; border-radius: 8px; font-size: 16px; outline: none; appearance: none; }
 
-        .option-card {
-            background: var(--grey); border: 1px solid #222; padding: 20px; border-radius: 12px;
-            margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;
-            transition: 0.2s; cursor: pointer;
-        }
+        .option-card { background: var(--grey); border: 1px solid #222; padding: 18px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
         .option-card.active { border-color: var(--gold); background: #1a160a; }
-        .option-card .txt-wrap { flex: 1; padding-right: 15px; }
-        .option-card span { font-weight: bold; text-transform: uppercase; font-size: 13px; color: #888; display: block; }
+        .option-card span { font-weight: bold; text-transform: uppercase; font-size: 13px; color: #888; }
         .option-card.active span { color: var(--gold); }
-        .option-card small { display: block; font-size: 11px; color: #555; margin-top: 4px; line-height: 1.3; }
-        .option-card.active small { color: #aaa; }
+        .option-card small { display: block; font-size: 11px; color: #555; margin-top: 4px; }
 
-        input[type="checkbox"] { width: 26px; height: 26px; accent-color: var(--gold); }
+        input[type="checkbox"] { width: 24px; height: 24px; accent-color: var(--gold); }
 
-        .quality-alert {
-            background: #1a160a; border: 1px solid var(--gold); padding: 15px;
-            border-radius: 8px; margin: 20px 0; display: none; font-size: 13px; color: var(--gold);
-            text-align: center; line-height: 1.5;
-        }
-
-        .result-box { 
-            margin-top: 30px; padding: 35px; background: var(--grey); border-radius: 15px; 
-            text-align: center; display: none; border-top: 4px solid var(--gold);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .result-box .total-label { font-size: 10px; color: #555; letter-spacing: 2px; font-weight: bold; }
-        .price { font-size: 50px; color: var(--gold); font-weight: 900; display: block; margin: 5px 0; }
-        .time-est { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+        .result-box { margin-top: 25px; padding: 30px; background: var(--grey); border-radius: 15px; text-align: center; display: none; border-top: 4px solid var(--gold); }
+        .price { font-size: 48px; color: var(--gold); font-weight: 900; display: block; margin: 5px 0; }
+        .time-est { font-size: 12px; color: #666; text-transform: uppercase; }
         
-        .call-now {
-            display: block; width: 100%; padding: 20px; background: var(--gold); color: black;
-            text-align: center; text-decoration: none; font-weight: 900; border-radius: 8px;
-            margin-top: 25px; text-transform: uppercase; font-size: 16px;
-        }
+        .call-now { display: block; width: 100%; padding: 18px; background: var(--gold); color: black; text-align: center; text-decoration: none; font-weight: 900; border-radius: 8px; margin-top: 20px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -86,52 +41,34 @@
     </div>
 
     <div class="container">
-        <label class="label-text">Izaberite vozilo</label>
-        <select id="brand" onchange="loadModels()">
-            <option value="" disabled selected>Marka...</option>
-        </select>
-        <select id="model" onchange="calculate()" style="margin-top: 10px;">
-            <option value="" disabled selected>Model...</option>
-        </select>
+        <label class="label-text">Marka vozila</label>
+        <select id="brand" onchange="loadModels()"><option value="" disabled selected>Izaberi brend...</option></select>
+        
+        <label class="label-text">Model i Karoserija</label>
+        <select id="model" onchange="calculate()"><option value="" disabled selected>Prvo izaberi brend...</option></select>
 
-        <label class="label-text">Stanje zaprljanosti</label>
+        <label class="label-text">Stanje vozila</label>
         <select id="dirt-level" onchange="calculate()">
-            <option value="1">Standardno (Redovno održavanje)</option>
-            <option value="1.3">Ekstremno prljavo (Blato / Teren)</option>
+            <option value="1">Standardno pranje</option>
+            <option value="1.3">Ekstremno prljavo (+30%)</option>
         </select>
 
         <label class="label-text">Usluge</label>
-        
         <div class="option-card" id="card-spolja" onclick="toggleOption('spolja')">
-            <div class="txt-wrap">
-                <span>Spoljašnje pranje</span>
-                <small>Koch-Chemie tretman (ručno pranje + zaštita).</small>
-            </div>
+            <div class="txt-wrap"><span>Spoljašnje pranje</span><small>Koch-Chemie preparati.</small></div>
             <input type="checkbox" id="check-spolja" onchange="calculate()" onclick="event.stopPropagation()">
         </div>
-
         <div class="option-card" id="card-unutra" onclick="toggleOption('unutra')">
-            <div class="txt-wrap">
-                <span>Unutrašnje održavanje</span>
-                <small>Usisavanje i brisanje bez dubinskog rada.</small>
-            </div>
+            <div class="txt-wrap"><span>Unutrašnje održavanje</span><small>Usisavanje i brisanje.</small></div>
             <input type="checkbox" id="check-unutra" onchange="calculate()" onclick="event.stopPropagation()">
         </div>
-
         <div class="option-card" id="card-vosak" onclick="toggleOption('vosak')">
-            <div class="txt-wrap">
-                <span>Ručna zaštita voskom</span>
-                <small>Visoki sjaj i hidrofobni štit.</small>
-            </div>
+            <div class="txt-wrap"><span>Ručna zaštita voskom</span><small>Hidrofobni sjaj.</small></div>
             <input type="checkbox" id="check-vosak" onchange="calculate()" onclick="event.stopPropagation()">
         </div>
 
-        <div id="quality-msg" class="quality-alert">
-            <strong>Kvalitet bez kompromisa:</strong> Uz samostalno spoljašnje pranje, obavezna je Koch-Chemie zaštita laka i sjaj guma (+100 RSD).
-        </div>
-
         <div class="result-box" id="results">
-            <span class="total-label">PROCENA INVESTICIJE</span>
+            <span style="font-size: 10px; color: #555; letter-spacing: 2px;">UKUPNA CENA</span>
             <span class="price" id="res-price">0 RSD</span>
             <span class="time-est" id="res-time"></span>
             <a href="tel:+38160000000" class="call-now">Zakaži termin</a>
@@ -139,19 +76,53 @@
     </div>
 
 <script>
-    // PODEŠENI KOEFICIJENTI ZA TAČNE CENE
-    // Formula: 900 x Koef = Ciljana cena
+    // Baza: Model | Koef_Spolja | Koef_Unutra
+    // Karavani su pojačani za cca 10-15% u odnosu na limuzine
     const vehicleDB = {
-        "Audi": ["A3|1.1|1.1", "A4|1.25|1.25", "A6|1.4|1.4", "Q5|1.5|1.6", "Q7|1.8|2.2"],
-        "BMW": ["Serija 1|1.0|1.0", "Serija 3|1.2|1.2", "Serija 5|1.4|1.4", "X3|1.5|1.6", "X5|1.8|2.1"],
-        "Mercedes-Benz": ["A-Klasa|1.0|1.0", "C-Klasa|1.25|1.25", "E-Klasa|1.45|1.45", "GLC|1.5|1.6", "GLE|1.8|2.1"],
-        "Volkswagen": ["Polo|0.9|0.9", "Golf|1.1|1.1", "Passat|1.3|1.3", "Tiguan|1.5|1.6", "Touareg|1.8|2.1"]
+        "Audi": [
+            "A3 Hatchback|1.1|1.0", 
+            "A4 Limuzina|1.2|1.05", 
+            "A4 Karavan (Avant)|1.35|1.2", 
+            "A6 Limuzina|1.3|1.1", 
+            "A6 Karavan (Avant)|1.45|1.25", 
+            "Q7 SUV|1.6|1.3"
+        ],
+        "BMW": [
+            "Serija 1|1.0|1.0", 
+            "Serija 3 Limuzina|1.2|1.05", 
+            "Serija 3 Karavan (Touring)|1.35|1.2", 
+            "Serija 5 Limuzina|1.3|1.1", 
+            "Serija 5 Karavan (Touring)|1.45|1.25", 
+            "X5 SUV|1.6|1.3"
+        ],
+        "Mercedes-Benz": [
+            "A-Klasa|1.0|1.0", 
+            "C-Klasa Limuzina|1.2|1.05", 
+            "C-Klasa Karavan|1.35|1.2", 
+            "E-Klasa Limuzina|1.3|1.1", 
+            "E-Klasa Karavan|1.45|1.25", 
+            "GLE SUV|1.6|1.3"
+        ],
+        "Volkswagen": [
+            "Polo|0.9|0.9", 
+            "Golf Hatchback|1.1|1.0", 
+            "Golf Variant (Karavan)|1.25|1.15", 
+            "Passat Limuzina|1.25|1.1", 
+            "Passat Karavan (Variant)|1.4|1.25", 
+            "Touareg SUV|1.6|1.3"
+        ],
+        "Škoda": [
+            "Fabia|0.9|0.9",
+            "Octavia Limuzina|1.2|1.1",
+            "Octavia Karavan|1.35|1.25",
+            "Superb Limuzina|1.3|1.15",
+            "Superb Karavan|1.45|1.3"
+        ]
     };
 
-    const BAZA_SPOLJA = 900;
-    const BAZA_UNUTRA = 800;
-    const BAZA_VOSAK = 350;
-    const DOPLATA_KVALITET = 100;
+    const BAZA_SPOLJA = 800;
+    const BAZA_UNUTRA = 700;
+    const BAZA_VOSAK = 300; 
 
     (function init() {
         const s = document.getElementById('brand');
@@ -165,7 +136,7 @@
     function loadModels() {
         const b = document.getElementById('brand').value;
         const s = document.getElementById('model');
-        s.innerHTML = '<option value="" disabled selected>Model...</option>';
+        s.innerHTML = '<option value="" disabled selected>Izaberi model...</option>';
         vehicleDB[b].forEach((v, i) => {
             let o = document.createElement('option');
             o.value = i; o.textContent = v.split('|')[0];
@@ -175,8 +146,7 @@
     }
 
     function toggleOption(id) {
-        const cb = document.getElementById('check-' + id);
-        cb.checked = !cb.checked;
+        document.getElementById('check-' + id).checked = !document.getElementById('check-' + id).checked;
         calculate();
     }
 
@@ -194,7 +164,6 @@
 
         if(!brand || modelIdx === "" || (!isSpolja && !isUnutra && !isVosak)) {
             document.getElementById('results').style.display = 'none';
-            document.getElementById('quality-msg').style.display = 'none';
             return;
         }
 
@@ -205,31 +174,13 @@
         let total = 0;
         let time = 0;
 
-        if(isSpolja) { 
-            total += (BAZA_SPOLJA * ks) * dirtFactor; 
-            time += (dirtFactor > 1) ? (30 * ks + 15) : (30 * ks);
-        }
-        
-        if(isUnutra) { 
-            total += BAZA_UNUTRA * ku; 
-            time += 35 * ku; 
-        }
-        
-        if(isVosak) { 
-            total += BAZA_VOSAK * ks; 
-            time += 15 * ks; 
-        }
+        if(isSpolja) { total += (BAZA_SPOLJA * ks) * dirtFactor; time += 30 * ks; }
+        if(isUnutra) { total += BAZA_UNUTRA * ku; time += 30 * ku; }
+        if(isVosak) { total += BAZA_VOSAK * ks; time += 15 * ks; }
 
-        if(isSpolja && !isUnutra) {
-            total += DOPLATA_KVALITET;
-            document.getElementById('quality-msg').style.display = 'block';
-        } else {
-            document.getElementById('quality-msg').style.display = 'none';
-        }
+        if(isSpolja && !isUnutra) { total += 100; }
 
-        // Zaokruživanje na 50 dinara
         let finalPrice = Math.ceil(total / 50) * 50;
-
         document.getElementById('res-price').innerText = finalPrice + " RSD";
         document.getElementById('res-time').innerText = "Vreme: cca " + Math.round(time) + " min";
         document.getElementById('results').style.display = "block";
