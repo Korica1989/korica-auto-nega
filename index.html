@@ -6,26 +6,28 @@
     <title>Korica Auto Nega | Sinonim kvaliteta</title>
     <style>
         :root { --gold: #d4af37; --black: #000; --dark: #0a0a0a; --grey: #151515; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         
-        body { background: var(--black); color: white; padding-bottom: 50px; }
+        body { background: var(--black); color: white; padding-bottom: 60px; }
 
+        /* HEADER - BRENDIRANJE */
         .header {
-            padding: 70px 20px;
+            padding: 60px 20px;
             text-align: center;
             background: linear-gradient(to bottom, #1a1a1a, var(--black));
             border-bottom: 2px solid var(--gold);
         }
         .header h1 { 
-            font-size: 32px; 
-            letter-spacing: 5px; 
+            font-size: 30px; 
+            letter-spacing: 4px; 
             color: var(--gold); 
             text-transform: uppercase; 
             font-weight: 900;
+            line-height: 1.1;
         }
         .header .slogan { 
             font-size: 14px; 
-            letter-spacing: 6px; 
+            letter-spacing: 5px; 
             color: #fff; 
             text-transform: uppercase; 
             margin-top: 15px;
@@ -33,7 +35,8 @@
             opacity: 0.8;
         }
 
-        .container { max-width: 450px; margin: 0 auto; padding: 25px; }
+        /* SADRŽAJ */
+        .container { max-width: 450px; margin: 0 auto; padding: 20px; }
         .label-text { display: block; color: #555; font-size: 10px; text-transform: uppercase; margin: 25px 0 10px 0; font-weight: bold; letter-spacing: 1px; }
         
         select { 
@@ -41,36 +44,45 @@
             border-radius: 8px; font-size: 16px; outline: none; appearance: none;
         }
 
+        /* OPCIJE KARTICE */
         .option-card {
-            background: var(--grey); border: 1px solid #222; padding: 22px; border-radius: 10px;
+            background: var(--grey); border: 1px solid #222; padding: 20px; border-radius: 12px;
             margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;
-            transition: 0.3s; cursor: pointer;
+            transition: 0.2s; cursor: pointer;
         }
         .option-card.active { border-color: var(--gold); background: #1a160a; }
-        .option-card span { font-weight: bold; text-transform: uppercase; font-size: 13px; color: #888; }
+        .option-card .txt-wrap { flex: 1; padding-right: 15px; }
+        .option-card span { font-weight: bold; text-transform: uppercase; font-size: 13px; color: #888; display: block; }
         .option-card.active span { color: var(--gold); }
-        .option-card small { display: block; font-size: 10px; text-transform: none; font-weight: normal; margin-top: 4px; color: #555; }
-        .option-card.active small { color: #886b1a; }
+        .option-card small { display: block; font-size: 11px; color: #555; margin-top: 4px; line-height: 1.3; }
+        .option-card.active small { color: #aaa; }
 
-        input[type="checkbox"] { width: 24px; height: 24px; accent-color: var(--gold); }
+        input[type="checkbox"] { width: 26px; height: 26px; accent-color: var(--gold); }
 
+        /* NAPOMENA O KVALITETU */
         .quality-alert {
             background: #1a160a; border: 1px solid var(--gold); padding: 15px;
             border-radius: 8px; margin: 20px 0; display: none; font-size: 13px; color: var(--gold);
-            text-align: center; line-height: 1.4;
+            text-align: center; line-height: 1.5;
         }
 
+        /* REZULTAT */
         .result-box { 
             margin-top: 30px; padding: 35px; background: var(--grey); border-radius: 15px; 
             text-align: center; display: none; border-top: 4px solid var(--gold);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .price { font-size: 50px; color: var(--gold); font-weight: 900; display: block; }
+        .result-box .total-label { font-size: 10px; color: #555; letter-spacing: 2px; font-weight: bold; }
+        .price { font-size: 50px; color: var(--gold); font-weight: 900; display: block; margin: 5px 0; }
+        .time-est { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
         
+        /* POZIV NA AKCIJU */
         .call-now {
             display: block; width: 100%; padding: 20px; background: var(--gold); color: black;
             text-align: center; text-decoration: none; font-weight: 900; border-radius: 8px;
-            margin-top: 25px; text-transform: uppercase; font-size: 15px;
+            margin-top: 25px; text-transform: uppercase; font-size: 16px; transition: 0.2s;
         }
+        .call-now:active { transform: scale(0.98); opacity: 0.9; }
     </style>
 </head>
 <body>
@@ -81,7 +93,7 @@
     </div>
 
     <div class="container">
-        <label class="label-text">Vozilo</label>
+        <label class="label-text">Izaberite vozilo</label>
         <select id="brand" onchange="loadModels()">
             <option value="" disabled selected>Marka...</option>
         </select>
@@ -89,22 +101,28 @@
             <option value="" disabled selected>Model...</option>
         </select>
 
-        <label class="label-text">Tretmani</label>
+        <label class="label-text">Dostupni tretmani</label>
         
         <div class="option-card" id="card-spolja" onclick="toggleOption('spolja')">
-            <span>Spoljašnje pranje (Koch-Chemie)</span>
+            <div class="txt-wrap">
+                <span>Spoljašnje pranje</span>
+                <small>Premium tretman Koch-Chemie preparatima.</small>
+            </div>
             <input type="checkbox" id="check-spolja" onchange="calculate()" onclick="event.stopPropagation()">
         </div>
 
         <div class="option-card" id="card-unutra" onclick="toggleOption('unutra')">
-            <span>Unutrašnje održavanje</span>
+            <div class="txt-wrap">
+                <span>Unutrašnje održavanje</span>
+                <small>Usisavanje i osvežavanje kompletnog enterijera.</small>
+            </div>
             <input type="checkbox" id="check-unutra" onchange="calculate()" onclick="event.stopPropagation()">
         </div>
 
         <div class="option-card" id="card-vosak" onclick="toggleOption('vosak')">
-            <div>
+            <div class="txt-wrap">
                 <span>Ručna zaštita voskom</span>
-                <small>Duboki sjaj i hidrofobni štit protiv kiše i prljavštine.</small>
+                <small>Visoki sjaj i hidrofobni štit koji odbija vodu i prljavštinu.</small>
             </div>
             <input type="checkbox" id="check-vosak" onchange="calculate()" onclick="event.stopPropagation()">
         </div>
@@ -114,25 +132,30 @@
         </div>
 
         <div class="result-box" id="results">
-            <span style="font-size: 10px; color: #555; letter-spacing: 2px; font-weight: bold;">PROCENA INVESTICIJE</span>
+            <span class="total-label">UKUPNA INVESTICIJA</span>
             <span class="price" id="res-price">0 RSD</span>
-            <span id="res-time" style="font-size: 12px; color: #666; text-transform: uppercase;"></span>
+            <span class="time-est" id="res-time"></span>
             <a href="tel:+38160000000" class="call-now">Zakaži termin</a>
         </div>
     </div>
 
 <script>
+    // Baza vozila sa koeficijentima (Model | Koef_Spolja | Koef_Unutra)
     const vehicleDB = {
-        "Audi": ["A3|1.1|1.1", "A4|1.25|1.25", "A6|1.45|1.45", "Q7|1.8|2.2"],
-        "BMW": ["Serija 3|1.2|1.2", "Serija 5|1.45|1.45", "X5|1.8|2.1"],
-        "Mercedes-Benz": ["C-Klasa|1.25|1.25", "E-Klasa|1.5|1.5", "GLE|1.8|2.1"],
-        "Volkswagen": ["Golf|1.1|1.1", "Passat|1.35|1.35", "Tiguan|1.5|1.6"]
+        "Audi": ["A3|1.1|1.1", "A4|1.25|1.25", "A6|1.45|1.45", "Q5|1.5|1.6", "Q7|1.8|2.2"],
+        "BMW": ["Serija 1|1.0|1.0", "Serija 3|1.2|1.2", "Serija 5|1.45|1.45", "X3|1.5|1.6", "X5|1.8|2.1"],
+        "Mercedes-Benz": ["A-Klasa|1.0|1.0", "C-Klasa|1.25|1.25", "E-Klasa|1.5|1.5", "GLC|1.5|1.6", "GLE|1.8|2.1"],
+        "Volkswagen": ["Polo|0.9|0.9", "Golf|1.1|1.1", "Passat|1.35|1.35", "Tiguan|1.5|1.6", "Touareg|1.8|2.1"],
+        "Škoda": ["Fabia|0.9|0.9", "Octavia|1.25|1.25", "Superb|1.45|1.45", "Kodiaq|1.7|2.0"]
     };
 
+    // Bazne cene
     const BAZA_SPOLJA = 900;
     const BAZA_UNUTRA = 800;
-    const BAZA_VOSAK = 500; // Bazna cena voska
+    const BAZA_VOSAK = 350; // Korektna bazna cena za vosak
+    const DOPLATA_KVALITET = 100;
 
+    // Inicijalizacija brendova
     (function init() {
         const s = document.getElementById('brand');
         Object.keys(vehicleDB).sort().forEach(m => {
@@ -142,6 +165,7 @@
         });
     })();
 
+    // Učitavanje modela
     function loadModels() {
         const b = document.getElementById('brand').value;
         const s = document.getElementById('model');
@@ -154,55 +178,57 @@
         calculate();
     }
 
+    // Toggle funkcija za kartice
     function toggleOption(id) {
         const cb = document.getElementById('check-' + id);
         cb.checked = !cb.checked;
         calculate();
     }
 
+    // Glavna računica
     function calculate() {
-        const b = document.getElementById('brand').value;
-        const mi = document.getElementById('model').value;
-        const isS = document.getElementById('check-spolja').checked;
-        const isU = document.getElementById('check-unutra').checked;
-        const isV = document.getElementById('check-vosak').checked;
+        const brand = document.getElementById('brand').value;
+        const modelIdx = document.getElementById('model').value;
+        const isSpolja = document.getElementById('check-spolja').checked;
+        const isUnutra = document.getElementById('check-unutra').checked;
+        const isVosak = document.getElementById('check-vosak').checked;
 
-        document.getElementById('card-spolja').className = isS ? 'option-card active' : 'option-card';
-        document.getElementById('card-unutra').className = isU ? 'option-card active' : 'option-card';
-        document.getElementById('card-vosak').className = isV ? 'option-card active' : 'option-card';
+        // Vizuelni feedback
+        document.getElementById('card-spolja').className = isSpolja ? 'option-card active' : 'option-card';
+        document.getElementById('card-unutra').className = isUnutra ? 'option-card active' : 'option-card';
+        document.getElementById('card-vosak').className = isVosak ? 'option-card active' : 'option-card';
 
-        if(!b || mi === "" || (!isS && !isU && !isV)) {
+        // Ako ništa nije izabrano, sakrij rezultate
+        if(!brand || modelIdx === "" || (!isSpolja && !isUnutra && !isVosak)) {
             document.getElementById('results').style.display = 'none';
             document.getElementById('quality-msg').style.display = 'none';
             return;
         }
 
-        const podaci = vehicleDB[b][mi].split('|');
+        const podaci = vehicleDB[brand][modelIdx].split('|');
         const ks = parseFloat(podaci[1]);
         const ku = parseFloat(podaci[2]);
 
         let total = 0;
         let time = 0;
 
-        if(isS) { total += BAZA_SPOLJA * ks; time += 30 * ks; }
-        if(isU) { total += BAZA_UNUTRA * ku; time += 35 * ku; }
-        
-        // VOSAK SADA ZAVISI OD VELIČINE VOZILA (ks)
-        if(isV) { 
-            total += BAZA_VOSAK * ks; 
-            time += 20 * ks; 
-        }
+        // Računanje cena i vremena
+        if(isSpolja) { total += BAZA_SPOLJA * ks; time += 30 * ks; }
+        if(isUnutra) { total += BAZA_UNUTRA * ku; time += 35 * ku; }
+        if(isVosak) { total += BAZA_VOSAK * ks; time += 15 * ks; }
 
-        if(isS && !isU) {
-            total += 100;
+        // Specijalna logika: Samo spolja
+        if(isSpolja && !isUnutra) {
+            total += DOPLATA_KVALITET;
             document.getElementById('quality-msg').style.display = 'block';
         } else {
             document.getElementById('quality-msg').style.display = 'none';
         }
 
-        let finalP = Math.ceil(total / 50) * 50;
+        // Finalno zaokruživanje na 50 dinara
+        let finalPrice = Math.ceil(total / 50) * 50;
 
-        document.getElementById('res-price').innerText = finalP + " RSD";
+        document.getElementById('res-price').innerText = finalPrice + " RSD";
         document.getElementById('res-time').innerText = "Vreme: cca " + Math.round(time) + " min";
         document.getElementById('results').style.display = "block";
     }
