@@ -76,17 +76,16 @@
     </div>
 
 <script>
-    // Model | Koef_Spolja | Koef_Unutra
     const vehicleDB = {
         "Audi": ["A3 Hatchback|1.1|1.0", "A4 Limuzina|1.2|1.05", "A4 Karavan|1.35|1.2", "A6 Limuzina|1.3|1.1", "A6 Karavan|1.45|1.25", "Q7 SUV|1.7|1.4"],
         "BMW": ["Serija 1|1.0|1.0", "Serija 3 Limuzina|1.2|1.05", "Serija 3 Karavan|1.35|1.2", "Serija 5 Limuzina|1.3|1.1", "Serija 5 Karavan|1.45|1.25", "X5 SUV|1.7|1.4"],
-        "Mercedes-Benz": ["A-Klasa|1.0|1.0", "C-Klasa Limuzina|1.2|1.05", "C-Klasa Karavan|1.35|1.2", "E-Klasa Limuzina|1.3|1.1", "E-Klasa Karavan|1.45|1.25", "GLE SUV|1.7|1.4"],
-        "Volkswagen": ["Polo|0.9|0.9", "Golf Hatchback|1.1|1.0", "Golf Karavan|1.25|1.15", "Passat Limuzina|1.25|1.1", "Passat Karavan|1.4|1.25", "Touareg SUV|1.7|1.4"],
+        "Fiat": ["Punto|0.85|0.9", "Tipo Hatchback|1.1|1.0", "Tipo Karavan|1.25|1.2", "500L|1.25|1.3", "Scudo/Ducato (Laka dostavna)|2.1|1.8"],
+        "Mercedes-Benz": ["A-Klasa|1.0|1.0", "C-Klasa Limuzina|1.2|1.05", "C-Klasa Karavan|1.35|1.2", "E-Klasa Limuzina|1.3|1.1", "E-Klasa Karavan|1.45|1.25", "GLE SUV|1.7|1.4", "Vito/V-Klasa|2.1|1.8"],
+        "Opel": ["Corsa|0.9|0.9", "Astra Hatchback|1.1|1.0", "Astra Karavan|1.25|1.2", "Insignia Limuzina|1.3|1.1", "Insignia Karavan|1.45|1.25", "Vivaro|2.1|1.8"],
+        "Peugeot": ["208|0.9|0.9", "308 Hatchback|1.1|1.0", "308 Karavan|1.25|1.2", "508 Limuzina|1.3|1.1", "508 Karavan|1.45|1.25", "Expert/Boxer|2.1|1.8"],
+        "Renault": ["Clio|0.9|0.9", "Megane Hatchback|1.1|1.0", "Megane Karavan|1.25|1.2", "Talisman Limuzina|1.3|1.1", "Talisman Karavan|1.45|1.25", "Trafic|2.1|1.8"],
         "Škoda": ["Fabia|0.9|0.9", "Octavia Limuzina|1.2|1.1", "Octavia Karavan|1.35|1.25", "Superb Limuzina|1.3|1.15", "Superb Karavan|1.45|1.3"],
-        "Renault": ["Clio|0.9|0.9", "Megane Hatchback|1.1|1.0", "Megane Karavan|1.25|1.2", "Laguna/Talisman Lim.|1.3|1.1", "Laguna/Talisman Kar.|1.45|1.25"],
-        "Peugeot": ["208|0.9|0.9", "308 Hatchback|1.1|1.0", "308 Karavan|1.25|1.2", "508 Limuzina|1.3|1.1", "508 Karavan|1.45|1.25"],
-        "Fiat": ["Punto|0.85|0.9", "Tipo Hatchback|1.1|1.0", "Tipo Karavan|1.25|1.2", "500L|1.25|1.3"],
-        "Dostavna (Kombiji)": ["Renault Trafic|2.1|1.8", "Opel Vivaro|2.1|1.8", "VW Transporter|2.1|1.8", "Mercedes Vito|2.1|1.8", "Fiat Scudo|2.0|1.7"]
+        "Volkswagen": ["Polo|0.9|0.9", "Golf Hatchback|1.1|1.0", "Golf Karavan|1.25|1.15", "Passat Limuzina|1.25|1.1", "Passat Karavan|1.4|1.25", "Touareg SUV|1.7|1.4", "Transporter/Multivan|2.1|1.8"]
     };
 
     const BAZA_SPOLJA = 800;
