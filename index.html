@@ -6,218 +6,234 @@
     <title>KORICA Auto Nega | Sinonim Kvaliteta</title>
     <style>
         :root { --gold: #d4af37; --black: #000; --dark: #0a0a0a; --grey: #121212; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         
-        body { background: var(--black); color: white; line-height: 1.6; }
+        body { background: var(--black); color: white; line-height: 1.6; overflow-x: hidden; }
 
-        /* HERO SEKCIJA - POČETNA */
+        /* PRESTIŽNA POČETNA SEKCIJA */
         .hero {
-            height: 60vh;
+            height: 100vh; /* Zauzima ceo ekran pri otvaranju */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&q=80&w=1000'); /* Možeš zameniti svojom slikom rada */
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&q=80&w=1500'); 
             background-size: cover;
             background-position: center;
             border-bottom: 2px solid var(--gold);
         }
 
-        .hero h1 {
-            font-size: 3rem;
-            letter-spacing: 12px;
+        .brand-name {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            letter-spacing: 15px;
             color: var(--gold);
             text-transform: uppercase;
             font-weight: 900;
             margin-bottom: 10px;
+            animation: fadeInDown 1.5s ease-out;
         }
 
-        .hero p {
-            font-size: 1.2rem;
-            letter-spacing: 5px;
+        .slogan {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            letter-spacing: 8px;
             color: white;
             text-transform: uppercase;
             font-weight: 300;
+            opacity: 0.9;
+            animation: fadeInUp 1.5s ease-out;
         }
 
-        /* KONTEJNER ZA APLIKACIJU */
-        .main-content {
-            padding: 50px 20px;
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            color: var(--gold);
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+        }
+
+        /* SEKCIJA SA APLIKACIJOM */
+        .app-section {
+            padding: 80px 20px;
             display: flex;
             justify-content: center;
             background: var(--dark);
         }
 
-        .app-container {
+        .expert-card {
             width: 100%;
-            max-width: 480px;
+            max-width: 500px;
             background: var(--black);
             border: 1px solid #222;
-            padding: 35px;
-            border-radius: 4px; /* Oštre, profesionalne ivice */
+            padding: 40px;
+            position: relative;
         }
 
-        .app-header {
-            margin-bottom: 30px;
+        .expert-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--gold);
+        }
+
+        .section-title {
             text-align: center;
-        }
-
-        .app-header h2 {
             font-size: 14px;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             color: var(--gold);
             text-transform: uppercase;
-            margin-bottom: 20px;
+            margin-bottom: 40px;
         }
 
-        .section { margin-bottom: 25px; }
-        label { display: block; color: #666; font-size: 11px; text-transform: uppercase; margin-bottom: 10px; font-weight: bold; }
+        .input-group { margin-bottom: 25px; }
+        label { display: block; color: #555; font-size: 10px; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px; }
         
         select { 
             width: 100%; padding: 18px; background: var(--grey); color: white; border: 1px solid #333; 
-            border-radius: 0; font-size: 16px; outline: none; transition: 0.3s;
+            border-radius: 0; font-size: 16px; outline: none; transition: 0.3s; cursor: pointer;
         }
         select:focus { border-color: var(--gold); }
 
-        .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-        .card { 
-            background: var(--grey); border: 1px solid #333; padding: 15px 5px; 
-            text-align: center; cursor: pointer; font-size: 11px; font-weight: bold; color: #555; 
+        .service-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+        .service-btn { 
+            background: var(--grey); border: 1px solid #333; padding: 18px 5px; 
+            text-align: center; cursor: pointer; font-size: 11px; font-weight: bold; color: #666; 
             transition: 0.3s; text-transform: uppercase;
         }
-        .card.active { border-color: var(--gold); color: var(--gold); background: #1a160a; }
+        .service-btn.active { border-color: var(--gold); color: var(--gold); background: #1a160a; }
 
-        .addon { 
-            margin-top: 20px; display: none; padding: 15px; background: #080808; border: 1px solid #222;
+        .extra-option { 
+            margin-top: 20px; display: none; padding: 15px; border: 1px solid #222;
             justify-content: space-between; align-items: center; 
         }
 
-        .result-box { 
-            margin-top: 40px; padding: 30px; background: #050505; border-top: 3px solid var(--gold); 
+        .summary-box { 
+            margin-top: 40px; padding: 30px; background: #050505; border: 1px solid #222;
             text-align: center; display: none;
         }
 
-        .price { font-size: 48px; color: var(--gold); font-weight: 900; display: block; }
-        .time { color: #666; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
+        .total-price { font-size: 50px; color: var(--gold); font-weight: 900; display: block; }
+        .est-time { color: #555; font-size: 12px; text-transform: uppercase; margin-top: 10px; }
 
-        footer {
-            text-align: center;
-            padding: 40px;
-            font-size: 10px;
-            color: #333;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
+        /* ANIMACIJE */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+
+        footer { padding: 50px; text-align: center; font-size: 10px; color: #222; letter-spacing: 3px; }
     </style>
 </head>
 <body>
 
-    <section class="hero">
-        <h1>KORICA</h1>
-        <p>Sinonim kvaliteta</p>
-    </section>
+    <header class="hero">
+        <h1 class="brand-name">KORICA</h1>
+        <p class="slogan">Sinonim kvaliteta</p>
+        <div class="scroll-indicator">Otkrijte više</div>
+    </header>
 
-    <section class="main-content">
-        <div class="app-container">
-            <div class="app-header">
-                <h2>Procena usluge nege</h2>
-            </div>
+    <main class="app-section">
+        <div class="expert-card">
+            <h2 class="section-title">Ekspert Sistem Procene</h2>
             
-            <div class="section">
-                <label>Brend vozila</label>
-                <select id="marka" onchange="updateModels()">
-                    <option value="" disabled selected>Izaberite...</option>
+            <div class="input-group">
+                <label>Odaberite brend</label>
+                <select id="brand-select" onchange="loadModels()">
+                    <option value="" disabled selected>Brend vozila...</option>
                 </select>
             </div>
 
-            <div class="section">
-                <label>Model / Generacija</label>
-                <select id="model" onchange="calculate()">
-                    <option value="" disabled selected>Prvo izaberite brend</option>
+            <div class="input-group">
+                <label>Odaberite model</label>
+                <select id="model-select" onchange="runCalculation()">
+                    <option value="" disabled selected>Prvo odaberite brend</option>
                 </select>
             </div>
 
-            <div class="section">
-                <label>Vrsta tretmana</label>
-                <div class="grid">
-                    <div class="card" id="btn-spolja" onclick="setMode('spolja')">Spolja</div>
-                    <div class="card" id="btn-unutra" onclick="setMode('unutra')">Unutra</div>
-                    <div class="card" id="btn-komplet" onclick="setMode('komplet')">Komplet</div>
+            <div class="input-group">
+                <label>Vrsta usluge</label>
+                <div class="service-grid">
+                    <div class="service-btn" id="s-spolja" onclick="selectService('spolja')">Spolja</div>
+                    <div class="service-btn" id="s-unutra" onclick="selectService('unutra')">Unutra</div>
+                    <div class="service-btn" id="s-komplet" onclick="selectService('komplet')">Komplet</div>
                 </div>
             </div>
 
-            <div class="addon" id="pragovi-div">
-                <span style="font-size: 12px; color: #888;">Nega pragova (+200 RSD)</span>
-                <input type="checkbox" id="pragovi-check" onchange="calculate()" style="width:20px; height:20px; accent-color:var(--gold)">
+            <div class="extra-option" id="pragovi-panel">
+                <span style="font-size: 11px; color: #666; text-transform: uppercase;">Nega pragova (+200 RSD)</span>
+                <input type="checkbox" id="pragovi-check" onchange="runCalculation()" style="width:22px; height:22px; accent-color:var(--gold)">
             </div>
 
-            <div class="result-box" id="results">
-                <span style="font-size: 10px; color: #444; letter-spacing: 2px;">UKUPAN IZNOS</span>
-                <span class="price" id="res-price">0 RSD</span>
-                <span class="time" id="res-time"></span>
+            <div class="summary-box" id="result-area">
+                <span style="font-size: 10px; color: #444; letter-spacing: 2px; font-weight: bold;">UKUPNA INVESTICIJA</span>
+                <span class="total-price" id="out-price">0 RSD</span>
+                <span class="est-time" id="out-time"></span>
             </div>
         </div>
-    </section>
+    </main>
 
     <footer>
-        &copy; 2026 KORICA AUTO NEGA | PROFESIONALNA USLUGA
+        &copy; 2026 KORICA AUTO NEGA | SREMČICA
     </footer>
 
 <script>
-    const db = {
+    const vehicleDB = {
         "Audi": ["A3 8P (2003-2012)|1.10", "A4 B8 (2008-2015)|1.25", "A6 C7 (2011-2018)|1.45", "Q7 4M (2015-)|1.90"],
         "BMW": ["Serija 3 E90|1.20", "Serija 5 F10|1.45", "X5 G05|1.95", "Serija 7 G11|1.90"],
         "Mercedes-Benz": ["C-Klasa W204|1.20", "E-Klasa W213|1.50", "GLE V167|1.95", "S-Klasa W222|1.90"],
         "Volkswagen": ["Golf 7|1.10", "Passat B8|1.35", "Tiguan G2|1.45", "Touareg CR|1.90"]
     };
 
-    let activeMode = '';
-    const prices = { spolja: 800, unutra: 800, komplet: 1500 };
-    const times = { spolja: 30, unutra: 35, komplet: 60 };
+    let selectedService = '';
+    const basePrices = { spolja: 800, unutra: 800, komplet: 1500 };
+    const baseTimes = { spolja: 30, unutra: 35, komplet: 60 };
 
-    (function init() {
-        const select = document.getElementById('marka');
-        Object.keys(db).sort().forEach(m => {
-            let opt = document.createElement('option');
-            opt.value = m;
-            opt.innerHTML = m;
-            select.appendChild(opt);
+    (function start() {
+        const bSel = document.getElementById('brand-select');
+        Object.keys(vehicleDB).sort().forEach(b => {
+            let o = document.createElement('option');
+            o.value = b; o.innerHTML = b;
+            bSel.appendChild(o);
         });
     })();
 
-    function updateModels() {
-        const marka = document.getElementById('marka').value;
-        const modelSelect = document.getElementById('model');
-        modelSelect.innerHTML = '<option value="" disabled selected>Izaberite model...</option>';
-        db[marka].forEach((item, index) => {
-            let opt = document.createElement('option');
-            opt.value = index;
-            opt.innerHTML = item.split('|')[0];
-            modelSelect.appendChild(opt);
+    function loadModels() {
+        const b = document.getElementById('brand-select').value;
+        const mSel = document.getElementById('model-select');
+        mSel.innerHTML = '<option value="" disabled selected>Model vozila...</option>';
+        vehicleDB[b].forEach((v, i) => {
+            let o = document.createElement('option');
+            o.value = i; o.innerHTML = v.split('|')[0];
+            mSel.appendChild(o);
         });
-        document.getElementById('results').style.display = 'none';
+        document.getElementById('result-area').style.display = 'none';
     }
 
-    function setMode(mode) {
-        activeMode = mode;
-        document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-        document.getElementById('btn-' + mode).classList.add('active');
-        document.getElementById('pragovi-div').style.display = (mode === 'spolja') ? 'flex' : 'none';
-        calculate();
+    function selectService(s) {
+        selectedService = s;
+        document.querySelectorAll('.service-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('s-' + s).classList.add('active');
+        document.getElementById('pragovi-panel').style.display = (s === 'spolja') ? 'flex' : 'none';
+        runCalculation();
     }
 
-    function calculate() {
-        const marka = document.getElementById('marka').value;
-        const modelIdx = document.getElementById('model').value;
-        if(!marka || modelIdx === "" || !activeMode) return;
-        const koef = parseFloat(db[marka][modelIdx].split('|')[1]);
-        let fPrice = Math.round(prices[activeMode] * koef);
-        let fTime = Math.round(times[activeMode] * koef);
-        if(activeMode === 'spolja' && document.getElementById('pragovi-check').checked) { fPrice += 200; fTime += 5; }
-        document.getElementById('res-price').innerText = fPrice + " RSD";
-        document.getElementById('res-time').innerText = "Očekivano vreme: cca " + fTime + " min";
-        document.getElementById('results').style.display = "block";
+    function runCalculation() {
+        const b = document.getElementById('brand-select').value;
+        const mi = document.getElementById('model-select').value;
+        if(!b || mi === "" || !selectedService) return;
+
+        const k = parseFloat(vehicleDB[b][mi].split('|')[1]);
+        let price = Math.round(basePrices[selectedService] * k);
+        let time = Math.round(baseTimes[selectedService] * k);
+
+        if(selectedService === 'spolja' && document.getElementById('pragovi-check').checked) {
+            price += 200; time += 5;
+        }
+
+        document.getElementById('out-price').innerText = price + " RSD";
+        document.getElementById('out-time').innerText = "PROCENJENO VREME: " + time + " MIN";
+        document.getElementById('result-area').style.display = "block";
     }
 </script>
 </body>
