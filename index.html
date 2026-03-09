@@ -10,7 +10,7 @@
         
         body { background: var(--black); color: white; padding-bottom: 60px; }
 
-        /* HEADER - BRENDIRANJE */
+        /* HEADER */
         .header {
             padding: 60px 20px;
             text-align: center;
@@ -41,7 +41,7 @@
         
         select { 
             width: 100%; padding: 18px; background: var(--grey); color: white; border: 1px solid #222; 
-            border-radius: 8px; font-size: 16px; outline: none; appearance: none;
+            border-radius: 8px; font-size: 16px; outline: none; appearance: none; margin-bottom: 5px;
         }
 
         /* OPCIJE KARTICE */
@@ -76,13 +76,12 @@
         .price { font-size: 50px; color: var(--gold); font-weight: 900; display: block; margin: 5px 0; }
         .time-est { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
         
-        /* POZIV NA AKCIJU */
+        /* DUGME */
         .call-now {
             display: block; width: 100%; padding: 20px; background: var(--gold); color: black;
             text-align: center; text-decoration: none; font-weight: 900; border-radius: 8px;
-            margin-top: 25px; text-transform: uppercase; font-size: 16px; transition: 0.2s;
+            margin-top: 25px; text-transform: uppercase; font-size: 16px;
         }
-        .call-now:active { transform: scale(0.98); opacity: 0.9; }
     </style>
 </head>
 <body>
@@ -101,7 +100,13 @@
             <option value="" disabled selected>Model...</option>
         </select>
 
-        <label class="label-text">Dostupni tretmani</label>
+        <label class="label-text">Trenutno stanje zaprljanosti</label>
+        <select id="dirt-level" onchange="calculate()">
+            <option value="1">Standardno (Redovno održavanje)</option>
+            <option value="1.3">Ekstremno prljavo (Blato / Teren)</option>
+        </select>
+
+        <label class="label-text">Izaberite tretmane</label>
         
         <div class="option-card" id="card-spolja" onclick="toggleOption('spolja')">
             <div class="txt-wrap">
@@ -114,7 +119,7 @@
         <div class="option-card" id="card-unutra" onclick="toggleOption('unutra')">
             <div class="txt-wrap">
                 <span>Unutrašnje održavanje</span>
-                <small>Usisavanje i osvežavanje kompletnog enterijera.</small>
+                <small>Usisavanje i brisanje bez dubinskog pranja.</small>
             </div>
             <input type="checkbox" id="check-unutra" onchange="calculate()" onclick="event.stopPropagation()">
         </div>
@@ -122,7 +127,7 @@
         <div class="option-card" id="card-vosak" onclick="toggleOption('vosak')">
             <div class="txt-wrap">
                 <span>Ručna zaštita voskom</span>
-                <small>Visoki sjaj i hidrofobni štit koji odbija vodu i prljavštinu.</small>
+                <small>Dugotrajan sjaj i hidrofobna zaštita laka.</small>
             </div>
             <input type="checkbox" id="check-vosak" onchange="calculate()" onclick="event.stopPropagation()">
         </div>
@@ -132,7 +137,7 @@
         </div>
 
         <div class="result-box" id="results">
-            <span class="total-label">UKUPNA INVESTICIJA</span>
+            <span class="total-label">PROCENA INVESTICIJE</span>
             <span class="price" id="res-price">0 RSD</span>
             <span class="time-est" id="res-time"></span>
             <a href="tel:+38160000000" class="call-now">Zakaži termin</a>
@@ -140,7 +145,6 @@
     </div>
 
 <script>
-    // Baza vozila sa koeficijentima (Model | Koef_Spolja | Koef_Unutra)
     const vehicleDB = {
         "Audi": ["A3|1.1|1.1", "A4|1.25|1.25", "A6|1.45|1.45", "Q5|1.5|1.6", "Q7|1.8|2.2"],
         "BMW": ["Serija 1|1.0|1.0", "Serija 3|1.2|1.2", "Serija 5|1.45|1.45", "X3|1.5|1.6", "X5|1.8|2.1"],
@@ -149,13 +153,11 @@
         "Škoda": ["Fabia|0.9|0.9", "Octavia|1.25|1.25", "Superb|1.45|1.45", "Kodiaq|1.7|2.0"]
     };
 
-    // Bazne cene
     const BAZA_SPOLJA = 900;
     const BAZA_UNUTRA = 800;
-    const BAZA_VOSAK = 350; // Korektna bazna cena za vosak
+    const BAZA_VOSAK = 350;
     const DOPLATA_KVALITET = 100;
 
-    // Inicijalizacija brendova
     (function init() {
         const s = document.getElementById('brand');
         Object.keys(vehicleDB).sort().forEach(m => {
@@ -165,7 +167,6 @@
         });
     })();
 
-    // Učitavanje modela
     function loadModels() {
         const b = document.getElementById('brand').value;
         const s = document.getElementById('model');
@@ -178,27 +179,24 @@
         calculate();
     }
 
-    // Toggle funkcija za kartice
     function toggleOption(id) {
         const cb = document.getElementById('check-' + id);
         cb.checked = !cb.checked;
         calculate();
     }
 
-    // Glavna računica
     function calculate() {
         const brand = document.getElementById('brand').value;
         const modelIdx = document.getElementById('model').value;
         const isSpolja = document.getElementById('check-spolja').checked;
         const isUnutra = document.getElementById('check-unutra').checked;
         const isVosak = document.getElementById('check-vosak').checked;
+        const dirtFactor = parseFloat(document.getElementById('dirt-level').value);
 
-        // Vizuelni feedback
         document.getElementById('card-spolja').className = isSpolja ? 'option-card active' : 'option-card';
         document.getElementById('card-unutra').className = isUnutra ? 'option-card active' : 'option-card';
         document.getElementById('card-vosak').className = isVosak ? 'option-card active' : 'option-card';
 
-        // Ako ništa nije izabrano, sakrij rezultate
         if(!brand || modelIdx === "" || (!isSpolja && !isUnutra && !isVosak)) {
             document.getElementById('results').style.display = 'none';
             document.getElementById('quality-msg').style.display = 'none';
@@ -212,12 +210,23 @@
         let total = 0;
         let time = 0;
 
-        // Računanje cena i vremena
-        if(isSpolja) { total += BAZA_SPOLJA * ks; time += 30 * ks; }
-        if(isUnutra) { total += BAZA_UNUTRA * ku; time += 35 * ku; }
-        if(isVosak) { total += BAZA_VOSAK * ks; time += 15 * ks; }
+        // Cena pranja + Faktor zaprljanosti
+        if(isSpolja) { 
+            total += (BAZA_SPOLJA * ks) * dirtFactor; 
+            time += (dirtFactor > 1) ? (30 * ks + 15) : (30 * ks);
+        }
+        
+        if(isUnutra) { 
+            total += BAZA_UNUTRA * ku; 
+            time += 35 * ku; 
+        }
+        
+        if(isVosak) { 
+            total += BAZA_VOSAK * ks; 
+            time += 15 * ks; 
+        }
 
-        // Specijalna logika: Samo spolja
+        // Sinonim Kvaliteta doplata
         if(isSpolja && !isUnutra) {
             total += DOPLATA_KVALITET;
             document.getElementById('quality-msg').style.display = 'block';
@@ -225,7 +234,6 @@
             document.getElementById('quality-msg').style.display = 'none';
         }
 
-        // Finalno zaokruživanje na 50 dinara
         let finalPrice = Math.ceil(total / 50) * 50;
 
         document.getElementById('res-price').innerText = finalPrice + " RSD";
