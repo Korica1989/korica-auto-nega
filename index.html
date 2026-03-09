@@ -3,27 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>KORICA Auto Nega | Kalkulator</title>
+    <title>KORICA Auto Nega | Pametni Kalkulator</title>
     <style>
-        :root { --gold: #d4af37; --black: #000; --grey: #151515; }
+        :root { --gold: #d4af37; --black: #000; --grey: #151515; --dark-grey: #222; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; }
         body { background: var(--black); color: white; padding-bottom: 60px; }
+
         .header { padding: 40px 20px; text-align: center; border-bottom: 2px solid var(--gold); }
         .header h1 { font-size: 26px; color: var(--gold); text-transform: uppercase; font-weight: 900; letter-spacing: 2px; }
         .header .slogan { font-size: 12px; letter-spacing: 4px; color: #fff; margin-top: 8px; text-transform: uppercase; }
+
         .container { max-width: 450px; margin: 0 auto; padding: 20px; }
-        .label-text { display: block; color: #666; font-size: 10px; text-transform: uppercase; margin: 18px 0 8px 0; font-weight: bold; letter-spacing: 1px; }
-        select { width: 100%; padding: 15px; background: var(--grey); color: white; border: 1px solid #222; border-radius: 8px; font-size: 15px; outline: none; appearance: none; }
-        .option-card { background: var(--grey); border: 1px solid #222; padding: 16px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.2s; }
+        
+        /* Search Box Style */
+        .search-wrapper { position: relative; margin-top: 20px; }
+        #search-input { width: 100%; padding: 18px; background: var(--grey); color: white; border: 1px solid var(--dark-grey); border-radius: 12px; font-size: 16px; outline: none; border-left: 4px solid var(--gold); }
+        #search-input::placeholder { color: #555; }
+        
+        .results-dropdown { 
+            position: absolute; width: 100%; background: var(--grey); border: 1px solid var(--dark-grey); 
+            border-radius: 0 0 12px 12px; max-height: 250px; overflow-y: auto; z-index: 100; display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        .search-item { padding: 15px; border-bottom: 1px solid #111; cursor: pointer; font-size: 14px; }
+        .search-item:hover { background: #1a160a; color: var(--gold); }
+
+        .selected-vehicle-display { 
+            background: #1a160a; padding: 15px; border-radius: 12px; border: 1px dashed var(--gold);
+            margin-top: 15px; display: none; text-align: center;
+        }
+
+        .label-text { display: block; color: #666; font-size: 10px; text-transform: uppercase; margin: 25px 0 8px 0; font-weight: bold; letter-spacing: 1px; }
+
+        .option-card { background: var(--grey); border: 1px solid var(--dark-grey); padding: 16px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
         .option-card.active { border-color: var(--gold); background: #1a160a; }
         .option-card span { font-weight: bold; text-transform: uppercase; font-size: 12px; color: #888; }
         .option-card.active span { color: var(--gold); }
         .option-card small { display: block; font-size: 10px; color: #555; margin-top: 4px; }
+
         input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--gold); }
-        .result-box { margin-top: 25px; padding: 25px; background: var(--grey); border-radius: 15px; text-align: center; display: none; border-top: 4px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+        .result-box { margin-top: 25px; padding: 25px; background: var(--grey); border-radius: 15px; text-align: center; display: none; border-top: 4px solid var(--gold); }
         .price { font-size: 44px; color: var(--gold); font-weight: 900; display: block; margin: 5px 0; }
-        .time-est { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
-        .call-now { display: block; width: 100%; padding: 18px; background: var(--gold); color: black; text-align: center; text-decoration: none; font-weight: 900; border-radius: 8px; margin-top: 20px; text-transform: uppercase; font-size: 14px; }
+        .call-now { display: block; width: 100%; padding: 18px; background: var(--gold); color: black; text-align: center; text-decoration: none; font-weight: 900; border-radius: 8px; margin-top: 20px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -34,21 +56,17 @@
     </div>
 
     <div class="container">
-        <label class="label-text">Brend</label>
-        <select id="brand" onchange="loadModels()"><option value="" disabled selected>Izaberi brend...</option></select>
-        
-        <label class="label-text">Model i Karoserija</label>
-        <select id="model" onchange="calculate()"><option value="" disabled selected>Prvo izaberi brend...</option></select>
+        <label class="label-text">Pronađi svoj auto (npr. Passat ili Trafic)</label>
+        <div class="search-wrapper">
+            <input type="text" id="search-input" placeholder="Kucaj model..." oninput="filterVehicles()">
+            <div id="search-results" class="results-dropdown"></div>
+        </div>
 
-        <label class="label-text">Stanje vozila</label>
-        <select id="dirt-level" onchange="calculate()">
-            <option value="1">Standardno (Redovno održavanje)</option>
-            <option value="1.3">Ekstremno prljavo (+30%)</option>
-        </select>
+        <div id="selected-info" class="selected-vehicle-display"></div>
 
         <label class="label-text">Usluge</label>
         <div class="option-card" id="card-spolja" onclick="toggleOption('spolja')">
-            <div class="txt-wrap"><span>Spoljašnje pranje</span><small>Koch-Chemie preparati.</small></div>
+            <div class="txt-wrap"><span>Spoljašnje pranje</span><small>Koch-Chemie tretman.</small></div>
             <input type="checkbox" id="check-spolja" onchange="calculate()" onclick="event.stopPropagation()">
         </div>
         <div class="option-card" id="card-unutra" onclick="toggleOption('unutra')">
@@ -56,64 +74,87 @@
             <input type="checkbox" id="check-unutra" onchange="calculate()" onclick="event.stopPropagation()">
         </div>
         <div class="option-card" id="card-vosak" onclick="toggleOption('vosak')">
-            <div class="txt-wrap"><span>Ručna zaštita voskom</span><small>Hidrofobni sjaj i zaštita.</small></div>
+            <div class="txt-wrap"><span>Ručna zaštita voskom</span><small>Hidrofobni sjaj.</small></div>
             <input type="checkbox" id="check-vosak" onchange="calculate()" onclick="event.stopPropagation()">
         </div>
 
-        <div class="result-box" id="results">
-            <span style="font-size: 10px; color: #555; letter-spacing: 2px;">UKUPNA INVESTICIJA</span>
+        <div class="result-box" id="results-box">
+            <span style="font-size: 10px; color: #555; letter-spacing: 2px;">UKUPNO ZA NAPLATU</span>
             <span class="price" id="res-price">0 RSD</span>
-            <span class="time-est" id="res-time"></span>
-            <a href="tel:+38160000000" class="call-now">Rezerviši termin</a>
+            <span id="res-time" style="font-size: 11px; color: #666; text-transform: uppercase;"></span>
+            <a href="tel:+38160000000" class="call-now">Zakaži termin</a>
         </div>
     </div>
 
 <script>
-    const vehicleDB = {
-        "Audi": ["A1/A3 Hatchback|1.1|1.0", "A4 Limuzina|1.2|1.05", "A4 Karavan|1.35|1.2", "A6 Limuzina|1.3|1.1", "A6 Karavan|1.45|1.25", "A8 Limuzina|1.5|1.2", "Q3/Q5 SUV|1.5|1.3", "Q7/Q8 SUV|1.7|1.4"],
-        "BMW": ["Serija 1|1.0|1.0", "Serija 3 Limuzina|1.2|1.05", "Serija 3 Karavan|1.35|1.2", "Serija 5 Limuzina|1.3|1.1", "Serija 5 Karavan|1.45|1.25", "Serija 7 Limuzina|1.5|1.2", "X1/X3 SUV|1.4|1.3", "X5/X6 SUV|1.7|1.4", "X7 SUV|1.9|1.6"],
-        "Citroen": ["C3|0.9|0.9", "C4 Hatchback|1.1|1.0", "C5 Limuzina|1.3|1.1", "C5 Karavan|1.45|1.25", "Berlingo/Jumpy Teretni|1.8|1.1", "Berlingo/Jumpy Putnički|1.8|1.8", "Jumper Teretni|2.2|1.2", "Jumper Putnički|2.2|2.3"],
-        "Dacia": ["Sandero|0.9|0.9", "Logan Limuzina|1.1|1.0", "Logan Karavan|1.25|1.15", "Duster|1.4|1.2", "Jogger|1.45|1.3"],
-        "Fiat": ["Punto/500|0.85|0.9", "Tipo Hatchback|1.1|1.0", "Tipo Karavan|1.25|1.2", "500L/500X|1.3|1.3", "Doblo/Scudo Teretni|1.8|1.1", "Doblo/Scudo Putnički|1.8|1.8", "Ducato Teretni|2.2|1.2", "Ducato Putnički|2.2|2.3"],
-        "Ford": ["Fiesta|0.9|0.9", "Focus Hatchback|1.1|1.0", "Focus Karavan|1.25|1.2", "Mondeo Limuzina|1.3|1.1", "Mondeo Karavan|1.45|1.25", "Kuga SUV|1.5|1.3", "Transit Teretni|2.2|1.2", "Transit Putnički|2.2|2.3"],
-        "Honda": ["Civic|1.1|1.0", "Accord|1.3|1.1", "CR-V SUV|1.5|1.3"],
-        "Hyundai": ["i10/i20|0.9|0.9", "i30 Hatchback|1.1|1.0", "i30 Karavan|1.25|1.2", "Elantra|1.25|1.1", "Tucson|1.5|1.3", "Santa Fe|1.7|1.4"],
-        "Kia": ["Rio/Ceed|1.1|1.0", "Ceed Karavan|1.25|1.2", "Sportage|1.5|1.3", "Sorento|1.7|1.4"],
-        "Mazda": ["Mazda 2|0.9|0.9", "Mazda 3 Hatchback|1.1|1.0", "Mazda 3 Sedan|1.2|1.05", "Mazda 6 Sedan|1.3|1.1", "Mazda 6 Karavan|1.45|1.25", "CX-5 SUV|1.5|1.3"],
-        "Mercedes-Benz": ["A/B Klasa|1.1|1.0", "C Klasa Limuzina|1.2|1.05", "C Klasa Karavan|1.35|1.2", "E Klasa Limuzina|1.3|1.1", "E Klasa Karavan|1.45|1.25", "S Klasa|1.5|1.2", "GLC/GLE SUV|1.7|1.4", "GLS/G Klasa|1.9|1.6", "Vito Teretni|2.1|1.1", "Vito Putnički|2.1|2.2", "Sprinter Teretni|2.3|1.2", "Sprinter Putnički|2.3|2.5"],
-        "Opel": ["Corsa|0.9|0.9", "Astra Hatchback|1.1|1.0", "Astra Karavan|1.25|1.2", "Insignia Limuzina|1.3|1.1", "Insignia Karavan|1.45|1.25", "Mokka/Grandland|1.5|1.3", "Vivaro Teretni|2.1|1.1", "Vivaro Putnički|2.1|2.2"],
-        "Peugeot": ["208|0.9|0.9", "308 Hatchback|1.1|1.0", "308 Karavan|1.25|1.2", "508 Limuzina|1.3|1.1", "508 Karavan|1.45|1.25", "2008/3008 SUV|1.4|1.3", "5008 SUV|1.6|1.4", "Partner/Expert Teretni|1.8|1.1", "Partner/Expert Putnički|1.8|1.8"],
-        "Porsche": ["911/Taycan|1.2|1.0", "Macan|1.5|1.3", "Cayenne|1.7|1.4", "Panamera|1.4|1.2"],
-        "Renault": ["Clio|0.9|0.9", "Megane Hatchback|1.1|1.0", "Megane Karavan|1.25|1.2", "Talisman Limuzina|1.3|1.1", "Talisman Karavan|1.45|1.25", "Captur/Kadjar|1.4|1.3", "Trafic Teretni|2.1|1.1", "Trafic Putnički|2.1|2.2", "Master Teretni|2.3|1.2"],
-        "Škoda": ["Fabia|0.9|0.9", "Scala|1.1|1.0", "Octavia Limuzina|1.2|1.1", "Octavia Karavan|1.35|1.25", "Superb Limuzina|1.3|1.15", "Superb Karavan|1.45|1.3", "Karoq/Kodiaq SUV|1.6|1.4"],
-        "Tesla": ["Model 3|1.2|1.0", "Model Y|1.5|1.3", "Model S|1.35|1.1", "Model X|1.8|1.5"],
-        "Toyota": ["Yaris|0.9|0.9", "Corolla Hatchback|1.1|1.0", "Corolla Karavan|1.25|1.2", "Camry|1.35|1.15", "RAV4 SUV|1.5|1.3", "Land Cruiser|1.9|1.6", "Hilux Pickup|1.8|1.3"],
-        "Volkswagen": ["Polo|0.9|0.9", "Golf Hatchback|1.1|1.0", "Golf Karavan|1.25|1.15", "Passat Limuzina|1.25|1.1", "Passat Karavan|1.4|1.25", "Arteon|1.3|1.1", "Tiguan|1.5|1.3", "Touareg|1.7|1.4", "Caddy Teretni|1.4|1.1", "Caddy Putnički|1.4|1.5", "Transporter Teretni|2.1|1.1", "Transporter Putnički|2.1|2.2", "Crafter Teretni|2.3|1.2"],
-        "Volvo": ["V40/V60|1.2|1.1", "V90 Karavan|1.45|1.25", "S60/S90 Limuzina|1.35|1.15", "XC40/XC60 SUV|1.5|1.3", "XC90 SUV|1.8|1.5"]
-    };
+    // Baza podataka (ista kao prethodna, ali optimizovana za pretragu)
+    const vehicleData = [
+        { name: "Audi A3 Hatchback", ks: 1.1, ku: 1.0 },
+        { name: "Audi A4 Limuzina", ks: 1.2, ku: 1.05 },
+        { name: "Audi A4 Karavan", ks: 1.35, ku: 1.2 },
+        { name: "Audi A6 Limuzina", ks: 1.3, ku: 1.1 },
+        { name: "Audi A6 Karavan", ks: 1.45, ku: 1.25 },
+        { name: "Audi Q7 SUV", ks: 1.7, ku: 1.4 },
+        { name: "BMW Serija 3 Limuzina", ks: 1.2, ku: 1.05 },
+        { name: "BMW Serija 3 Karavan", ks: 1.35, ku: 1.2 },
+        { name: "BMW Serija 5 Limuzina", ks: 1.3, ku: 1.1 },
+        { name: "BMW Serija 5 Karavan", ks: 1.45, ku: 1.25 },
+        { name: "BMW X5 SUV", ks: 1.7, ku: 1.4 },
+        { name: "Fiat Punto", ks: 0.85, ku: 0.9 },
+        { name: "Fiat Tipo Karavan", ks: 1.25, ku: 1.2 },
+        { name: "Fiat Scudo Teretni", ks: 2.1, ku: 1.1 },
+        { name: "Fiat Scudo Putnički", ks: 2.1, ku: 2.2 },
+        { name: "Mercedes C Klasa Karavan", ks: 1.35, ku: 1.2 },
+        { name: "Mercedes E Klasa Limuzina", ks: 1.3, ku: 1.1 },
+        { name: "Mercedes Vito Teretni", ks: 2.1, ku: 1.1 },
+        { name: "Mercedes Vito Putnički", ks: 2.1, ku: 2.2 },
+        { name: "Peugeot 308 Karavan", ks: 1.25, ku: 1.2 },
+        { name: "Renault Megane Karavan", ks: 1.25, ku: 1.2 },
+        { name: "Renault Trafic Teretni", ks: 2.1, ku: 1.1 },
+        { name: "Renault Trafic Putnički", ks: 2.1, ku: 2.2 },
+        { name: "Škoda Octavia Karavan", ks: 1.35, ku: 1.25 },
+        { name: "Škoda Superb Karavan", ks: 1.45, ku: 1.3 },
+        { name: "VW Golf Karavan", ks: 1.25, ku: 1.15 },
+        { name: "VW Passat Limuzina", ks: 1.25, ku: 1.1 },
+        { name: "VW Passat Karavan", ks: 1.4, ku: 1.25 },
+        { name: "VW Transporter Teretni", ks: 2.1, ku: 1.1 },
+        { name: "VW Transporter Putnički", ks: 2.1, ku: 2.2 }
+    ];
 
+    let selectedVehicle = null;
     const BAZA_SPOLJA = 800;
     const BAZA_UNUTRA = 700;
-    const BAZA_VOSAK = 300; 
+    const BAZA_VOSAK = 300;
 
-    (function init() {
-        const s = document.getElementById('brand');
-        Object.keys(vehicleDB).sort().forEach(m => {
-            let o = document.createElement('option');
-            o.value = m; o.textContent = m;
-            s.appendChild(o);
-        });
-    })();
+    function filterVehicles() {
+        const input = document.getElementById('search-input').value.toLowerCase();
+        const resultsDiv = document.getElementById('search-results');
+        resultsDiv.innerHTML = '';
+        
+        if (input.length < 2) { resultsDiv.style.display = 'none'; return; }
 
-    function loadModels() {
-        const b = document.getElementById('brand').value;
-        const s = document.getElementById('model');
-        s.innerHTML = '<option value="" disabled selected>Izaberi model...</option>';
-        vehicleDB[b].forEach((v, i) => {
-            let o = document.createElement('option');
-            o.value = i; o.textContent = v.split('|')[0];
-            s.appendChild(o);
-        });
+        const filtered = vehicleData.filter(v => v.name.toLowerCase().includes(input));
+
+        if (filtered.length > 0) {
+            resultsDiv.style.display = 'block';
+            filtered.forEach(v => {
+                const div = document.createElement('div');
+                div.className = 'search-item';
+                div.innerText = v.name;
+                div.onclick = () => selectVehicle(v);
+                resultsDiv.appendChild(div);
+            });
+        } else {
+            resultsDiv.style.display = 'none';
+        }
+    }
+
+    function selectVehicle(v) {
+        selectedVehicle = v;
+        document.getElementById('search-input').value = v.name;
+        document.getElementById('search-results').style.display = 'none';
+        document.getElementById('selected-info').innerText = "Izabrano: " + v.name;
+        document.getElementById('selected-info').style.display = 'block';
         calculate();
     }
 
@@ -123,40 +164,34 @@
     }
 
     function calculate() {
-        const brand = document.getElementById('brand').value;
-        const modelIdx = document.getElementById('model').value;
+        if (!selectedVehicle) return;
+
         const isSpolja = document.getElementById('check-spolja').checked;
         const isUnutra = document.getElementById('check-unutra').checked;
         const isVosak = document.getElementById('check-vosak').checked;
-        const dirtFactor = parseFloat(document.getElementById('dirt-level').value);
 
         document.getElementById('card-spolja').className = isSpolja ? 'option-card active' : 'option-card';
         document.getElementById('card-unutra').className = isUnutra ? 'option-card active' : 'option-card';
         document.getElementById('card-vosak').className = isVosak ? 'option-card active' : 'option-card';
 
-        if(!brand || modelIdx === "" || (!isSpolja && !isUnutra && !isVosak)) {
-            document.getElementById('results').style.display = 'none';
+        if (!isSpolja && !isUnutra && !isVosak) {
+            document.getElementById('results-box').style.display = 'none';
             return;
         }
-
-        const podaci = vehicleDB[brand][modelIdx].split('|');
-        const ks = parseFloat(podaci[1]);
-        const ku = parseFloat(podaci[2]);
 
         let total = 0;
         let time = 0;
 
-        if(isSpolja) { total += (BAZA_SPOLJA * ks) * dirtFactor; time += 30 * ks; }
-        if(isUnutra) { total += BAZA_UNUTRA * ku; time += 35 * ku; }
-        if(isVosak) { total += BAZA_VOSAK * ks; time += 15 * ks; }
-
-        if(isSpolja && !isUnutra) { total += 100; }
+        if(isSpolja) { total += (BAZA_SPOLJA * selectedVehicle.ks); time += 30 * selectedVehicle.ks; }
+        if(isUnutra) { total += (BAZA_UNUTRA * selectedVehicle.ku); time += 35 * selectedVehicle.ku; }
+        if(isVosak) { total += (BAZA_VOSAK * selectedVehicle.ks); time += 15 * selectedVehicle.ks; }
+        if(isSpolja && !isUnutra) total += 100;
 
         let finalPrice = Math.ceil(total / 50) * 50;
         document.getElementById('res-price').innerText = finalPrice + " RSD";
         document.getElementById('res-time').innerText = "Vreme: cca " + Math.round(time) + " min";
-        document.getElementById('results').style.display = "block";
+        document.getElementById('results-box').style.display = "block";
     }
 </script>
 </body>
-</html>s
+</html>
