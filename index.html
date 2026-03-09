@@ -10,72 +10,88 @@
         
         body { background: var(--black); color: white; padding-bottom: 50px; }
 
-        /* GLAVNI NATPIS - BRENDIRANJE */
+        /* HEADER - SAMO BREND I SLOGAN */
         .header {
-            padding: 60px 20px;
+            padding: 70px 20px;
             text-align: center;
             background: linear-gradient(to bottom, #1a1a1a, var(--black));
             border-bottom: 2px solid var(--gold);
         }
         .header h1 { 
-            font-size: 28px; 
-            letter-spacing: 4px; 
-            color: var(--gold); 
-            text-transform: uppercase; 
-            font-weight: 900;
-            line-height: 1.2;
-        }
-        .header .brand-subtitle { 
-            font-size: 16px; 
-            letter-spacing: 2px; 
-            color: #fff; 
-            text-transform: uppercase; 
-            margin-top: 5px;
-            font-weight: 400;
-        }
-        .header .slogan { 
-            font-size: 12px; 
+            font-size: 32px; 
             letter-spacing: 5px; 
             color: var(--gold); 
             text-transform: uppercase; 
+            font-weight: 900;
+            line-height: 1.1;
+        }
+        .header .slogan { 
+            font-size: 14px; 
+            letter-spacing: 6px; 
+            color: #fff; 
+            text-transform: uppercase; 
             margin-top: 15px;
-            opacity: 0.9;
-            font-style: italic;
+            font-weight: 300;
+            opacity: 0.8;
         }
 
-        /* Ostatak stila za kalkulator */
+        /* KALKULATOR STRUKTURA */
         .container { max-width: 450px; margin: 0 auto; padding: 25px; }
-        .label-text { display: block; color: #555; font-size: 10px; text-transform: uppercase; margin: 20px 0 10px 0; font-weight: bold; letter-spacing: 1px; }
-        select { width: 100%; padding: 18px; background: var(--grey); color: white; border: 1px solid #222; border-radius: 8px; font-size: 16px; outline: none; appearance: none; }
-        .option-card { background: var(--grey); border: 1px solid #222; padding: 22px; border-radius: 10px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; transition: 0.3s; cursor: pointer; }
+        .label-text { display: block; color: #555; font-size: 10px; text-transform: uppercase; margin: 25px 0 10px 0; font-weight: bold; letter-spacing: 1px; }
+        
+        select { 
+            width: 100%; padding: 18px; background: var(--grey); color: white; border: 1px solid #222; 
+            border-radius: 8px; font-size: 16px; outline: none; appearance: none;
+        }
+
+        .option-card {
+            background: var(--grey); border: 1px solid #222; padding: 22px; border-radius: 10px;
+            margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;
+            transition: 0.3s; cursor: pointer;
+        }
         .option-card.active { border-color: var(--gold); background: #1a160a; }
         .option-card span { font-weight: bold; text-transform: uppercase; font-size: 13px; color: #888; }
         .option-card.active span { color: var(--gold); }
+
         input[type="checkbox"] { width: 24px; height: 24px; accent-color: var(--gold); }
-        .quality-alert { background: #1a160a; border: 1px solid var(--gold); padding: 15px; border-radius: 8px; margin: 20px 0; display: none; font-size: 13px; color: var(--gold); text-align: center; }
-        .result-box { margin-top: 30px; padding: 30px; background: var(--grey); border-radius: 15px; text-align: center; display: none; border-top: 4px solid var(--gold); }
-        .price { font-size: 48px; color: var(--gold); font-weight: 900; display: block; }
-        .call-now { display: block; width: 100%; padding: 20px; background: var(--gold); color: black; text-align: center; text-decoration: none; font-weight: 900; border-radius: 8px; margin-top: 25px; text-transform: uppercase; }
+
+        .quality-alert {
+            background: #1a160a; border: 1px solid var(--gold); padding: 15px;
+            border-radius: 8px; margin: 20px 0; display: none; font-size: 13px; color: var(--gold);
+            text-align: center; line-height: 1.4;
+        }
+
+        .result-box { 
+            margin-top: 30px; padding: 35px; background: var(--grey); border-radius: 15px; 
+            text-align: center; display: none; border-top: 4px solid var(--gold);
+        }
+        .price { font-size: 50px; color: var(--gold); font-weight: 900; display: block; }
+        
+        .call-now {
+            display: block; width: 100%; padding: 20px; background: var(--gold); color: black;
+            text-align: center; text-decoration: none; font-weight: 900; border-radius: 8px;
+            margin-top: 25px; text-transform: uppercase; font-size: 15px;
+        }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h1>Korica Auto Nega</h1>
-        <div class="brand-subtitle">Profesionalna Estetika</div>
         <div class="slogan">Sinonim kvaliteta</div>
     </div>
 
     <div class="container">
-        <label class="label-text">Izbor vozila</label>
+        <label class="label-text">Vozilo</label>
         <select id="brand" onchange="loadModels()">
-            <option value="" disabled selected>Brend...</option>
+            <option value="" disabled selected>Marka...</option>
         </select>
         <select id="model" onchange="calculate()" style="margin-top: 10px;">
             <option value="" disabled selected>Model...</option>
         </select>
 
-        <label class="label-text">Usluge</label>
+        <label class="label-text">Tretmani</label>
+        
         <div class="option-card" id="card-spolja" onclick="toggleOption('spolja')">
             <span>Spoljašnje pranje (Koch-Chemie)</span>
             <input type="checkbox" id="check-spolja" onchange="calculate()" onclick="event.stopPropagation()">
@@ -87,18 +103,18 @@
         </div>
 
         <div id="quality-msg" class="quality-alert">
-            Uz samostalno spoljašnje pranje, obavezna je Koch-Chemie zaštita (+100 RSD).
+            <strong>Standard Kvaliteta:</strong> Uz samostalno spoljašnje pranje, obavezna je Koch-Chemie zaštita laka i sjaj guma (+100 RSD).
         </div>
 
         <div class="result-box" id="results">
-            <span style="font-size: 10px; color: #555; letter-spacing: 2px;">PROCENA</span>
+            <span style="font-size: 10px; color: #555; letter-spacing: 2px; font-weight: bold;">PROCENA INVESTICIJE</span>
             <span class="price" id="res-price">0 RSD</span>
+            <span id="res-time" style="font-size: 12px; color: #666; text-transform: uppercase;"></span>
             <a href="tel:+38160000000" class="call-now">Zakaži termin</a>
         </div>
     </div>
 
 <script>
-    // Isti JS kod kao malopre, on drži bazu i računicu
     const vehicleDB = {
         "Audi": ["A3|1.1|1.1", "A4|1.25|1.25", "A6|1.45|1.45", "Q7|1.8|2.2"],
         "BMW": ["Serija 3|1.2|1.2", "Serija 5|1.45|1.45", "X5|1.8|2.1"],
@@ -127,6 +143,7 @@
             o.value = i; o.textContent = v.split('|')[0];
             s.appendChild(o);
         });
+        calculate();
     }
 
     function toggleOption(id) {
@@ -151,9 +168,14 @@
         }
 
         const podaci = vehicleDB[b][mi].split('|');
+        const ks = parseFloat(podaci[1]);
+        const ku = parseFloat(podaci[2]);
+
         let total = 0;
-        if(isS) total += BAZA_SPOLJA * parseFloat(podaci[1]);
-        if(isU) total += BAZA_UNUTRA * parseFloat(podaci[2]);
+        let time = 0;
+
+        if(isS) { total += BAZA_SPOLJA * ks; time += 30 * ks; }
+        if(isU) { total += BAZA_UNUTRA * ku; time += 35 * ku; }
 
         if(isS && !isU) {
             total += 100;
@@ -163,6 +185,7 @@
         }
 
         document.getElementById('res-price').innerText = (Math.ceil(total / 50) * 50) + " RSD";
+        document.getElementById('res-time').innerText = "Vreme: cca " + Math.round(time) + " min";
         document.getElementById('results').style.display = "block";
     }
 </script>
