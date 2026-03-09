@@ -3,277 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>KORICA | Expert System</title>
+    <title>KORICA auto nega | Ekspert Sistem</title>
     <style>
-        :root { --gold: #d4af37; --black: #000; --dark: #0a0a0a; }
-        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: var(--black); color: white; padding: 20px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 500px; background: #050505; border: 1px solid #222; padding: 30px; border-radius: 10px; }
-        .header { border-left: 5px solid var(--gold); padding-left: 15px; margin-bottom: 30px; }
-        h1 { color: var(--gold); margin: 0; letter-spacing: 5px; text-transform: uppercase; font-size: 26px; }
-        .section { margin-bottom: 20px; }
-        label { display: block; color: #555; font-size: 11px; text-transform: uppercase; margin-bottom: 8px; }
-        select { width: 100%; padding: 15px; background: #111; color: white; border: 1px solid #333; border-radius: 5px; font-size: 16px; outline: none; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .card { background: #111; border: 1px solid #333; padding: 12px; border-radius: 5px; text-align: center; cursor: pointer; font-size: 11px; font-weight: bold; color: #666; }
-        .card.active { border-color: var(--gold); color: var(--gold); background: #1a160a; }
-        .addon { margin-top: 15px; display: none; padding: 15px; border: 1px dashed #444; justify-content: space-between; align-items: center; }
-        .result-box { margin-top: 30px; padding: 20px; background: #0a0a0a; border: 1px solid var(--gold); text-align: center; display: none; }
-        .price { font-size: 42px; color: var(--gold); font-weight: 900; display: block; }
-        .time { color: #888; font-size: 14px; margin-top: 5px; display: block; }
+        :root { --gold: #d4af37; --black: #000; --dark: #0a0a0a; --grey: #1a1a1a; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+        body { background: var(--black); color: white; padding: 20px; display: flex; justify-content: center; margin: 0; }
+        
+        .app-container { width: 100%; max-width: 450px; background: #050505; border: 1px solid #222; padding: 25px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
+        .header { border-left: 4px solid var(--gold); padding-left: 15px; margin-bottom: 35px; }
+        h1 { color: var(--gold); margin: 0; letter-spacing: 4px; text-transform: uppercase; font-size: 24px; font-weight: 900; }
+        .motto { color: var(--gold); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.8; }
+        
+        .section { margin-bottom: 25px; }
+        label { display: block; color: #777; font-size: 11px; text-transform: uppercase; margin-bottom: 10px; font-weight: 600; }
+        
+        select { 
+            width: 100%; padding: 15px; background: var(--grey); color: white; border: 1px solid #333; 
+            border-radius: 6px; font-size: 16px; outline: none; appearance: none; transition: border 0.3s;
+        }
+        select:focus { border-color: var(--gold); }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        .card { 
+            background: var(--grey); border: 1px solid #333; padding: 15px 5px; border-radius: 6px; 
+            text-align: center; cursor: pointer; font-size: 10px; font-weight: 800; color: #888; 
+            transition: all 0.3s; text-transform: uppercase;
+        }
+        .card.active { border-color: var(--gold); color: var(--gold); background: #1a160a; transform: translateY(-2px); }
+
+        .addon { 
+            margin-top: 20px; display: none; padding: 15px; background: #0a0a0a; border: 1px solid #222;
+            border-radius: 6px; justify-content: space-between; align-items: center; 
+        }
+
+        .result-box { 
+            margin-top: 35px; padding: 25px; background: #0c0c0c; border: 1px solid var(--gold); 
+            border-radius: 8px; text-align: center; display: none; animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .price { font-size: 46px; color: var(--gold); font-weight: 900; display: block; margin: 10px 0; }
+        .time { color: #aaa; font-size: 14px; }
     </style>
 </head>
 <body>
+
 <div class="app-container">
-    <div class="header"><h1>KORICA</h1><small style="color:var(--gold)">SINONIM KVALITETA</small></div>
+    <div class="header">
+        <h1>KORICA</h1>
+        <div class="motto">Sinonim kvaliteta</div>
+    </div>
     
     <div class="section">
-    <label>Marka vozila</label>
-    <select id="marka" onchange="fillModels()">
-        <option value="" disabled selected>Učitavanje marki...</option>
-    </select>
-</div>
-
-<div class="section">
-    <label>Model i generacija</label>
-    <select id="model" onchange="calculate()">
-        <option value="" disabled selected>Prvo izaberi marku</option>
-    </select>
-</div>
+        <label>Marka vozila</label>
+        <select id="marka" onchange="osveziModele()">
+            <option value="" disabled selected>Izaberite brend...</option>
+        </select>
+    </div>
 
     <div class="section">
-        <label>Odaberi uslugu</label>
+        <label>Model i generacija</label>
+        <select id="model" onchange="izracunaj()">
+            <option value="" disabled selected>Prvo izaberite marku</option>
+        </select>
+    </div>
+
+    <div class="section">
+        <label>Vrsta usluge</label>
         <div class="grid">
-            <div class="card" id="btn-spolja" onclick="setMode('spolja')">SPOLJA</div>
-            <div class="card" id="btn-unutra" onclick="setMode('unutra')">UNUTRA</div>
-            <div class="card" id="btn-komplet" onclick="setMode('komplet')">KOMPLET</div>
+            <div class="card" id="btn-spolja" onclick="postaviMod('spolja')">Spolja</div>
+            <div class="card" id="btn-unutra" onclick="postaviMod('unutra')">Unutra</div>
+            <div class="card" id="btn-komplet" onclick="postaviMod('komplet')">Komplet</div>
         </div>
     </div>
 
-    <div class="addon" id="pragovi-div">
-        <span style="font-size: 12px;">Doplata za pragove (+200 RSD)</span>
-        <input type="checkbox" id="pragovi-check" onchange="calculate()" style="width:20px; height:20px; accent-color:var(--gold)">
+    <div class="addon" id="pragovi-zona">
+        <span style="font-size: 12px; color: #ccc;">Dodatna nega pragova (+200 RSD)</span>
+        <input type="checkbox" id="pragovi-check" onchange="izracunaj()" style="width:22px; height:22px; accent-color:var(--gold)">
     </div>
 
     <div class="result-box" id="results">
-        <span style="font-size: 10px; color: #555; letter-spacing: 2px;">UKUPNO ZA NAPLATU</span>
+        <span style="font-size: 11px; color: #666; letter-spacing: 2px; font-weight: bold;">PROCENJENA VREDNOST</span>
         <span class="price" id="res-price">0 RSD</span>
-        <span class="time" id="res-time">Vreme: -- min</span>
-        <div style="margin-top: 10px; font-size: 11px; color: #444;" id="res-dim"></div>
+        <span class="time" id="res-time"></span>
     </div>
 </div>
 
 <script>
-    const masterDB = {
-        "Alfa Romeo": [
-            "147 (2000-2010)|422|173|1.00", "156 Sedan (1997-2007)|443|174|1.10", "156 SW (1997-2007)|444|174|1.15",
-            "159 Sedan (2005-2011)|466|183|1.20", "159 SW (2005-2011)|466|183|1.25", "166 (1998-2007)|472|181|1.30",
-            "Giulia (2016-2026)|464|186|1.20", "Giulietta (2010-2020)|435|180|1.10", "Stelvio (2016-2026)|468|190|1.50",
-            "MiTo (2008-2018)|406|172|0.90", "GT (2003-2010)|448|176|1.10", "Brera (2005-2010)|441|183|1.15"
-        ],
-        "Audi": [
-            "A1 8X (2010-2018)|395|174|0.90", "A1 GB (2018-2026)|403|174|0.95", "A3 8L (1996-2003)|415|173|1.00",
-            "A3 8P (2003-2012)|424|177|1.10", "A3 8V (2012-2020)|431|178|1.10", "A3 8Y (2020-2026)|434|181|1.15",
-            "A4 B5 (1994-2001)|447|173|1.15", "A4 B6 (2000-2004)|454|177|1.20", "A4 B7 (2004-2008)|458|177|1.20",
-            "A4 B8 Sedan (2008-2015)|470|182|1.25", "A4 B8 Avant (2008-2015)|470|182|1.30", "A4 B9 (2015-2024)|476|184|1.30",
-            "A5 Coupe (2007-2016)|463|185|1.25", "A5 Sportback (2009-2016)|471|185|1.30", "A6 C5 (1997-2004)|479|181|1.35",
-            "A6 C6 (2004-2011)|491|185|1.40", "A6 C7 (2011-2018)|494|187|1.45", "A6 C8 (2018-2026)|494|188|1.50",
-            "A8 D3 (2002-2010)|506|189|1.70", "A8 D4 (2010-2017)|513|195|1.80", "Q2 (2016-2024)|419|179|1.20",
-            "Q3 8U (2011-2018)|438|183|1.30", "Q3 F3 (2018-2026)|448|184|1.40", "Q5 8R (2008-2017)|463|188|1.50",
-            "Q5 FY (2017-2024)|466|189|1.55", "Q7 4L (2005-2015)|508|198|1.85", "Q7 4M (2015-2026)|506|197|1.90",
-            "Q8 (2018-2026)|498|199|2.00"
-        ],
-        "BMW": [
-            "Serija 1 E87 (2004-2011)|422|175|1.00", "Serija 1 F20 (2011-2019)|432|176|1.10", "Serija 1 F40 (2019-2026)|431|179|1.15",
-            "Serija 3 E46 Sedan|447|174|1.15", "Serija 3 E90 Sedan|452|181|1.20", "Serija 3 E91 Touring|452|181|1.25",
-            "Serija 3 F30 Sedan|462|181|1.25", "Serija 3 G20 Sedan|471|183|1.30", "Serija 5 E39|477|180|1.35",
-            "Serija 5 E60|484|184|1.40", "Serija 5 F10|489|186|1.45", "Serija 5 G30|494|186|1.50",
-            "Serija 7 E65|504|190|1.75", "Serija 7 F01|507|190|1.80", "Serija 7 G11|509|190|1.90",
-            "X1 E84|445|179|1.30", "X1 F48|444|182|1.35", "X3 E83|456|185|1.45", "X3 F25|465|188|1.55",
-            "X3 G01|471|189|1.60", "X5 E53|466|187|1.65", "X5 E70|485|193|1.80", "X5 F15|488|193|1.85",
-            "X5 G05|492|200|1.95", "X6 E71|487|198|1.90", "X6 F16|490|198|1.95", "X7 G07|515|200|2.20"
-        ],
-        "Mercedes-Benz": [
-            "A-Klasa W168|357|172|0.80", "A-Klasa W169|383|176|0.90", "A-Klasa W176|429|178|1.10",
-            "A-Klasa W177|441|179|1.15", "B-Klasa W245|427|177|1.20", "B-Klasa W246|435|178|1.25",
-            "C-Klasa W203|452|172|1.15", "C-Klasa W204|458|177|1.20", "C-Klasa W205|468|181|1.25",
-            "C-Klasa W206|475|182|1.30", "E-Klasa W210|481|180|1.35", "E-Klasa W211|482|182|1.40",
-            "E-Klasa W212|486|185|1.45", "E-Klasa W213|492|185|1.50", "S-Klasa W220|504|185|1.70",
-            "S-Klasa W221|507|187|1.80", "S-Klasa W222|511|189|1.90", "S-Klasa W223|517|192|2.00",
-            "CLA C117|463|177|1.20", "CLS W219|491|187|1.40", "GLK X204|452|184|1.40", "GLC X253|465|189|1.55",
-            "ML W163|458|183|1.60", "ML W164|478|191|1.75", "ML/GLE W166|481|193|1.85", "GLE V167|492|194|1.95",
-            "GL X164|508|192|2.00", "GLS X166|513|193|2.10", "G-Klasa|466|176|1.80"
-        ],
-        "Volkswagen": [
-            "Polo 9N|389|165|0.85", "Polo 6R|397|168|0.90", "Polo AW|405|175|1.00", "Golf 4|414|173|1.00",
-            "Golf 5|420|175|1.05", "Golf 6|419|177|1.05", "Golf 7|425|179|1.10", "Golf 8|428|178|1.15",
-            "Passat B5.5|470|174|1.25", "Passat B6|476|182|1.30", "Passat B7|476|182|1.30", "Passat B8|476|183|1.35",
-            "Arteon|486|187|1.40", "Jetta A5|455|178|1.20", "Tiguan G1|442|181|1.35", "Tiguan G2|448|184|1.45",
-            "Touareg 7L|475|192|1.75", "Touareg 7P|479|194|1.80", "Touareg CR|487|198|1.90", "Touran 1T|439|179|1.35",
-            "Sharan 7N|485|190|1.60", "Caddy 2K|440|179|1.40", "Transporter T5|489|190|1.85", "Transporter T6|490|190|1.90"
-        ],
-        "Škoda": [
-            "Fabia G1|396|164|0.90", "Fabia G2|400|164|0.95", "Fabia G3|399|173|0.95", "Fabia G4|411|178|1.00",
-            "Octavia G1|451|173|1.15", "Octavia G2 Sedan|457|177|1.20", "Octavia G2 Combi|457|177|1.25",
-            "Octavia G3 Sedan|466|181|1.30", "Octavia G3 Combi|466|181|1.35", "Octavia G4 Sedan|469|183|1.35",
-            "Superb G1|480|176|1.35", "Superb G2 Sedan|484|182|1.40", "Superb G2 Combi|484|182|1.45",
-            "Superb G3 Sedan|486|186|1.45", "Superb G3 Combi|486|186|1.50", "Yeti|422|179|1.30",
-            "Karoq|438|184|1.40", "Kodiaq|470|188|1.60", "Kamiq|424|179|1.20", "Rapid|448|171|1.15", "Scala|436|179|1.15"
-        ],
-         
+    const bazaVozila = {
+        "Audi": ["A3 8P (2003-2012)|1.10", "A4 B8 (2008-2015)|1.25", "A6 C7 (2011-2018)|1.45", "Q7 4M (2015-)|1.90"],
+        "BMW": ["Serija 3 E90|1.20", "Serija 5 F10|1.45", "X5 G05|1.95", "Serija 7 G11|1.90"],
+        "Mercedes-Benz": ["C-Klasa W204|1.20", "E-Klasa W213|1.50", "GLE V167|1.95", "S-Klasa W222|1.90"],
+        "Volkswagen": ["Golf 7|1.10", "Passat B8|1.35", "Tiguan G2|1.45", "Touareg CR|1.90"]
     };
 
-    let currentMode = '';
-    const cene = { spolja: 800, unutra: 800, komplet: 1500 };
-    const vremena = { spolja: 30, unutra: 35, komplet: 60 };
+    let selektovanMod = '';
+    const cenovnik = { spolja: 800, unutra: 800, komplet: 1500 };
+    const trajanje = { spolja: 30, unutra: 35, komplet: 60 };
 
-    // FUNKCIJA ZA INICIJALIZACIJU
-    function initApp() {
-        const markaSelect = document.getElementById('marka');
-        if (!markaSelect) {
-            console.error("Greška: Element 'marka' nije pronađen u DOM-u.");
-            return;
-        }
-
-        // Čistimo i punimo listu marki
-        markaSelect.innerHTML = '<option value="" disabled selected>Izaberi marku...</option>';
-        Object.keys(masterDB).sort().forEach(m => {
-            const opt = document.createElement('option');
-            opt.value = m;
-            opt.textContent = m;
-            markaSelect.appendChild(opt);
-        });
-        console.log("Marke uspešno učitane.");
-    }
-
-    function fillModels() {
-        const m = document.getElementById('marka').value;
-        const s = document.getElementById('model');
-        if(!s) return;
+    function pokreniSistem() {
+        const mSelect = document.getElementById('marka');
+        mSelect.innerHTML = '<option value="" disabled selected>Izaberite brend...</option>';
         
-        s.innerHTML = '<option value="" disabled selected>Izaberi model...</option>';
-        if(masterDB[m]) {
-            masterDB[m].forEach((item, idx) => {
-                const opt = document.createElement('option');
-                opt.value = idx;
-                opt.textContent = item.split('|')[0];
-                s.appendChild(opt);
-            });
-        }
-        document.getElementById('results').style.display = 'none';
-    }
-
-    function setMode(mode) {
-        currentMode = mode;
-        document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-        const btn = document.getElementById('btn-' + mode);
-        if(btn) btn.classList.add('active');
-        
-        const pragoviDiv = document.getElementById('pragovi-div');
-        if(pragoviDiv) pragoviDiv.style.display = (mode === 'spolja') ? 'flex' : 'none';
-        calculate();
-    }
-
-    function calculate() {
-        const m = document.getElementById('marka').value;
-        const i = document.getElementById('model').value;
-        if(!m || i === "" || !currentMode) return;
-
-        const data = masterDB[m][i].split('|');
-        const koef = parseFloat(data[3]);
-        
-        let finalPrice = Math.round(cene[currentMode] * koef);
-        let finalTime = Math.round(vremena[currentMode] * koef);
-
-        const pragoviCheck = document.getElementById('pragovi-check');
-        if(currentMode === 'spolja' && pragoviCheck && pragoviCheck.checked) {
-            finalPrice += 200;
-            finalTime += 5;
-        }
-
-        document.getElementById('res-price').innerText = finalPrice + " RSD";
-        document.getElementById('res-time').innerText = "Vreme rada: cca " + finalTime + " min";
-        document.getElementById('res-dim').innerText = "Gabariti: " + data[1] + "x" + data[2] + " cm";
-        document.getElementById('results').style.display = "block";
-    }
-
-    // GLAVNI OKIDAČ: Pokreće aplikaciju bez obzira na način učitavanja
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initApp);
-    } else {
-        initApp();
-    }
-</script>
-   }; // Ovde se završava tvoja masterDB baza
-
-    // --- KLJUČNA LOGIKA I AKTIVACIJA ---
-    let currentMode = '';
-    const cene = { spolja: 800, unutra: 800, komplet: 1500 };
-    const vremena = { spolja: 30, unutra: 35, komplet: 60 };
-
-    function initApp() {
-        const s = document.getElementById('marka');
-        if(!s) return;
-        s.innerHTML = '<option value="" disabled selected>Izaberi marku...</option>';
-        Object.keys(masterDB).sort().forEach(m => {
-            s.options.add(new Option(m, m));
+        Object.keys(bazaVozila).sort().forEach(marka => {
+            let opt = document.createElement('option');
+            opt.value = marka;
+            opt.textContent = marka;
+            mSelect.appendChild(opt);
         });
     }
 
-    // Aktiviraj bazu čim se stranica učita
-    window.onload = initApp;
-
-    function fillModels() {
-        const m = document.getElementById('marka').value;
-        const s = document.getElementById('model');
-        if(!s) return;
-        s.innerHTML = '<option value="" disabled selected>Izaberi model...</option>';
-        if(masterDB[m]) {
-            masterDB[m].forEach((item, idx) => {
-                s.options.add(new Option(item.split('|')[0], idx));
+    function osveziModele() {
+        const marka = document.getElementById('marka').value;
+        const mSelect = document.getElementById('model');
+        mSelect.innerHTML = '<option value="" disabled selected>Izaberite model...</option>';
+        
+        if(bazaVozila[marka]) {
+            bazaVozila[marka].forEach((auto, index) => {
+                let opt = document.createElement('option');
+                opt.value = index;
+                opt.textContent = auto.split('|')[0];
+                mSelect.appendChild(opt);
             });
         }
-        document.getElementById('results').style.display = 'none';
     }
 
-    function setMode(mode) {
-        currentMode = mode;
+    function postaviMod(mod) {
+        selektovanMod = mod;
         document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-        const btn = document.getElementById('btn-' + mode);
-        if(btn) btn.classList.add('active');
-        const pragoviDiv = document.getElementById('pragovi-div');
-        if(pragoviDiv) pragoviDiv.style.display = (mode === 'spolja') ? 'flex' : 'none';
-        calculate();
+        document.getElementById('btn-' + mod).classList.add('active');
+        document.getElementById('pragovi-zona').style.display = (mod === 'spolja') ? 'flex' : 'none';
+        izracunaj();
     }
 
-    function calculate() {
-        const m = document.getElementById('marka').value;
-        const i = document.getElementById('model').value;
-        if(!m || i === "" || !currentMode) return;
+    function izracunaj() {
+        const marka = document.getElementById('marka').value;
+        const modelIdx = document.getElementById('model').value;
+        if(!marka || modelIdx === "" || !selektovanMod) return;
 
-        const data = masterDB[m][i].split('|');
-        const koef = parseFloat(data[3]);
+        const koef = parseFloat(bazaVozila[marka][modelIdx].split('|')[1]);
         
-        let finalPrice = Math.round(cene[currentMode] * koef);
-        let finalTime = Math.round(vremena[currentMode] * koef);
+        let cena = Math.round(cenovnik[selektovanMod] * koef);
+        let vreme = Math.round(trajanje[selektovanMod] * koef);
 
-        const pragoviCheck = document.getElementById('pragovi-check');
-        if(currentMode === 'spolja' && pragoviCheck && pragoviCheck.checked) {
-            finalPrice += 200;
-            finalTime += 5;
+        if(selektovanMod === 'spolja' && document.getElementById('pragovi-check').checked) {
+            cena += 200;
+            vreme += 5;
         }
 
-        document.getElementById('res-price').innerText = finalPrice + " RSD";
-        document.getElementById('res-time').innerText = "Vreme rada: cca " + finalTime + " min";
-        document.getElementById('res-dim').innerText = "Gabariti: " + data[1] + "x" + data[2] + " cm";
+        document.getElementById('res-price').innerText = cena + " RSD";
+        document.getElementById('res-time').innerText = "Okvirno vreme rada: " + vreme + " min";
         document.getElementById('results').style.display = "block";
     }
 
-    // Sigurnosni okidač - ako window.onload zakaže
-    document.addEventListener('DOMContentLoaded', initApp);
+    // Direktno pokretanje
+    pokreniSistem();
 </script>
+
 </body>
 </html>
-
-
-
