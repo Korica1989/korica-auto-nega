@@ -14,7 +14,7 @@
         .container { max-width: 450px; margin: 0 auto; padding: 20px; }
         .search-wrapper { position: relative; margin-top: 20px; }
         #search-input { width: 100%; padding: 18px; background: var(--grey); color: white; border: 1px solid #222; border-radius: 12px; font-size: 16px; outline: none; border-left: 4px solid var(--gold); }
-        .results-dropdown { position: absolute; width: 100%; background: var(--grey); border: 1px solid #222; border-radius: 0 0 12px 12px; max-height: 250px; overflow-y: auto; z-index: 100; display: none; }
+        .results-dropdown { position: absolute; width: 100%; background: var(--grey); border: 1px solid #222; border-radius: 0 0 12px 12px; max-height: 250px; overflow-y: auto; z-index: 100; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
         .search-item { padding: 15px; border-bottom: 1px solid #111; cursor: pointer; font-size: 14px; }
         .search-item:hover { background: #1a160a; color: var(--gold); }
         .selected-vehicle-display { background: #1a160a; padding: 15px; border-radius: 12px; border: 1px dashed var(--gold); margin-top: 15px; display: none; text-align: center; font-weight: bold; color: var(--gold); }
@@ -37,14 +37,14 @@
     </div>
 
     <div class="container">
-        <label class="label-text">Pronađi vozilo</label>
+        <label class="label-text">Pretraži vozilo</label>
         <div class="search-wrapper">
-            <input type="text" id="search-input" placeholder="Ukucaj model (npr. Audi A6)..." oninput="filterVehicles()">
+            <input type="text" id="search-input" placeholder="npr. i20, Golf, A6, Vito..." oninput="filterVehicles()">
             <div id="search-results" class="results-dropdown"></div>
         </div>
         <div id="selected-info" class="selected-vehicle-display"></div>
 
-        <label class="label-text">Usluge</label>
+        <label class="label-text">Usluge pranja</label>
         <div class="option-card" id="card-spolja" onclick="toggleOption('spolja')">
             <span>Spoljašnje pranje</span>
             <input type="checkbox" id="check-spolja" onchange="calculate()" onclick="event.stopPropagation()">
@@ -59,29 +59,50 @@
         </div>
 
         <div class="result-box" id="results-box">
-            <span style="font-size: 10px; color: #555; letter-spacing: 2px;">FIKSNA CENA</span>
+            <span style="font-size: 10px; color: #555; letter-spacing: 2px;">UKUPNA CENA</span>
             <span class="price" id="res-price">0 RSD</span>
-            <a href="tel:+38160000000" class="call-now">Rezerviši termin</a>
+            <a href="tel:+38160000000" class="call-now">Zakaži termin</a>
         </div>
     </div>
 
 <script>
-    // Podešeni koeficijenti da Audi A6 izađe tačno 1800/2000
     const vehicleData = [
-        { name: "Audi A4 Limuzina", ks: 1.15, ku: 1.0 },
-        { name: "Audi A4 Karavan", ks: 1.3, ku: 1.15 },
-        { name: "Audi A6 Limuzina", ks: 1.25, ku: 1.15 }, // 1.25*800 + 1.15*700 = 1000 + 805 = 1805 -> 1800
-        { name: "Audi A6 Karavan", ks: 1.4, ku: 1.25 },  // 1.4*800 + 1.25*700 = 1120 + 875 = 1995 -> 2000
-        { name: "VW Golf 7/8", ks: 1.0, ku: 1.0 },
+        // GRADSKI (1400 RSD KOMPLET)
+        { name: "Hyundai i10 / i20", ks: 0.94, ku: 0.93 },
+        { name: "VW Polo", ks: 0.94, ku: 0.93 },
+        { name: "Opel Corsa", ks: 0.94, ku: 0.93 },
+        { name: "Renault Clio", ks: 0.94, ku: 0.93 },
+        { name: "Fiat Punto / 500", ks: 0.94, ku: 0.93 },
+        { name: "Toyota Yaris", ks: 0.94, ku: 0.93 },
+
+        // SREDNJA KLASA (1600 RSD KOMPLET)
+        { name: "VW Golf 7/8 Hatchback", ks: 1.07, ku: 1.06 },
+        { name: "Audi A3 Hatchback", ks: 1.07, ku: 1.06 },
+        { name: "Mazda 3 Hatchback", ks: 1.07, ku: 1.06 },
+        { name: "Renault Megane", ks: 1.07, ku: 1.06 },
+        { name: "Opel Astra", ks: 1.07, ku: 1.06 },
+
+        // LIMUZINE (1800 RSD KOMPLET)
+        { name: "Audi A6 Limuzina", ks: 1.25, ku: 1.15 },
         { name: "VW Passat Limuzina", ks: 1.25, ku: 1.15 },
-        { name: "VW Passat Karavan", ks: 1.35, ku: 1.2 },
+        { name: "BMW Serija 5 Sedan", ks: 1.25, ku: 1.15 },
+        { name: "Škoda Superb Limuzina", ks: 1.25, ku: 1.15 },
+        { name: "Mercedes E Klasa", ks: 1.25, ku: 1.15 },
+
+        // KARAVANI / MALI SUV (2000 RSD KOMPLET)
+        { name: "Audi A6 Karavan", ks: 1.4, ku: 1.25 },
+        { name: "VW Passat Karavan", ks: 1.4, ku: 1.25 },
+        { name: "BMW Serija 5 Karavan", ks: 1.4, ku: 1.25 },
+        { name: "Škoda Superb Karavan", ks: 1.4, ku: 1.25 },
+        { name: "Dacia Duster", ks: 1.4, ku: 1.25 },
+
+        // KOMBI / VELIKI SUV (3000+ RSD KOMPLET)
         { name: "VW Transporter Teretni", ks: 2.1, ku: 1.1 },
         { name: "VW Transporter Putnički", ks: 2.1, ku: 2.3 },
         { name: "Renault Trafic Teretni", ks: 2.1, ku: 1.1 },
         { name: "Renault Trafic Putnički", ks: 2.1, ku: 2.3 },
-        { name: "Fiat Punto", ks: 0.8, ku: 0.8 },
-        { name: "BMW Serija 5 Sedan", ks: 1.25, ku: 1.15 },
-        { name: "BMW Serija 5 Karavan", ks: 1.4, ku: 1.25 }
+        { name: "Mercedes Vito Teretni", ks: 2.1, ku: 1.1 },
+        { name: "Mercedes Vito Putnički", ks: 2.1, ku: 2.3 }
     ];
 
     let selectedVehicle = null;
@@ -141,7 +162,6 @@
         if(isUnutra) total += (BAZA_UNUTRA * selectedVehicle.ku);
         if(isVosak) total += (BAZA_VOSAK * selectedVehicle.ks);
 
-        // Zaokruživanje na najbližih 100 dinara
         let finalPrice = Math.round(total / 100) * 100;
 
         document.getElementById('res-price').innerText = finalPrice + " RSD";
