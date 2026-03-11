@@ -3,43 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>KORICA Auto Nega | Profesionalni Kalkulator</title>
+    <title>KORICA Auto Nega | Kalkulator</title>
     <style>
-        :root { --gold: #d4af37; --black: #000; --grey: #151515; --dark-grey: #222; }
+        :root { --gold: #d4af37; --black: #000; --grey: #151515; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; }
         body { background: var(--black); color: white; padding-bottom: 60px; }
-
         .header { padding: 40px 20px; text-align: center; border-bottom: 2px solid var(--gold); }
         .header h1 { font-size: 26px; color: var(--gold); text-transform: uppercase; font-weight: 900; letter-spacing: 2px; }
         .header .slogan { font-size: 12px; letter-spacing: 4px; color: #fff; margin-top: 8px; text-transform: uppercase; }
-
         .container { max-width: 450px; margin: 0 auto; padding: 20px; }
-        
         .search-wrapper { position: relative; margin-top: 20px; }
-        #search-input { width: 100%; padding: 18px; background: var(--grey); color: white; border: 1px solid var(--dark-grey); border-radius: 12px; font-size: 16px; outline: none; border-left: 4px solid var(--gold); }
-        
-        .results-dropdown { 
-            position: absolute; width: 100%; background: var(--grey); border: 1px solid var(--dark-grey); 
-            border-radius: 0 0 12px 12px; max-height: 250px; overflow-y: auto; z-index: 100; display: none;
-        }
+        #search-input { width: 100%; padding: 18px; background: var(--grey); color: white; border: 1px solid #222; border-radius: 12px; font-size: 16px; outline: none; border-left: 4px solid var(--gold); }
+        .results-dropdown { position: absolute; width: 100%; background: var(--grey); border: 1px solid #222; border-radius: 0 0 12px 12px; max-height: 250px; overflow-y: auto; z-index: 100; display: none; }
         .search-item { padding: 15px; border-bottom: 1px solid #111; cursor: pointer; font-size: 14px; }
         .search-item:hover { background: #1a160a; color: var(--gold); }
-
-        .selected-vehicle-display { 
-            background: #1a160a; padding: 15px; border-radius: 12px; border: 1px dashed var(--gold);
-            margin-top: 15px; display: none; text-align: center; font-weight: bold; color: var(--gold);
-        }
-
-        .label-text { display: block; color: #666; font-size: 10px; text-transform: uppercase; margin: 25px 0 8px 0; font-weight: bold; letter-spacing: 1px; }
-
-        .option-card { background: var(--grey); border: 1px solid var(--dark-grey); padding: 16px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        .selected-vehicle-display { background: #1a160a; padding: 15px; border-radius: 12px; border: 1px dashed var(--gold); margin-top: 15px; display: none; text-align: center; font-weight: bold; color: var(--gold); }
+        .label-text { display: block; color: #666; font-size: 10px; text-transform: uppercase; margin: 25px 0 8px 0; font-weight: bold; }
+        .option-card { background: var(--grey); border: 1px solid #222; padding: 16px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
         .option-card.active { border-color: var(--gold); background: #1a160a; }
         .option-card span { font-weight: bold; text-transform: uppercase; font-size: 12px; color: #888; }
         .option-card.active span { color: var(--gold); }
-        .option-card small { display: block; font-size: 10px; color: #555; margin-top: 4px; }
-
         input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--gold); }
-
         .result-box { margin-top: 25px; padding: 25px; background: var(--grey); border-radius: 15px; text-align: center; display: none; border-top: 4px solid var(--gold); }
         .price { font-size: 44px; color: var(--gold); font-weight: 900; display: block; margin: 5px 0; }
         .call-now { display: block; width: 100%; padding: 18px; background: var(--gold); color: black; text-align: center; text-decoration: none; font-weight: 900; border-radius: 8px; margin-top: 20px; text-transform: uppercase; }
@@ -53,69 +37,51 @@
     </div>
 
     <div class="container">
-        <label class="label-text">Pronađi vozilo (npr. Audi A6, Golf, Trafic...)</label>
+        <label class="label-text">Pronađi vozilo</label>
         <div class="search-wrapper">
-            <input type="text" id="search-input" placeholder="Ukucaj model..." oninput="filterVehicles()">
+            <input type="text" id="search-input" placeholder="Ukucaj model (npr. Audi A6)..." oninput="filterVehicles()">
             <div id="search-results" class="results-dropdown"></div>
         </div>
-
         <div id="selected-info" class="selected-vehicle-display"></div>
 
-        <label class="label-text">Usluge pranja</label>
+        <label class="label-text">Usluge</label>
         <div class="option-card" id="card-spolja" onclick="toggleOption('spolja')">
-            <div class="txt-wrap"><span>Spoljašnje pranje</span><small>Pragovi i felne uključeni.</small></div>
+            <span>Spoljašnje pranje</span>
             <input type="checkbox" id="check-spolja" onchange="calculate()" onclick="event.stopPropagation()">
         </div>
         <div class="option-card" id="card-unutra" onclick="toggleOption('unutra')">
-            <div class="txt-wrap"><span>Unutrašnje pranje</span><small>Detaljno usisavanje i plastike.</small></div>
+            <span>Unutrašnje pranje</span>
             <input type="checkbox" id="check-unutra" onchange="calculate()" onclick="event.stopPropagation()">
         </div>
         <div class="option-card" id="card-vosak" onclick="toggleOption('vosak')">
-            <div class="txt-wrap"><span>Zaštitni vosak</span><small>Hidrofobni sjaj.</small></div>
+            <span>Zaštitni vosak</span>
             <input type="checkbox" id="check-vosak" onchange="calculate()" onclick="event.stopPropagation()">
         </div>
 
         <div class="result-box" id="results-box">
             <span style="font-size: 10px; color: #555; letter-spacing: 2px;">FIKSNA CENA</span>
             <span class="price" id="res-price">0 RSD</span>
-            <span id="res-time" style="font-size: 11px; color: #666; text-transform: uppercase;"></span>
-            <a href="tel:+38160000000" class="call-now">Rezerviši odmah</a>
+            <a href="tel:+38160000000" class="call-now">Rezerviši termin</a>
         </div>
     </div>
 
 <script>
-    // Proširena baza vozila sa koeficijentima
+    // Podešeni koeficijenti da Audi A6 izađe tačno 1800/2000
     const vehicleData = [
-        { name: "Audi A4 Limuzina", ks: 1.2, ku: 1.1 },
-        { name: "Audi A4 Karavan", ks: 1.3, ku: 1.2 },
-        { name: "Audi A6 Limuzina", ks: 1.4, ku: 1.2 },
-        { name: "Audi A6 Karavan", ks: 1.5, ku: 1.3 },
-        { name: "BMW Serija 3 Sedan", ks: 1.2, ku: 1.1 },
-        { name: "BMW Serija 3 Karavan", ks: 1.3, ku: 1.2 },
-        { name: "BMW Serija 5 Sedan", ks: 1.4, ku: 1.2 },
-        { name: "BMW Serija 5 Karavan", ks: 1.5, ku: 1.3 },
-        { name: "VW Golf 7/8 Hatchback", ks: 1.1, ku: 1.0 },
-        { name: "VW Golf 7/8 Variant (Karavan)", ks: 1.25, ku: 1.15 },
-        { name: "VW Passat Limuzina", ks: 1.3, ku: 1.1 },
-        { name: "VW Passat Karavan", ks: 1.4, ku: 1.25 },
+        { name: "Audi A4 Limuzina", ks: 1.15, ku: 1.0 },
+        { name: "Audi A4 Karavan", ks: 1.3, ku: 1.15 },
+        { name: "Audi A6 Limuzina", ks: 1.25, ku: 1.15 }, // 1.25*800 + 1.15*700 = 1000 + 805 = 1805 -> 1800
+        { name: "Audi A6 Karavan", ks: 1.4, ku: 1.25 },  // 1.4*800 + 1.25*700 = 1120 + 875 = 1995 -> 2000
+        { name: "VW Golf 7/8", ks: 1.0, ku: 1.0 },
+        { name: "VW Passat Limuzina", ks: 1.25, ku: 1.15 },
+        { name: "VW Passat Karavan", ks: 1.35, ku: 1.2 },
         { name: "VW Transporter Teretni", ks: 2.1, ku: 1.1 },
         { name: "VW Transporter Putnički", ks: 2.1, ku: 2.3 },
-        { name: "Renault Megane Karavan", ks: 1.25, ku: 1.2 },
         { name: "Renault Trafic Teretni", ks: 2.1, ku: 1.1 },
         { name: "Renault Trafic Putnički", ks: 2.1, ku: 2.3 },
-        { name: "Mercedes C Klasa Karavan", ks: 1.3, ku: 1.2 },
-        { name: "Mercedes E Klasa Limuzina", ks: 1.4, ku: 1.2 },
-        { name: "Mercedes Vito Teretni", ks: 2.1, ku: 1.1 },
-        { name: "Mercedes Vito Putnički", ks: 2.1, ku: 2.3 },
-        { name: "Škoda Octavia Limuzina", ks: 1.25, ku: 1.1 },
-        { name: "Škoda Octavia Karavan", ks: 1.35, ku: 1.25 },
-        { name: "Škoda Superb Limuzina", ks: 1.4, ku: 1.2 },
-        { name: "Škoda Superb Karavan", ks: 1.5, ku: 1.3 },
-        { name: "Fiat Punto", ks: 0.9, ku: 0.9 },
-        { name: "Fiat Tipo Karavan", ks: 1.25, ku: 1.2 },
-        { name: "Peugeot 308 Karavan", ks: 1.25, ku: 1.2 },
-        { name: "Dacia Duster", ks: 1.4, ku: 1.2 },
-        { name: "Hyundai Tucson", ks: 1.5, ku: 1.3 }
+        { name: "Fiat Punto", ks: 0.8, ku: 0.8 },
+        { name: "BMW Serija 5 Sedan", ks: 1.25, ku: 1.15 },
+        { name: "BMW Serija 5 Karavan", ks: 1.4, ku: 1.25 }
     ];
 
     let selectedVehicle = null;
@@ -171,17 +137,14 @@
         }
 
         let total = 0;
-        let time = 0;
+        if(isSpolja) total += (BAZA_SPOLJA * selectedVehicle.ks);
+        if(isUnutra) total += (BAZA_UNUTRA * selectedVehicle.ku);
+        if(isVosak) total += (BAZA_VOSAK * selectedVehicle.ks);
 
-        if(isSpolja) { total += (BAZA_SPOLJA * selectedVehicle.ks); time += 30 * selectedVehicle.ks; }
-        if(isUnutra) { total += (BAZA_UNUTRA * selectedVehicle.ku); time += 35 * selectedVehicle.ku; }
-        if(isVosak) { total += (BAZA_VOSAK * selectedVehicle.ks); time += 15 * selectedVehicle.ks; }
-
-        // Zaokruživanje na nulu (na 100 dinara naniže)
-        let finalPrice = Math.floor(total / 100) * 100;
+        // Zaokruživanje na najbližih 100 dinara
+        let finalPrice = Math.round(total / 100) * 100;
 
         document.getElementById('res-price').innerText = finalPrice + " RSD";
-        document.getElementById('res-time').innerText = "Oko " + Math.round(time) + " min";
         document.getElementById('results-box').style.display = "block";
     }
 </script>
