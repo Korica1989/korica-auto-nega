@@ -3,132 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>KORICA Auto Nega | Kalkulator</title>
-    
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="KORICA">
-    <link rel="apple-touch-icon" href="https://img.icons8.com/ios-filled/192/d4af37/car.png">
-
+    <title>KORICA Auto Nega | FULL DATABASE</title>
     <style>
         :root { --gold: #d4af37; --black: #000; --grey: #151515; --dark-grey: #222; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background: var(--black); color: white; padding-bottom: env(safe-area-inset-bottom); }
-        
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; }
+        body { background: var(--black); color: white; padding-bottom: 40px; }
         .header { padding: 40px 20px; text-align: center; border-bottom: 2px solid var(--gold); background: linear-gradient(to bottom, #111, #000); }
-        .header h1 { font-size: 24px; color: var(--gold); text-transform: uppercase; font-weight: 900; letter-spacing: 3px; }
+        .header h1 { font-size: 22px; color: var(--gold); text-transform: uppercase; font-weight: 900; letter-spacing: 3px; }
         .header p { font-size: 10px; letter-spacing: 4px; color: #fff; margin-top: 10px; text-transform: uppercase; opacity: 0.8; }
-        
-        .container { max-width: 500px; margin: 0 auto; padding: 25px; }
-        
-        .label-text { display: block; color: #777; font-size: 10px; text-transform: uppercase; margin: 25px 0 10px 0; font-weight: 800; letter-spacing: 1.5px; }
-        
-        .search-wrapper { position: relative; }
-        #search-input { width: 100%; padding: 18px; background: var(--grey); color: white; border: 1px solid var(--dark-grey); border-radius: 12px; font-size: 16px; border-left: 5px solid var(--gold); outline: none; transition: 0.3s; }
-        #search-input:focus { border-color: var(--gold); background: #1a1a1a; }
-        
-        .results-dropdown { position: absolute; width: 100%; background: var(--grey); border: 1px solid var(--dark-grey); border-radius: 0 0 12px 12px; max-height: 350px; overflow-y: auto; z-index: 100; display: none; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
-        .search-item { padding: 15px; border-bottom: 1px solid #111; cursor: pointer; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
-        .search-item b { color: var(--gold); font-size: 12px; }
-        .search-item:hover { background: #1c180e; color: var(--gold); }
-        
-        .selected-display { background: #1a160a; padding: 18px; border-radius: 12px; border: 1px dashed var(--gold); margin-top: 15px; display: none; text-align: center; font-weight: 900; color: var(--gold); text-transform: uppercase; font-size: 13px; letter-spacing: 1px; animation: fadeIn 0.4s; }
-        
-        .option-card { background: var(--grey); border: 1px solid var(--dark-grey); padding: 20px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.2s; -webkit-tap-highlight-color: transparent; }
-        .option-card.active { border-color: var(--gold); background: #1a160a; box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.1); }
-        .option-card span { font-weight: 800; text-transform: uppercase; font-size: 12px; color: #999; letter-spacing: 1px; }
-        .option-card.active span { color: var(--gold); }
-        
-        input[type="checkbox"] { width: 24px; height: 24px; accent-color: var(--gold); cursor: pointer; }
-        
-        .result-box { margin-top: 30px; padding: 30px; background: var(--grey); border-radius: 20px; text-align: center; display: none; border-top: 5px solid var(--gold); animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .price-label { font-size: 10px; color: #666; letter-spacing: 3px; margin-bottom: 5px; display: block; }
-        .price { font-size: 52px; color: var(--gold); font-weight: 900; display: block; margin-bottom: 15px; }
-        
-        .call-btn { display: block; width: 100%; padding: 20px; background: var(--gold); color: black; text-align: center; text-decoration: none; font-weight: 900; border-radius: 12px; text-transform: uppercase; font-size: 16px; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2); }
-        
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .container { max-width: 500px; margin: 0 auto; padding: 20px; }
+        #search-input { width: 100%; padding: 18px; background: var(--grey); color: white; border: 1px solid var(--dark-grey); border-radius: 12px; font-size: 16px; border-left: 5px solid var(--gold); outline: none; }
+        .results-dropdown { position: absolute; width: 100%; background: var(--grey); border: 1px solid var(--dark-grey); border-radius: 0 0 12px 12px; max-height: 450px; overflow-y: auto; z-index: 100; display: none; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
+        .search-item { padding: 15px; border-bottom: 1px solid #111; cursor: pointer; font-size: 13px; display: flex; justify-content: space-between; }
+        .search-item b { color: var(--gold); }
+        .selected-display { background: #1a160a; padding: 18px; border-radius: 12px; border: 1px dashed var(--gold); margin-top: 15px; display: none; text-align: center; font-weight: 900; color: var(--gold); text-transform: uppercase; font-size: 12px; }
+        .option-card { background: var(--grey); border: 1px solid var(--dark-grey); padding: 20px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        .option-card.active { border-color: var(--gold); background: #1a160a; }
+        .result-box { margin-top: 25px; padding: 25px; background: var(--grey); border-radius: 20px; text-align: center; display: none; border-top: 5px solid var(--gold); }
+        .price { font-size: 48px; color: var(--gold); font-weight: 900; display: block; margin-bottom: 10px; }
+        .call-btn { display: block; width: 100%; padding: 18px; background: var(--gold); color: black; text-align: center; text-decoration: none; font-weight: 900; border-radius: 12px; text-transform: uppercase; font-size: 15px; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h1>KORICA Auto Nega</h1>
-        <p>Sinonim Kvaliteta</p>
+        <p>SINONIM KVALITETA</p>
     </div>
 
     <div class="container">
-        <label class="label-text">Pronađi vozilo (po modelu ili godini)</label>
-        <div class="search-wrapper">
-            <input type="text" id="search-input" placeholder="npr. Audi 2014 ili Yeti..." oninput="filterVehicles()" autocomplete="off">
+        <div style="position: relative;">
+            <input type="text" id="search-input" placeholder="Pretraži brend ili model..." oninput="filterVehicles()" autocomplete="off">
             <div id="search-results" class="results-dropdown"></div>
         </div>
 
         <div id="selected-info" class="selected-display"></div>
 
-        <label class="label-text">Izaberi usluge</label>
         <div class="option-card" id="card-spolja" onclick="toggleOption('spolja')">
             <span>Spoljašnje pranje</span>
-            <input type="checkbox" id="check-spolja" onchange="calculate()" onclick="event.stopPropagation()">
+            <input type="checkbox" id="check-spolja" onchange="calculate()">
         </div>
         <div class="option-card" id="card-unutra" onclick="toggleOption('unutra')">
             <span>Unutrašnje pranje</span>
-            <input type="checkbox" id="check-unutra" onchange="calculate()" onclick="event.stopPropagation()">
+            <input type="checkbox" id="check-unutra" onchange="calculate()">
         </div>
 
         <div class="result-box" id="results-box">
-            <span class="price-label">UKUPAN IZNOS</span>
             <span class="price" id="res-price">0 RSD</span>
             <a href="tel:+38160000000" class="call-btn">Rezerviši termin</a>
         </div>
     </div>
 
 <script>
-    // MASIVNA BAZA PODATAKA SA GODIŠTIMA
     const vehicleData = [
-        // --- ŠKODA ---
-        { name: "Škoda Yeti", years: "2009 - 2017", ks: 1.25, ku: 1.15 },
-        { name: "Škoda Octavia A4", years: "1996 - 2004", ks: 1.07, ku: 1.06 },
-        { name: "Škoda Octavia A5", years: "2004 - 2013", ks: 1.25, ku: 1.15 },
-        { name: "Škoda Octavia A7", years: "2013 - 2020", ks: 1.25, ku: 1.15 },
-        { name: "Škoda Superb", years: "2001 - 2024", ks: 1.25, ku: 1.15 },
-        { name: "Škoda Fabia", years: "1999 - 2024", ks: 0.94, ku: 0.93 },
-
-        // --- VW ---
-        { name: "VW Golf 4", years: "1997 - 2004", ks: 1.07, ku: 1.06 },
-        { name: "VW Golf 5", years: "2003 - 2009", ks: 1.07, ku: 1.06 },
-        { name: "VW Golf 6", years: "2008 - 2013", ks: 1.07, ku: 1.06 },
-        { name: "VW Golf 7", years: "2012 - 2020", ks: 1.07, ku: 1.06 },
-        { name: "VW Golf 8", years: "2020 - 2024", ks: 1.07, ku: 1.06 },
-        { name: "VW Passat B5 / B5.5", years: "1996 - 2005", ks: 1.25, ku: 1.15 },
-        { name: "VW Passat B6", years: "2005 - 2010", ks: 1.25, ku: 1.15 },
-        { name: "VW Passat B7", years: "2010 - 2014", ks: 1.25, ku: 1.15 },
-        { name: "VW Passat B8", years: "2014 - 2023", ks: 1.25, ku: 1.15 },
-        { name: "VW Polo", years: "Sve generacije", ks: 0.94, ku: 0.93 },
-
-        // --- AUDI ---
-        { name: "Audi A3", years: "1996 - 2024", ks: 1.07, ku: 1.06 },
-        { name: "Audi A4 B6", years: "2000 - 2006", ks: 1.25, ku: 1.15 },
-        { name: "Audi A4 B7", years: "2004 - 2008", ks: 1.25, ku: 1.15 },
-        { name: "Audi A4 B8", years: "2008 - 2016", ks: 1.25, ku: 1.15 },
-        { name: "Audi A4 B9", years: "2016 - 2024", ks: 1.25, ku: 1.15 },
-        { name: "Audi A6 C6", years: "2004 - 2011", ks: 1.25, ku: 1.15 },
-        { name: "Audi A6 C7", years: "2011 - 2018", ks: 1.25, ku: 1.15 },
-
-        // --- BMW ---
-        { name: "BMW Serija 3 E46", years: "1998 - 2005", ks: 1.25, ku: 1.15 },
-        { name: "BMW Serija 3 E90", years: "2005 - 2013", ks: 1.25, ku: 1.15 },
-        { name: "BMW Serija 3 F30", years: "2012 - 2019", ks: 1.25, ku: 1.15 },
-        { name: "BMW Serija 5 E60", years: "2003 - 2010", ks: 1.25, ku: 1.15 },
-        { name: "BMW Serija 5 F10", years: "2010 - 2017", ks: 1.25, ku: 1.15 },
-
-        // --- SUV & KOMBI (DODAJ PO POTREBI JOŠ 1000+) ---
-        { name: "BMW X5", years: "Sve generacije", ks: 1.8, ku: 1.66 },
-        { name: "VW Tiguan", years: "2007 - 2024", ks: 1.5, ku: 1.43 },
-        { name: "Dacia Duster", years: "2010 - 2024", ks: 1.5, ku: 1.43 },
-        { name: "VW Transporter (Putnički)", years: "Sve gen", ks: 2.1, ku: 2.3 },
-        { name: "VW Transporter (Teretni)", years: "Sve gen", ks: 2.1, ku: 1.1 }
+        // ABARTH
+        { name: "Abarth 500/595", years: "Sve god", ks: 0.9, ku: 0.9 },
+        // ALFA ROMEO
+        { name: "Alfa Romeo Giulia", years: "2016 - 2024", ks: 1.25, ku: 1.15 },
+        { name: "Alfa Romeo Stelvio", years: "2016 - 2024", ks: 1.5, ku: 1.43 },
+        { name: "Alfa Romeo Giulietta", years: "2010 - 2020", ks: 1.07, ku: 1.06 },
+        { name: "Alfa Romeo 159", years: "2005 - 2011", ks: 1.25, ku: 1.15 },
+        // AUDI
+        { name: "Audi A1", years: "2010 - 2024", ks: 0.94, ku: 0.93 },
+        { name: "Audi A3", years: "2003 - 2024", ks: 1.07, ku: 1.06 },
+        { name: "Audi A4", years: "2001 - 2024", ks: 1.25, ku: 1.15 },
+        { name: "Audi A6", years: "2004 - 2024", ks: 1.25, ku: 1.15 },
+        { name: "Audi Q3/Q5", years: "2008 - 2024", ks: 1.5, ku: 1.43 },
+        { name: "Audi Q7/Q8", years: "2005 - 2024", ks: 1.8, ku: 1.66 },
+        // BENTLEY
+        { name: "Bentley Continental", years: "Sve god", ks: 1.5, ku: 1.5 },
+        { name: "Bentley Bentayga", years: "Sve god", ks: 2.1, ku: 2.1 },
+        // BMW
+        { name: "BMW Serija 1", years: "2004 - 2024", ks: 1.07, ku: 1.06 },
+        { name: "BMW Serija 3", years: "1998 - 2024", ks: 1.25, ku: 1.15 },
+        { name: "BMW Serija 4", years: "2013 - 2024", ks: 1.25, ku: 1.15 },
+        { name: "BMW Serija 5", years: "2003 - 2024", ks: 1.25, ku: 1.15 },
+        { name: "BMW Serija 7", years: "Sve god", ks: 1.8, ku: 1.66 },
+        { name: "BMW X1/X2", years: "2009 - 2024", ks: 1.5, ku: 1.43 },
+        { name: "BMW X3/X4", years: "2003 - 2024", ks: 1.5, ku: 1.43 },
+        { name: "BMW X5/X6", years: "1999 - 2024", ks: 1.8, ku: 1.66 },
+        { name: "BMW X7", years: "2018 - 2024", ks: 2.1, ku: 1.88 },
+        // CITROEN
+        { name: "Citroen C3", years: "2002 - 2024", ks: 0.94, ku: 0.93 },
+        { name: "Citroen C4", years: "2004 - 2024", ks: 1.07, ku: 1.06 },
+        { name: "Citroen C5", years: "2001 - 2024", ks: 1.25, ku: 1.15 },
+        // DACIA
+        { name: "Dacia Sandero", years: "2008 - 2024", ks: 0.94, ku: 0.93 },
+        { name: "Dacia Duster", years: "2010 - 2024", ks: 1.3, ku: 1.2 },
+        // FIAT
+        { name: "Fiat Punto", years: "1999 - 2018", ks: 0.94, ku: 0.93 },
+        { name: "Fiat 500/500L", years: "2007 - 2024", ks: 1.07, ku: 1.06 },
+        { name: "Fiat Tipo", years: "2015 - 2024", ks: 1.07, ku: 1.06 },
+        // FORD
+        { name: "Ford Fiesta", years: "2002 - 2023", ks: 0.94, ku: 0.93 },
+        { name: "Ford Focus", years: "1998 - 2024", ks: 1.07, ku: 1.06 },
+        { name: "Ford Mondeo", years: "2000 - 2024", ks: 1.25, ku: 1.15 },
+        { name: "Ford Kuga", years: "2008 - 2024", ks: 1.5, ku: 1.43 },
+        // HYUNDAI
+        { name: "Hyundai i10/i20", years: "2008 - 2024", ks: 0.94, ku: 0.93 },
+        { name: "Hyundai i30", years: "2007 - 2024", ks: 1.07, ku: 1.06 },
+        { name: "Hyundai Tucson", years: "2004 - 2024", ks: 1.5, ku: 1.43 },
+        { name: "Hyundai Santa Fe", years: "Sve god", ks: 1.8, ku: 1.66 },
+        // JEEP
+        { name: "Jeep Renegade/Compass", years: "2014 - 2024", ks: 1.5, ku: 1.43 },
+        { name: "Jeep Cherokee", years: "Sve god", ks: 1.8, ku: 1.66 },
+        // KIA
+        { name: "Kia Ceed", years: "2006 - 2024", ks: 1.07, ku: 1.06 },
+        { name: "Kia Sportage", years: "2004 - 2024", ks: 1.5, ku: 1.43 },
+        { name: "Kia Sorento", years: "Sve god", ks: 1.8, ku: 1.66 },
+        // LAND ROVER
+        { name: "Range Rover Evoque", years: "Sve god", ks: 1.5, ku: 1.43 },
+        { name: "Range Rover Sport", years: "Sve god", ks: 2.1, ku: 1.88 },
+        // MERCEDES
+        { name: "Mercedes A-Klasa", years: "1997 - 2024", ks: 0.94, ku: 0.93 },
+        { name: "Mercedes C-Klasa", years: "2000 - 2024", ks: 1.25, ku: 1.15 },
+        { name: "Mercedes E-Klasa", years: "1995 - 2024", ks: 1.25, ku: 1.15 },
+        { name: "Mercedes S-Klasa", years: "Sve god", ks: 1.8, ku: 1.66 },
+        { name: "Mercedes GLC/GLE", years: "Sve god", ks: 1.8, ku: 1.66 },
+        // OPEL
+        { name: "Opel Corsa", years: "2000 - 2024", ks: 0.94, ku: 0.93 },
+        { name: "Opel Astra", years: "1998 - 2024", ks: 1.07, ku: 1.06 },
+        { name: "Opel Insignia", years: "2008 - 2024", ks: 1.25, ku: 1.15 },
+        // PEUGEOT
+        { name: "Peugeot 207/208", years: "2006 - 2024", ks: 0.94, ku: 0.93 },
+        { name: "Peugeot 308", years: "2007 - 2024", ks: 1.07, ku: 1.06 },
+        { name: "Peugeot 508", years: "2010 - 2024", ks: 1.25, ku: 1.15 },
+        { name: "Peugeot 3008/5008", years: "2009 - 2024", ks: 1.8, ku: 1.66 },
+        // PORSCHE
+        { name: "Porsche 911/Taycan", years: "Sve god", ks: 1.25, ku: 1.15 },
+        { name: "Porsche Macan/Cayenne", years: "Sve god", ks: 1.8, ku: 1.66 },
+        // RENAULT
+        { name: "Renault Clio", years: "1998 - 2024", ks: 0.94, ku: 0.93 },
+        { name: "Renault Megane", years: "1995 - 2024", ks: 1.07, ku: 1.06 },
+        { name: "Renault Kadjar/Austral", years: "2015 - 2024", ks: 1.5, ku: 1.43 },
+        // SEAT
+        { name: "Seat Ibiza", years: "2002 - 2024", ks: 0.94, ku: 0.93 },
+        { name: "Seat Leon", years: "1999 - 2024", ks: 1.07, ku: 1.06 },
+        // SKODA
+        { name: "Skoda Fabia", years: "1999 - 2024", ks: 0.94, ku: 0.93 },
+        { name: "Skoda Octavia", years: "1996 - 2024", ks: 1.25, ku: 1.15 },
+        { name: "Skoda Superb", years: "2001 - 2024", ks: 1.25, ku: 1.15 },
+        { name: "Skoda Kodiaq", years: "2016 - 2024", ks: 1.8, ku: 1.66 },
+        // TOYOTA
+        { name: "Toyota Yaris", years: "1999 - 2024", ks: 0.94, ku: 0.93 },
+        { name: "Toyota Corolla", years: "2000 - 2024", ks: 1.07, ku: 1.06 },
+        { name: "Toyota RAV4", years: "2000 - 2024", ks: 1.5, ku: 1.43 },
+        // VOLVO
+        { name: "Volvo S60/V60", years: "2000 - 2024", ks: 1.25, ku: 1.15 },
+        { name: "Volvo XC60/XC90", years: "2002 - 2024", ks: 1.8, ku: 1.66 },
+        // VW
+        { name: "VW Golf 4-8", years: "1997 - 2024", ks: 1.07, ku: 1.06 },
+        { name: "VW Passat B5-B8", years: "1996 - 2024", ks: 1.25, ku: 1.15 },
+        { name: "VW Tiguan/Touareg", years: "2002 - 2024", ks: 1.8, ku: 1.66 },
+        // TERETNA / VANS (Sa slike)
+        { name: "Iveco Daily", years: "Sve god", ks: 2.1, ku: 1.1 },
+        { name: "MAN TGE", years: "Sve god", ks: 2.1, ku: 1.1 },
+        { name: "Mercedes Sprinter/Vito", years: "Sve god", ks: 2.1, ku: 2.3 }
     ];
 
     let selectedVehicle = null;
@@ -140,12 +170,7 @@
         const resultsDiv = document.getElementById('search-results');
         resultsDiv.innerHTML = '';
         if (input.length < 1) { resultsDiv.style.display = 'none'; return; }
-
-        const filtered = vehicleData.filter(v => 
-            v.name.toLowerCase().includes(input) || 
-            v.years.toLowerCase().includes(input)
-        ).slice(0, 15);
-
+        const filtered = vehicleData.filter(v => v.name.toLowerCase().includes(input)).slice(0, 15);
         if (filtered.length > 0) {
             resultsDiv.style.display = 'block';
             filtered.forEach(v => {
@@ -162,14 +187,15 @@
         selectedVehicle = v;
         document.getElementById('search-input').value = v.name;
         document.getElementById('search-results').style.display = 'none';
-        document.getElementById('selected-info').innerText = "Vozilo: " + v.name + " (" + v.years + ")";
+        document.getElementById('selected-info').innerText = v.name + " (" + v.years + ")";
         document.getElementById('selected-info').style.display = 'block';
         calculate();
     }
 
     function toggleOption(id) {
-        const checkbox = document.getElementById('check-' + id);
-        checkbox.checked = !checkbox.checked;
+        const ch = document.getElementById('check-' + id);
+        ch.checked = !ch.checked;
+        document.getElementById('card-' + id).className = ch.checked ? 'option-card active' : 'option-card';
         calculate();
     }
 
@@ -177,22 +203,11 @@
         if (!selectedVehicle) return;
         const isSpolja = document.getElementById('check-spolja').checked;
         const isUnutra = document.getElementById('check-unutra').checked;
-
-        document.getElementById('card-spolja').className = isSpolja ? 'option-card active' : 'option-card';
-        document.getElementById('card-unutra').className = isUnutra ? 'option-card active' : 'option-card';
-
-        if (!isSpolja && !isUnutra) {
-            document.getElementById('results-box').style.display = 'none';
-            return;
-        }
-
+        if (!isSpolja && !isUnutra) { document.getElementById('results-box').style.display = 'none'; return; }
         let total = 0;
         if(isSpolja) total += (BAZA_SPOLJA * selectedVehicle.ks);
         if(isUnutra) total += (BAZA_UNUTRA * selectedVehicle.ku);
-
-        // Zaokruživanje na 100 dinara
-        let finalPrice = Math.round(total / 100) * 100;
-        document.getElementById('res-price').innerText = finalPrice + " RSD";
+        document.getElementById('res-price').innerText = (Math.round(total / 100) * 100) + " RSD";
         document.getElementById('results-box').style.display = "block";
     }
 </script>
