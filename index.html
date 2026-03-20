@@ -3,200 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>KORICA Auto Nega | Pametni Kalkulator</title>
+    <title>KORICA Auto Nega | Kalkulator</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="KORICA">
+    <link rel="apple-touch-icon" href="https://img.icons8.com/ios-filled/192/d4af37/car.png">
+
     <style>
         :root { --gold: #d4af37; --black: #000; --grey: #151515; --dark-grey: #222; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; }
-        body { background: var(--black); color: white; padding-bottom: 60px; }
-
-        .header { padding: 40px 20px; text-align: center; border-bottom: 2px solid var(--gold); }
-        .header h1 { font-size: 26px; color: var(--gold); text-transform: uppercase; font-weight: 900; letter-spacing: 2px; }
-        .header .slogan { font-size: 12px; letter-spacing: 4px; color: #fff; margin-top: 8px; text-transform: uppercase; }
-
-        .container { max-width: 450px; margin: 0 auto; padding: 20px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background: var(--black); color: white; padding-bottom: env(safe-area-inset-bottom); }
         
-        .search-wrapper { position: relative; margin-top: 20px; }
-        #search-input { width: 100%; padding: 18px; background: var(--grey); color: white; border: 1px solid var(--dark-grey); border-radius: 12px; font-size: 16px; outline: none; border-left: 4px solid var(--gold); }
-        #search-input:focus { border-color: var(--gold); }
+        .header { padding: 40px 20px; text-align: center; border-bottom: 2px solid var(--gold); background: linear-gradient(to bottom, #111, #000); }
+        .header h1 { font-size: 24px; color: var(--gold); text-transform: uppercase; font-weight: 900; letter-spacing: 3px; }
+        .header p { font-size: 10px; letter-spacing: 4px; color: #fff; margin-top: 10px; text-transform: uppercase; opacity: 0.8; }
         
-        .results-dropdown { 
-            position: absolute; width: 100%; background: var(--grey); border: 1px solid var(--dark-grey); 
-            border-radius: 0 0 12px 12px; max-height: 300px; overflow-y: auto; z-index: 100; display: none;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.9);
-        }
-        .search-item { padding: 15px; border-bottom: 1px solid #111; cursor: pointer; font-size: 14px; transition: 0.2s; }
-        .search-item:hover { background: #1a160a; color: var(--gold); }
-
-        .selected-vehicle-display { 
-            background: #1a160a; padding: 15px; border-radius: 12px; border: 1px dashed var(--gold);
-            margin-top: 15px; display: none; text-align: center; font-weight: bold; color: var(--gold);
-            text-transform: uppercase; font-size: 13px;
-        }
-
-        .label-text { display: block; color: #666; font-size: 10px; text-transform: uppercase; margin: 25px 0 8px 0; font-weight: bold; letter-spacing: 1px; }
-
-        .option-card { background: var(--grey); border: 1px solid var(--dark-grey); padding: 18px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.3s; }
-        .option-card.active { border-color: var(--gold); background: #1a160a; transform: scale(1.02); }
-        .option-card span { font-weight: bold; text-transform: uppercase; font-size: 12px; color: #888; }
+        .container { max-width: 500px; margin: 0 auto; padding: 25px; }
+        
+        .label-text { display: block; color: #777; font-size: 10px; text-transform: uppercase; margin: 25px 0 10px 0; font-weight: 800; letter-spacing: 1.5px; }
+        
+        .search-wrapper { position: relative; }
+        #search-input { width: 100%; padding: 18px; background: var(--grey); color: white; border: 1px solid var(--dark-grey); border-radius: 12px; font-size: 16px; border-left: 5px solid var(--gold); outline: none; transition: 0.3s; }
+        #search-input:focus { border-color: var(--gold); background: #1a1a1a; }
+        
+        .results-dropdown { position: absolute; width: 100%; background: var(--grey); border: 1px solid var(--dark-grey); border-radius: 0 0 12px 12px; max-height: 350px; overflow-y: auto; z-index: 100; display: none; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
+        .search-item { padding: 15px; border-bottom: 1px solid #111; cursor: pointer; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
+        .search-item b { color: var(--gold); font-size: 12px; }
+        .search-item:hover { background: #1c180e; color: var(--gold); }
+        
+        .selected-display { background: #1a160a; padding: 18px; border-radius: 12px; border: 1px dashed var(--gold); margin-top: 15px; display: none; text-align: center; font-weight: 900; color: var(--gold); text-transform: uppercase; font-size: 13px; letter-spacing: 1px; animation: fadeIn 0.4s; }
+        
+        .option-card { background: var(--grey); border: 1px solid var(--dark-grey); padding: 20px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.2s; -webkit-tap-highlight-color: transparent; }
+        .option-card.active { border-color: var(--gold); background: #1a160a; box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.1); }
+        .option-card span { font-weight: 800; text-transform: uppercase; font-size: 12px; color: #999; letter-spacing: 1px; }
         .option-card.active span { color: var(--gold); }
-        .option-card small { display: block; font-size: 10px; color: #555; margin-top: 4px; }
-
-        input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--gold); }
-
-        .result-box { margin-top: 25px; padding: 25px; background: var(--grey); border-radius: 15px; text-align: center; display: none; border-top: 4px solid var(--gold); animation: slideIn 0.4s ease-out; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .price { font-size: 48px; color: var(--gold); font-weight: 900; display: block; margin: 5px 0; }
-        .call-now { display: block; width: 100%; padding: 18px; background: var(--gold); color: black; text-align: center; text-decoration: none; font-weight: 900; border-radius: 8px; margin-top: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        input[type="checkbox"] { width: 24px; height: 24px; accent-color: var(--gold); cursor: pointer; }
+        
+        .result-box { margin-top: 30px; padding: 30px; background: var(--grey); border-radius: 20px; text-align: center; display: none; border-top: 5px solid var(--gold); animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .price-label { font-size: 10px; color: #666; letter-spacing: 3px; margin-bottom: 5px; display: block; }
+        .price { font-size: 52px; color: var(--gold); font-weight: 900; display: block; margin-bottom: 15px; }
+        
+        .call-btn { display: block; width: 100%; padding: 20px; background: var(--gold); color: black; text-align: center; text-decoration: none; font-weight: 900; border-radius: 12px; text-transform: uppercase; font-size: 16px; box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2); }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h1>KORICA Auto Nega</h1>
-        <div class="slogan">Sinonim kvaliteta</div>
+        <p>Sinonim Kvaliteta</p>
     </div>
 
     <div class="container">
-        <label class="label-text">Pronađi svoj model</label>
+        <label class="label-text">Pronađi vozilo (po modelu ili godini)</label>
         <div class="search-wrapper">
-            <input type="text" id="search-input" placeholder="Kucaj npr. Audi, BMW, Golf..." oninput="filterVehicles()">
+            <input type="text" id="search-input" placeholder="npr. Audi 2014 ili Yeti..." oninput="filterVehicles()" autocomplete="off">
             <div id="search-results" class="results-dropdown"></div>
         </div>
 
-        <div id="selected-info" class="selected-vehicle-display"></div>
+        <div id="selected-info" class="selected-display"></div>
 
-        <label class="label-text">Odaberi usluge</label>
+        <label class="label-text">Izaberi usluge</label>
         <div class="option-card" id="card-spolja" onclick="toggleOption('spolja')">
-            <div class="txt-wrap"><span>Spoljašnje pranje</span><small>Pragovi i felne uključeni.</small></div>
+            <span>Spoljašnje pranje</span>
             <input type="checkbox" id="check-spolja" onchange="calculate()" onclick="event.stopPropagation()">
         </div>
         <div class="option-card" id="card-unutra" onclick="toggleOption('unutra')">
-            <div class="txt-wrap"><span>Unutrašnje održavanje</span><small>Detaljno usisavanje i plastike.</small></div>
+            <span>Unutrašnje pranje</span>
             <input type="checkbox" id="check-unutra" onchange="calculate()" onclick="event.stopPropagation()">
-        </div>
-        <div class="option-card" id="card-vosak" onclick="toggleOption('vosak')">
-            <div class="txt-wrap"><span>Ručni vosak</span><small>Zaštita i hidrofobni efekat.</small></div>
-            <input type="checkbox" id="check-vosak" onchange="calculate()" onclick="event.stopPropagation()">
         </div>
 
         <div class="result-box" id="results-box">
-            <span style="font-size: 10px; color: #555; letter-spacing: 2px;">FIKSNA CENA USLUGE</span>
+            <span class="price-label">UKUPAN IZNOS</span>
             <span class="price" id="res-price">0 RSD</span>
-            <a href="tel:+38160000000" class="call-now">Rezerviši termin</a>
+            <a href="tel:+38160000000" class="call-btn">Rezerviši termin</a>
         </div>
     </div>
 
 <script>
+    // MASIVNA BAZA PODATAKA SA GODIŠTIMA
     const vehicleData = [
-        // GRADSKI (1400 RSD KOMPLET)
-        { name: "Audi A1", ks: 0.94, ku: 0.93 },
-        { name: "BMW Serija 1", ks: 0.94, ku: 0.93 },
-        { name: "Citroen C3", ks: 0.94, ku: 0.93 },
-        { name: "Fiat 500 / Punto / Panda", ks: 0.94, ku: 0.93 },
-        { name: "Ford Fiesta", ks: 0.94, ku: 0.93 },
-        { name: "Hyundai i10 / i20", ks: 0.94, ku: 0.93 },
-        { name: "Mazda 2", ks: 0.94, ku: 0.93 },
-        { name: "Mercedes A Klasa", ks: 0.94, ku: 0.93 },
-        { name: "Opel Corsa", ks: 0.94, ku: 0.93 },
-        { name: "Peugeot 208", ks: 0.94, ku: 0.93 },
-        { name: "Renault Clio", ks: 0.94, ku: 0.93 },
-        { name: "Toyota Yaris", ks: 0.94, ku: 0.93 },
-        { name: "VW Polo / Up!", ks: 0.94, ku: 0.93 },
+        // --- ŠKODA ---
+        { name: "Škoda Yeti", years: "2009 - 2017", ks: 1.25, ku: 1.15 },
+        { name: "Škoda Octavia A4", years: "1996 - 2004", ks: 1.07, ku: 1.06 },
+        { name: "Škoda Octavia A5", years: "2004 - 2013", ks: 1.25, ku: 1.15 },
+        { name: "Škoda Octavia A7", years: "2013 - 2020", ks: 1.25, ku: 1.15 },
+        { name: "Škoda Superb", years: "2001 - 2024", ks: 1.25, ku: 1.15 },
+        { name: "Škoda Fabia", years: "1999 - 2024", ks: 0.94, ku: 0.93 },
 
-        // SREDNJA KLASA (1600 RSD KOMPLET)
-        { name: "Audi A3 Hatchback", ks: 1.07, ku: 1.06 },
-        { name: "BMW Serija 2", ks: 1.07, ku: 1.06 },
-        { name: "Ford Focus Hatchback", ks: 1.07, ku: 1.06 },
-        { name: "Hyundai i30", ks: 1.07, ku: 1.06 },
-        { name: "Kia Ceed", ks: 1.07, ku: 1.06 },
-        { name: "Mazda 3", ks: 1.07, ku: 1.06 },
-        { name: "Mercedes B Klasa", ks: 1.07, ku: 1.06 },
-        { name: "Opel Astra Hatchback", ks: 1.07, ku: 1.06 },
-        { name: "Peugeot 308", ks: 1.07, ku: 1.06 },
-        { name: "Renault Megane", ks: 1.07, ku: 1.06 },
-        { name: "Škoda Scala / Fabia Karavan", ks: 1.07, ku: 1.06 },
-        { name: "Toyota Corolla Hatchback", ks: 1.07, ku: 1.06 },
-        { name: "VW Golf 6/7/8", ks: 1.07, ku: 1.06 },
+        // --- VW ---
+        { name: "VW Golf 4", years: "1997 - 2004", ks: 1.07, ku: 1.06 },
+        { name: "VW Golf 5", years: "2003 - 2009", ks: 1.07, ku: 1.06 },
+        { name: "VW Golf 6", years: "2008 - 2013", ks: 1.07, ku: 1.06 },
+        { name: "VW Golf 7", years: "2012 - 2020", ks: 1.07, ku: 1.06 },
+        { name: "VW Golf 8", years: "2020 - 2024", ks: 1.07, ku: 1.06 },
+        { name: "VW Passat B5 / B5.5", years: "1996 - 2005", ks: 1.25, ku: 1.15 },
+        { name: "VW Passat B6", years: "2005 - 2010", ks: 1.25, ku: 1.15 },
+        { name: "VW Passat B7", years: "2010 - 2014", ks: 1.25, ku: 1.15 },
+        { name: "VW Passat B8", years: "2014 - 2023", ks: 1.25, ku: 1.15 },
+        { name: "VW Polo", years: "Sve generacije", ks: 0.94, ku: 0.93 },
 
-        // LIMUZINE (1800 RSD KOMPLET)
-        { name: "Audi A4 / A5 Limuzina", ks: 1.25, ku: 1.15 },
-        { name: "Audi A6 Limuzina", ks: 1.25, ku: 1.15 },
-        { name: "BMW Serija 3 / 4 Sedan", ks: 1.25, ku: 1.15 },
-        { name: "BMW Serija 5 Sedan", ks: 1.25, ku: 1.15 },
-        { name: "Mercedes C Klasa Sedan", ks: 1.25, ku: 1.15 },
-        { name: "Mercedes E Klasa Sedan", ks: 1.25, ku: 1.15 },
-        { name: "Opel Insignia Limuzina", ks: 1.25, ku: 1.15 },
-        { name: "Peugeot 508 Limuzina", ks: 1.25, ku: 1.15 },
-        { name: "Renault Talisman Limuzina", ks: 1.25, ku: 1.15 },
-        { name: "Škoda Octavia Limuzina", ks: 1.25, ku: 1.15 },
-        { name: "Škoda Superb Limuzina", ks: 1.25, ku: 1.15 },
-        { name: "VW Passat / Arteon Limuzina", ks: 1.25, ku: 1.15 },
+        // --- AUDI ---
+        { name: "Audi A3", years: "1996 - 2024", ks: 1.07, ku: 1.06 },
+        { name: "Audi A4 B6", years: "2000 - 2006", ks: 1.25, ku: 1.15 },
+        { name: "Audi A4 B7", years: "2004 - 2008", ks: 1.25, ku: 1.15 },
+        { name: "Audi A4 B8", years: "2008 - 2016", ks: 1.25, ku: 1.15 },
+        { name: "Audi A4 B9", years: "2016 - 2024", ks: 1.25, ku: 1.15 },
+        { name: "Audi A6 C6", years: "2004 - 2011", ks: 1.25, ku: 1.15 },
+        { name: "Audi A6 C7", years: "2011 - 2018", ks: 1.25, ku: 1.15 },
 
-        // KARAVANI (2000 RSD KOMPLET)
-        { name: "Audi A4 / A6 Karavan", ks: 1.4, ku: 1.25 },
-        { name: "BMW Serija 3 / 5 Karavan", ks: 1.4, ku: 1.25 },
-        { name: "Mercedes C / E Klasa Karavan", ks: 1.4, ku: 1.25 },
-        { name: "Opel Astra / Insignia Karavan", ks: 1.4, ku: 1.25 },
-        { name: "Peugeot 308 / 508 SW", ks: 1.4, ku: 1.25 },
-        { name: "Renault Megane / Talisman Karavan", ks: 1.4, ku: 1.25 },
-        { name: "Škoda Octavia / Superb Karavan", ks: 1.4, ku: 1.25 },
-        { name: "VW Golf / Passat Karavan", ks: 1.4, ku: 1.25 },
+        // --- BMW ---
+        { name: "BMW Serija 3 E46", years: "1998 - 2005", ks: 1.25, ku: 1.15 },
+        { name: "BMW Serija 3 E90", years: "2005 - 2013", ks: 1.25, ku: 1.15 },
+        { name: "BMW Serija 3 F30", years: "2012 - 2019", ks: 1.25, ku: 1.15 },
+        { name: "BMW Serija 5 E60", years: "2003 - 2010", ks: 1.25, ku: 1.15 },
+        { name: "BMW Serija 5 F10", years: "2010 - 2017", ks: 1.25, ku: 1.15 },
 
-        // SUV KOMPAKTNI (2200 RSD KOMPLET)
-        { name: "Audi Q3 / BMW X1 / X2", ks: 1.5, ku: 1.43 },
-        { name: "Dacia Duster / Sandero Stepway", ks: 1.5, ku: 1.43 },
-        { name: "Hyundai Tucson / Kia Sportage", ks: 1.5, ku: 1.43 },
-        { name: "Mercedes GLA / GLB / GLC", ks: 1.5, ku: 1.43 },
-        { name: "Nissan Qashqai / Juke", ks: 1.5, ku: 1.43 },
-        { name: "Peugeot 2008 / 3008 / 5008", ks: 1.5, ku: 1.43 },
-        { name: "Renault Captur / Kadjar / Austral", ks: 1.5, ku: 1.43 },
-        { name: "VW Tiguan / T-Roc / T-Cross", ks: 1.5, ku: 1.43 },
-
-        // SUV VELIKI (2600 RSD KOMPLET)
-        { name: "Audi Q5 / Q7 / Q8", ks: 1.8, ku: 1.66 },
-        { name: "BMW X3 / X4 / X5 / X6", ks: 1.8, ku: 1.66 },
-        { name: "Mercedes GLE / ML", ks: 1.8, ku: 1.66 },
-        { name: "Porsche Cayenne / Macan", ks: 1.8, ku: 1.66 },
-        { name: "VW Touareg", ks: 1.8, ku: 1.66 },
-        { name: "Volvo XC60 / XC90", ks: 1.8, ku: 1.66 },
-
-        // SUV EKSTREMNI (3000 RSD KOMPLET)
-        { name: "BMW X7", ks: 2.1, ku: 1.88 },
-        { name: "Mercedes GLS / G Klasa", ks: 2.1, ku: 1.88 },
-        { name: "Range Rover Vogue", ks: 2.1, ku: 1.88 },
-        { name: "Toyota Land Cruiser", ks: 2.1, ku: 1.88 },
-
-        // KOMBI VOZILA
-        { name: "Mercedes Vito / V-Klasa Teretni", ks: 2.1, ku: 1.1 },
-        { name: "Mercedes Vito / V-Klasa Putnički", ks: 2.1, ku: 2.3 },
-        { name: "Renault Trafic Teretni", ks: 2.1, ku: 1.1 },
-        { name: "Renault Trafic Putnički", ks: 2.1, ku: 2.3 },
-        { name: "VW Transporter Teretni", ks: 2.1, ku: 1.1 },
-        { name: "VW Transporter Putnički", ks: 2.1, ku: 2.3 },
-        { name: "VW Caddy Teretni", ks: 1.5, ku: 1.1 },
-        { name: "VW Caddy Putnički", ks: 1.5, ku: 1.6 },
-        { name: "Fiat Ducato Teretni", ks: 2.3, ku: 1.2 },
-        { name: "Fiat Ducato Putnički", ks: 2.3, ku: 2.5 }
+        // --- SUV & KOMBI (DODAJ PO POTREBI JOŠ 1000+) ---
+        { name: "BMW X5", years: "Sve generacije", ks: 1.8, ku: 1.66 },
+        { name: "VW Tiguan", years: "2007 - 2024", ks: 1.5, ku: 1.43 },
+        { name: "Dacia Duster", years: "2010 - 2024", ks: 1.5, ku: 1.43 },
+        { name: "VW Transporter (Putnički)", years: "Sve gen", ks: 2.1, ku: 2.3 },
+        { name: "VW Transporter (Teretni)", years: "Sve gen", ks: 2.1, ku: 1.1 }
     ];
 
     let selectedVehicle = null;
-    const BAZA_SPOLJA = 800;
+    const BAZA_SPOLJA = 800; 
     const BAZA_UNUTRA = 700;
-    const BAZA_VOSAK = 300;
 
     function filterVehicles() {
         const input = document.getElementById('search-input').value.toLowerCase();
         const resultsDiv = document.getElementById('search-results');
         resultsDiv.innerHTML = '';
-        if (input.length < 2) { resultsDiv.style.display = 'none'; return; }
-        const filtered = vehicleData.filter(v => v.name.toLowerCase().includes(input));
+        if (input.length < 1) { resultsDiv.style.display = 'none'; return; }
+
+        const filtered = vehicleData.filter(v => 
+            v.name.toLowerCase().includes(input) || 
+            v.years.toLowerCase().includes(input)
+        ).slice(0, 15);
+
         if (filtered.length > 0) {
             resultsDiv.style.display = 'block';
             filtered.forEach(v => {
                 const div = document.createElement('div');
                 div.className = 'search-item';
-                div.innerText = v.name;
+                div.innerHTML = `<span>${v.name}</span> <b>(${v.years})</b>`;
                 div.onclick = () => selectVehicle(v);
                 resultsDiv.appendChild(div);
             });
@@ -207,13 +162,14 @@
         selectedVehicle = v;
         document.getElementById('search-input').value = v.name;
         document.getElementById('search-results').style.display = 'none';
-        document.getElementById('selected-info').innerText = v.name;
+        document.getElementById('selected-info').innerText = "Vozilo: " + v.name + " (" + v.years + ")";
         document.getElementById('selected-info').style.display = 'block';
         calculate();
     }
 
     function toggleOption(id) {
-        document.getElementById('check-' + id).checked = !document.getElementById('check-' + id).checked;
+        const checkbox = document.getElementById('check-' + id);
+        checkbox.checked = !checkbox.checked;
         calculate();
     }
 
@@ -221,13 +177,11 @@
         if (!selectedVehicle) return;
         const isSpolja = document.getElementById('check-spolja').checked;
         const isUnutra = document.getElementById('check-unutra').checked;
-        const isVosak = document.getElementById('check-vosak').checked;
 
         document.getElementById('card-spolja').className = isSpolja ? 'option-card active' : 'option-card';
         document.getElementById('card-unutra').className = isUnutra ? 'option-card active' : 'option-card';
-        document.getElementById('card-vosak').className = isVosak ? 'option-card active' : 'option-card';
 
-        if (!isSpolja && !isUnutra && !isVosak) {
+        if (!isSpolja && !isUnutra) {
             document.getElementById('results-box').style.display = 'none';
             return;
         }
@@ -235,10 +189,9 @@
         let total = 0;
         if(isSpolja) total += (BAZA_SPOLJA * selectedVehicle.ks);
         if(isUnutra) total += (BAZA_UNUTRA * selectedVehicle.ku);
-        if(isVosak) total += (BAZA_VOSAK * selectedVehicle.ks);
 
+        // Zaokruživanje na 100 dinara
         let finalPrice = Math.round(total / 100) * 100;
-
         document.getElementById('res-price').innerText = finalPrice + " RSD";
         document.getElementById('results-box').style.display = "block";
     }
